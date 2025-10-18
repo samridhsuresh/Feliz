@@ -5,16 +5,14 @@
   <title>Feliz – Where Legends are Forged</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* ---------- CSS RESET & VARIABLES ---------- */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #0a0a0a;
-      --bg2: #111111;
+      --bg2: rgba(17,17,17,.75);
       --cyan: #00ffff;
-      --azure: #0080ff;
       --glow: 0 0 5px var(--cyan), 0 0 10px var(--cyan), 0 0 20px var(--cyan);
       --font: 'Segoe UI', 'Roboto', sans-serif;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
       color: #fff;
@@ -24,10 +22,41 @@
     }
     a { color: var(--cyan); text-decoration: none; }
     h1, h2, h3 { letter-spacing: 2px; text-transform: uppercase; }
-    section { padding: 80px 20px; max-width: 1100px; margin: auto; }
+    section {
+      padding: 80px 20px;
+      max-width: 1100px;
+      margin: 0 auto 50px;
+      background: var(--bg2);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ----- SIMPLE CSS PARTICLES ----- */
+    .particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: var(--glow);
+      animation: float 20s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+
     .btn {
       display: inline-block;
-      margin-top: 25px;
       padding: 14px 32px;
       border: 2px solid var(--cyan);
       background: transparent;
@@ -39,11 +68,12 @@
       cursor: pointer;
     }
     .btn:hover { background: var(--cyan); color: #000; }
-    /* ---------- HEADER ---------- */
+
+    /* ----- HEADER + DISCORD ----- */
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
-      background: rgba(0,0,0,.7);
+      background: rgba(0,0,0,.5);
       backdrop-filter: blur(10px);
       z-index: 1000;
       padding: 15px 30px;
@@ -71,7 +101,20 @@
       transition: width .3s;
     }
     nav a:hover::after { width: 100%; }
-    /* ---------- HERO ---------- */
+    .discord-top { margin-left: auto; margin-right: 20px; }
+    .discord-fab {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 999;
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .discord-top { display: none; }
+      .discord-fab { display: block; }
+    }
+
+    /* ----- HERO ----- */
     #hero {
       min-height: 100vh;
       display: flex;
@@ -80,13 +123,6 @@
       justify-content: center;
       text-align: center;
       position: relative;
-      background: url('https://i.imgur.com/8Z1BOVM.jpeg') center/cover no-repeat;
-    }
-    #hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,.65);
     }
     .hero-content { position: relative; z-index: 2; }
     .hero-content h1 {
@@ -99,21 +135,16 @@
       margin: 15px 0 25px;
       opacity: .9;
     }
-    /* ---------- PARTICLES ---------- */
-    #particles {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-    /* ---------- TEAM CARDS ---------- */
+
+    /* ----- TEAM CARDS ----- */
     .team-grid {
       display: grid;
       gap: 25px;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
     .card {
-      background: var(--bg2);
-      border: 1px solid rgba(0,255,255,.2);
+      background: rgba(0,0,0,.5);
+      border: 1px solid rgba(0,255,255,.3);
       border-radius: 8px;
       padding: 25px 20px;
       text-align: center;
@@ -123,18 +154,10 @@
       transform: translateY(-8px);
       box-shadow: var(--glow);
     }
-    .card h3 {
-      color: var(--azure);
-      margin-bottom: 8px;
-    }
+    .card h3 { color: var(--azure); margin-bottom: 8px; }
     .role { font-size: .9rem; opacity: .7; }
-    /* ---------- SERVER INFO ---------- */
-    #server-info {
-      background: var(--bg2);
-      border-radius: 12px;
-      padding: 35px;
-      text-align: center;
-    }
+
+    /* ----- SERVER INFO ----- */
     .ip-box {
       display: inline-flex;
       align-items: center;
@@ -153,7 +176,8 @@
       box-shadow: 0 0 6px #0f0;
     }
     .status.off { background: #f00; box-shadow: 0 0 6px #f00; }
-    /* ---------- MEDIA GALLERY ---------- */
+
+    /* ----- MEDIA GALLERY ----- */
     .gallery {
       display: grid;
       gap: 15px;
@@ -169,18 +193,17 @@
       transform: scale(1.05);
       filter: brightness(1.2);
     }
-    /* ---------- FOOTER ---------- */
+
+    /* ----- FOOTER ----- */
     footer {
       text-align: center;
       padding: 50px 20px 30px;
       font-size: .9rem;
       opacity: .6;
     }
-    .socials a {
-      margin: 0 10px;
-      font-size: 1.2rem;
-    }
-    /* ---------- ANIMATIONS ---------- */
+    .socials a { margin: 0 10px; font-size: 1.2rem; }
+
+    /* ----- ANIMATIONS ----- */
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     section { animation: fadeIn .8s ease forwards; }
   </style>
@@ -197,20 +220,25 @@
     <a href="#server">Server</a>
     <a href="#media">Media</a>
   </nav>
+  <a class="btn discord-top" href="https://discord.gg/8UXjesM3" target="_blank">Join Discord</a>
 </header>
+
+<!-- ---------- FLOATING DISCORD (mobile) ---------- -->
+<a class="btn discord-fab" href="https://discord.gg/8UXjesM3" target="_blank">Discord</a>
 
 <!-- ---------- HERO ---------- -->
 <section id="hero">
-  <canvas id="particles"></canvas>
+  <div class="particles"></div>
   <div class="hero-content">
     <h1>Where Legends are Forged</h1>
     <p>Built from determination, bonded through battles, and forged in loyalty — Welcome to the world of Feliz.</p>
-    <a class="btn" href="https://discord.gg/feliz" target="_blank">Join the Realm</a>
+    <a class="btn" href="https://discord.gg/8UXjesM3" target="_blank">Join Discord</a>
   </div>
 </section>
 
 <!-- ---------- TEAMS ---------- -->
 <section id="teams">
+  <div class="particles"></div>
   <h2 style="text-align:center; margin-bottom:50px;">Teams</h2>
 
   <h3 style="color:var(--cyan); margin:40px 0 20px;">Team Feliz</h3>
@@ -234,6 +262,7 @@
 
 <!-- ---------- STORY ---------- -->
 <section id="story">
+  <div class="particles"></div>
   <h2 style="text-align:center; margin-bottom:30px;">The Legend of Feliz</h2>
   <p style="max-width: 700px; margin: auto; text-align:center; font-size:1.1rem; opacity:.9;">
     Once just a dream between a few warriors, Feliz rose from dust and fire. Each battle, each forge, shaped the clan into more than a team — a brotherhood built on skill, loyalty, and respect.
@@ -242,8 +271,9 @@
 
 <!-- ---------- SERVER INFO ---------- -->
 <section id="server">
+  <div class="particles"></div>
   <h2 style="text-align:center; margin-bottom:30px;">Server Info</h2>
-  <div id="server-info">
+  <div style="text-align:center;">
     <div class="ip-box">
       <span id="ip">play.feliz.mc</span>
       <button class="btn" style="margin:0; padding:8px 18px; font-size:.9rem;" onclick="copyIP()">Copy IP</button>
@@ -252,21 +282,23 @@
       Status: <span id="srv-status" class="status"></span> <span id="srv-text">Checking...</span>
     </div>
     <div style="margin-top:25px;">
-      <a class="btn" href="https://discord.gg/feliz" target="_blank">Join Discord</a>
+      <a class="btn" href="https://discord.gg/8UXjesM3" target="_blank">Join Discord</a>
     </div>
-    <div style="margin-top:40px; text-align:left;">
-      <h3 style="margin-bottom:15px;">Rules & Ranks</h3>
-      <div class="team-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-        <div class="card"><h4>Respect</h4><p>No toxicity, no hacks.</p></div>
-        <div class="card"><h4>Loyalty</h4><p>Stay true to Feliz.</p></div>
-        <div class="card"><h4>Skill</h4><p>Sharpen your craft daily.</p></div>
-      </div>
+  </div>
+
+  <div style="margin-top:40px;">
+    <h3 style="margin-bottom:15px; text-align:center;">Rules & Ranks</h3>
+    <div class="team-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+      <div class="card"><h4>Respect</h4><p>No toxicity, no hacks.</p></div>
+      <div class="card"><h4>Loyalty</h4><p>Stay true to Feliz.</p></div>
+      <div class="card"><h4>Skill</h4><p>Sharpen your craft daily.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ---------- MEDIA ---------- -->
 <section id="media">
+  <div class="particles"></div>
   <h2 style="text-align:center; margin-bottom:40px;">Media</h2>
   <div class="gallery">
     <img src="https://i.imgur.com/J4Q5lLO.jpeg" alt="Castle Siege">
@@ -281,7 +313,7 @@
 <!-- ---------- FOOTER ---------- -->
 <footer>
   <div class="socials">
-    <a href="https://discord.gg/feliz" target="_blank">Discord</a>
+    <a href="https://discord.gg/8UXjesM3" target="_blank">Discord</a>
     <a href="https://youtube.com/@FelizMC" target="_blank">YouTube</a>
     <a href="https://twitch.tv/FelizMC" target="_blank">Twitch</a>
   </div>
@@ -291,26 +323,19 @@
 
 <!-- ---------- SCRIPTS ---------- -->
 <script>
-  /* ---------- PARTICLE CANVAS ---------- */
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-  window.addEventListener('resize', resize); resize();
-  function random(min, max){ return Math.random() * (max - min) + min; }
-  class P {
-    constructor(){ this.x = random(0, W); this.y = random(0, H); this.vx = random(-.5, .5); this.vy = random(-.5, .5); this.r = random(1.2, 2.2); this.o = random(.4, 1); }
-    update(){ this.x += this.vx; this.y += this.vy; if(this.x < 0 || this.x > W) this.vx *= -1; if(this.y < 0 || this.y > H) this.vy *= -1; }
-    draw(){ ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fillStyle = `rgba(0,255,255,${this.o})`; ctx.fill(); }
-  }
-  for(let i = 0; i < 60; i++) particles.push(new P());
-  function animate(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach(p=>{ p.update(); p.draw(); });
-    requestAnimationFrame(animate);
-  } animate();
+  /* ----- particles ----- */
+  document.querySelectorAll('section').forEach(sec => {
+    for(let i=0; i<40; i++){
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random()*100 + '%';
+      p.style.animationDelay = Math.random()*20 + 's';
+      p.style.animationDuration = (15+Math.random()*10) + 's';
+      sec.querySelector('.particles').appendChild(p);
+    }
+  });
 
-  /* ---------- COPY IP ---------- */
+  /* ----- copy IP ----- */
   function copyIP(){
     navigator.clipboard.writeText('play.feliz.mc');
     const btn = event.target;
@@ -319,8 +344,7 @@
     setTimeout(()=> btn.textContent = orig, 1500);
   }
 
-  /* ---------- SERVER STATUS MOCK ---------- */
-  /* Replace with real ping script or API */
+  /* ----- mock server status ----- */
   const statuses = ['Online','Online','Online','Offline'];
   const status = statuses[Math.floor(Math.random()*statuses.length)];
   const indicator = document.getElementById('srv-status');
@@ -328,7 +352,7 @@
   text.textContent = status;
   if(status === 'Offline') indicator.classList.add('off');
 
-  /* ---------- YEAR ---------- */
+  /* ----- year ----- */
   document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
 </body>
