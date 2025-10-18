@@ -2,195 +2,334 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Feliz Minecraft Server</title>
+  <title>Feliz – Where Legends are Forged</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
+    /* ---------- CSS RESET & VARIABLES ---------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0b0b0f;
-      --card: #121218;
-      --accent: #00f2a0;
-      --text: #e0e0e0;
-      --sub: #8a8a9e;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --cyan: #00ffff;
+      --azure: #0080ff;
+      --glow: 0 0 5px var(--cyan), 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+      --font: 'Segoe UI', 'Roboto', sans-serif;
     }
     body {
-      font-family: 'Exo 2', sans-serif;
       background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    header {
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      background: url("https://images8.alphacoders.com/109/thumb-1920-1099438.png") center/cover no-repeat;
-      position: relative;
-    }
-    header::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, .55);
-    }
-    .hero {
-      position: relative;
-      z-index: 2;
-    }
-    .hero h1 {
-      font-size: clamp(3rem, 10vw, 6rem);
-      font-weight: 700;
-      letter-spacing: 3px;
       color: #fff;
-      text-shadow: 0 0 15px var(--accent);
-      animation: glow 2s ease-in-out infinite alternate;
+      font-family: var(--font);
+      line-height: 1.6;
+      overflow-x: hidden;
     }
-    @keyframes glow {
-      from {
-        text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
-      }
-      to {
-        text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
-      }
-    }
+    a { color: var(--cyan); text-decoration: none; }
+    h1, h2, h3 { letter-spacing: 2px; text-transform: uppercase; }
+    section { padding: 80px 20px; max-width: 1100px; margin: auto; }
     .btn {
       display: inline-block;
-      margin-top: 2rem;
-      padding: .9rem 2.2rem;
-      background: var(--accent);
-      color: #000;
-      font-weight: 700;
-      border-radius: 30px;
-      text-decoration: none;
-      transition: transform .2s;
+      margin-top: 25px;
+      padding: 14px 32px;
+      border: 2px solid var(--cyan);
+      background: transparent;
+      color: var(--cyan);
+      font-weight: bold;
+      border-radius: 4px;
+      transition: .3s;
+      box-shadow: var(--glow);
+      cursor: pointer;
     }
-    .btn:hover {
-      transform: scale(1.08);
-    }
-    section {
-      padding: 4rem 1rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 2.5rem;
-      font-size: 2.2rem;
-      color: var(--accent);
-    }
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid #222;
-      border-radius: 12px;
-      padding: 2rem 1.5rem;
-      width: 260px;
-      text-align: center;
-      transition: transform .2s;
-    }
-    .card:hover {
-      transform: translateY(-7px);
-    }
-    .card img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 3px solid var(--accent);
-      margin-bottom: 1rem;
-    }
-    .role {
-      color: var(--accent);
-      font-weight: 500;
-      margin-bottom: .5rem;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: .9rem;
-      color: var(--sub);
-    }
-    /* micro nav */
-    nav {
+    .btn:hover { background: var(--cyan); color: #000; }
+    /* ---------- HEADER ---------- */
+    header {
       position: fixed;
-      top: 0;
-      width: 100%;
-      background: #0003;
-      backdrop-filter: blur(6px);
-      padding: .8rem 1.2rem;
+      top: 0; left: 0; right: 0;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 15px 30px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      z-index: 10;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--cyan);
+      text-shadow: var(--glow);
     }
     nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 1rem;
+      margin-left: 25px;
+      font-weight: 600;
+      position: relative;
     }
-    /* tiny screens */
-    @media (max-width: 600px) {
-      .cards {
-        flex-direction: column;
-        align-items: center;
-      }
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -4px;
+      width: 0; height: 2px;
+      background: var(--cyan);
+      transition: width .3s;
     }
+    nav a:hover::after { width: 100%; }
+    /* ---------- HERO ---------- */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      background: url('https://i.imgur.com/8Z1BOVM.jpeg') center/cover no-repeat;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-content h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--cyan);
+      text-shadow: var(--glow);
+    }
+    .hero-content p {
+      font-size: 1.3rem;
+      margin: 15px 0 25px;
+      opacity: .9;
+    }
+    /* ---------- PARTICLES ---------- */
+    #particles {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    /* ---------- TEAM CARDS ---------- */
+    .team-grid {
+      display: grid;
+      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .card {
+      background: var(--bg2);
+      border: 1px solid rgba(0,255,255,.2);
+      border-radius: 8px;
+      padding: 25px 20px;
+      text-align: center;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--glow);
+    }
+    .card h3 {
+      color: var(--azure);
+      margin-bottom: 8px;
+    }
+    .role { font-size: .9rem; opacity: .7; }
+    /* ---------- SERVER INFO ---------- */
+    #server-info {
+      background: var(--bg2);
+      border-radius: 12px;
+      padding: 35px;
+      text-align: center;
+    }
+    .ip-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      background: #000;
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+    .ip-box span { font-family: monospace; font-size: 1.1rem; }
+    .status {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #0f0;
+      box-shadow: 0 0 6px #0f0;
+    }
+    .status.off { background: #f00; box-shadow: 0 0 6px #f00; }
+    /* ---------- MEDIA GALLERY ---------- */
+    .gallery {
+      display: grid;
+      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 6px;
+      transition: transform .3s, filter .3s;
+      cursor: pointer;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+      filter: brightness(1.2);
+    }
+    /* ---------- FOOTER ---------- */
+    footer {
+      text-align: center;
+      padding: 50px 20px 30px;
+      font-size: .9rem;
+      opacity: .6;
+    }
+    .socials a {
+      margin: 0 10px;
+      font-size: 1.2rem;
+    }
+    /* ---------- ANIMATIONS ---------- */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    section { animation: fadeIn .8s ease forwards; }
   </style>
 </head>
 <body>
+
+<!-- ---------- HEADER ---------- -->
+<header>
+  <div class="logo">FELIZ</div>
   <nav>
-    <div style="font-weight:700;color:var(--accent);">FELIZ</div>
-    <div>
-      <a href="#team">Team</a>
-      <a href="https://discord.gg/vd6SEAGG" target="_blank" rel="noopener">Discord</a>
-    </div>
+    <a href="#home">Home</a>
+    <a href="#teams">Teams</a>
+    <a href="#story">Story</a>
+    <a href="#server">Server</a>
+    <a href="#media">Media</a>
   </nav>
+</header>
 
-  <header>
-    <div class="hero">
-      <h1>FELIZ</h1>
-      <p>Survival re-imagined. 1.20+ Java & Bedrock</p>
-      <a class="btn" href="https://discord.gg/vd6SEAGG" target="_blank" rel="noopener">Join Discord</a>
+<!-- ---------- HERO ---------- -->
+<section id="hero">
+  <canvas id="particles"></canvas>
+  <div class="hero-content">
+    <h1>Where Legends are Forged</h1>
+    <p>Built from determination, bonded through battles, and forged in loyalty — Welcome to the world of Feliz.</p>
+    <a class="btn" href="https://discord.gg/feliz" target="_blank">Join the Realm</a>
+  </div>
+</section>
+
+<!-- ---------- TEAMS ---------- -->
+<section id="teams">
+  <h2 style="text-align:center; margin-bottom:50px;">Teams</h2>
+
+  <h3 style="color:var(--cyan); margin:40px 0 20px;">Team Feliz</h3>
+  <div class="team-grid">
+    <div class="card"><h3>Fz_Jimbruz</h3><div class="role">Owner</div></div>
+    <div class="card"><h3>Fz_Axe</h3><div class="role">Founder</div></div>
+    <div class="card"><h3>Fz_Smooth</h3><div class="role">Founder</div></div>
+    <div class="card"><h3>Fz_Kannan</h3><div class="role">Member</div></div>
+    <div class="card"><h3>Fz_Kevin</h3><div class="role">Member</div></div>
+    <div class="card"><h3>HORIZONXD12344</h3><div class="role">Member</div></div>
+  </div>
+
+  <h3 style="color:var(--cyan); margin:60px 0 20px;">Team Xenon</h3>
+  <div class="team-grid">
+    <div class="card"><h3>MAXII</h3><div class="role">Captain</div></div>
+    <div class="card"><h3>ItsTrueBlood_</h3><div class="role">Member</div></div>
+    <div class="card"><h3>Cleati</h3><div class="role">Member</div></div>
+    <div class="card"><h3>ENDLESS_AKKU</h3><div class="role">Member</div></div>
+  </div>
+</section>
+
+<!-- ---------- STORY ---------- -->
+<section id="story">
+  <h2 style="text-align:center; margin-bottom:30px;">The Legend of Feliz</h2>
+  <p style="max-width: 700px; margin: auto; text-align:center; font-size:1.1rem; opacity:.9;">
+    Once just a dream between a few warriors, Feliz rose from dust and fire. Each battle, each forge, shaped the clan into more than a team — a brotherhood built on skill, loyalty, and respect.
+  </p>
+</section>
+
+<!-- ---------- SERVER INFO ---------- -->
+<section id="server">
+  <h2 style="text-align:center; margin-bottom:30px;">Server Info</h2>
+  <div id="server-info">
+    <div class="ip-box">
+      <span id="ip">play.feliz.mc</span>
+      <button class="btn" style="margin:0; padding:8px 18px; font-size:.9rem;" onclick="copyIP()">Copy IP</button>
     </div>
-  </header>
-
-  <section id="team">
-    <h2>Meet the Team</h2>
-    <div class="cards">
-      <div class="card">
-        <img src="https://mc-heads.net/avatar/Fz_smooth/90" alt="Fz_smooth">
-        <div class="role">Founder</div>
-        <h3>Fz_smooth</h3>
-        <p>Builder & plugin curator. Loves terraforming and redstone.</p>
-      </div>
-
-      <div class="card">
-        <img src="https://mc-heads.net/avatar/Fz_Axe/90" alt="Fz_Axe">
-        <div class="role">Founder</div>
-        <h3>Fz_Axe</h3>
-        <p>Community strategist. Keeps the vibes chill and fair.</p>
-      </div>
-
-      <div class="card">
-        <img src="https://mc-heads.net/avatar/Fz_jimbruz/90" alt="Fz_jimbruz">
-        <div class="role">Owner</div>
-        <h3>Fz_jimbruz</h3>
-        <p>Lead dev & sys-admin. Hardware and lag-slayer.</p>
+    <div style="margin-top:20px;">
+      Status: <span id="srv-status" class="status"></span> <span id="srv-text">Checking...</span>
+    </div>
+    <div style="margin-top:25px;">
+      <a class="btn" href="https://discord.gg/feliz" target="_blank">Join Discord</a>
+    </div>
+    <div style="margin-top:40px; text-align:left;">
+      <h3 style="margin-bottom:15px;">Rules & Ranks</h3>
+      <div class="team-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="card"><h4>Respect</h4><p>No toxicity, no hacks.</p></div>
+        <div class="card"><h4>Loyalty</h4><p>Stay true to Feliz.</p></div>
+        <div class="card"><h4>Skill</h4><p>Sharpen your craft daily.</p></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    © 2025 Feliz Minecraft Server &nbsp;•&nbsp;
-    <a href="https://discord.gg/vd6SEAGG" style="color:var(--accent)">Discord</a>
-  </footer>
+<!-- ---------- MEDIA ---------- -->
+<section id="media">
+  <h2 style="text-align:center; margin-bottom:40px;">Media</h2>
+  <div class="gallery">
+    <img src="https://i.imgur.com/J4Q5lLO.jpeg" alt="Castle Siege">
+    <img src="https://i.imgur.com/9p5aB5R.jpeg" alt="Nether Battle">
+    <img src="https://i.imgur.com/5gVjyP6.jpeg" alt="Forge Ceremony">
+    <img src="https://i.imgur.com/7nG8HDO.jpeg" alt="PvP Finals">
+    <img src="https://i.imgur.com/eXKZ1lS.jpeg" alt="Base Tour">
+    <img src="https://i.imgur.com/8Z1BOVM.jpeg" alt="Cinematic Landscape">
+  </div>
+</section>
+
+<!-- ---------- FOOTER ---------- -->
+<footer>
+  <div class="socials">
+    <a href="https://discord.gg/feliz" target="_blank">Discord</a>
+    <a href="https://youtube.com/@FelizMC" target="_blank">YouTube</a>
+    <a href="https://twitch.tv/FelizMC" target="_blank">Twitch</a>
+  </div>
+  <p style="margin-top:25px;">“Not just a server — a legacy.”</p>
+  <p style="margin-top:15px; font-size:.8rem;">&copy; <span id="yr"></span> Feliz. All rights reserved.</p>
+</footer>
+
+<!-- ---------- SCRIPTS ---------- -->
+<script>
+  /* ---------- PARTICLE CANVAS ---------- */
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  function random(min, max){ return Math.random() * (max - min) + min; }
+  class P {
+    constructor(){ this.x = random(0, W); this.y = random(0, H); this.vx = random(-.5, .5); this.vy = random(-.5, .5); this.r = random(1.2, 2.2); this.o = random(.4, 1); }
+    update(){ this.x += this.vx; this.y += this.vy; if(this.x < 0 || this.x > W) this.vx *= -1; if(this.y < 0 || this.y > H) this.vy *= -1; }
+    draw(){ ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fillStyle = `rgba(0,255,255,${this.o})`; ctx.fill(); }
+  }
+  for(let i = 0; i < 60; i++) particles.push(new P());
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{ p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  } animate();
+
+  /* ---------- COPY IP ---------- */
+  function copyIP(){
+    navigator.clipboard.writeText('play.feliz.mc');
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(()=> btn.textContent = orig, 1500);
+  }
+
+  /* ---------- SERVER STATUS MOCK ---------- */
+  /* Replace with real ping script or API */
+  const statuses = ['Online','Online','Online','Offline'];
+  const status = statuses[Math.floor(Math.random()*statuses.length)];
+  const indicator = document.getElementById('srv-status');
+  const text = document.getElementById('srv-text');
+  text.textContent = status;
+  if(status === 'Offline') indicator.classList.add('off');
+
+  /* ---------- YEAR ---------- */
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
