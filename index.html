@@ -1,427 +1,229 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FELIZ — Minecraft Neon Hub</title>
-  <meta name="description" content="Feliz Minecraft server — neon, blocky, immersive." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#030308;
-      --glass: rgba(255,255,255,0.04);
-      --accent1: #00f0ff; /* cyan */
-      --accent2: #ff48d1; /* magenta */
-      --accent3: #9cff4a; /* lime */
-      --accent4: #ffd166; /* amber */
-      --accent5: #b58cff; /* violet */
-      --fg: #e6f0ff;
-      --glass-border: rgba(255,255,255,0.06);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Minecraft Server</title>
+<style>
+    html, body {
+        margin:0;
+        padding:0;
+        height:100%;
+        font-family: 'Minecraft', sans-serif;
+        overflow:hidden;
+        background:black;
+        color:#fff;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Arial,sans-serif}
-    .app{min-height:100vh;display:flex;flex-direction:column}
+    body { display:flex; flex-direction:column; }
 
-    /* NAV */
-    header{position:fixed;left:0;right:0;top:14px;display:flex;align-items:center;justify-content:center;z-index:40;pointer-events:none}
-    nav{display:flex;gap:10px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));backdrop-filter:blur(6px);padding:8px;border-radius:999px;pointer-events:auto;border:1px solid var(--glass-border)}
-    nav button{background:transparent;border:0;padding:10px 14px;color:var(--fg);font-weight:600;cursor:pointer;border-radius:10px;outline:none}
-    nav button:hover{transform:translateY(-3px);}
-    nav .logo{font-family:'Press Start 2P',monospace;font-size:14px;margin-right:6px}
+    .page {
+        display:none;
+        position:absolute;
+        width:100%;
+        height:100%;
+        justify-content:center;
+        align-items:center;
+        text-align:center;
+        padding:50px;
+        box-sizing:border-box;
+        z-index:10;
+    }
 
-    /* PAGES (sections) */
-    .pages{position:relative;min-height:100vh}
-    section.page{min-height:100vh;display:grid;place-items:center;padding:80px 24px;position:relative;overflow:hidden}
-    .page .content{max-width:1100px;width:100%;text-align:center}
-    h1.title{font-family:'Press Start 2P',monospace;font-size:48px;margin:0;text-transform:uppercase;letter-spacing:4px}
-    p.lead{opacity:0.9;margin:12px 0 24px}
+    .active { display:grid; }
 
-    /* FULLSCREEN BLOCKY NEON BACKGROUND */
-    .neon-field{position:absolute;inset:0;z-index:0;pointer-events:none}
-    .cube{position:absolute;width:28px;height:28px;transform-style:preserve-3d;opacity:0.9;border-radius:4px;box-shadow:0 2px 18px rgba(0,0,0,0.65)}
-    .cube::before,.cube::after{content:"";position:absolute;inset:0;border-radius:4px}
-    /* Use CSS variables for colors */
-    .cube.c1{background:linear-gradient(135deg,var(--accent1),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(0,240,255,0.18),0 0 24px rgba(0,240,255,0.08)}
-    .cube.c2{background:linear-gradient(135deg,var(--accent2),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(255,72,209,0.18),0 0 24px rgba(255,72,209,0.08)}
-    .cube.c3{background:linear-gradient(135deg,var(--accent3),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(156,255,74,0.12),0 0 24px rgba(156,255,74,0.06)}
-    .cube.c4{background:linear-gradient(135deg,var(--accent4),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(255,209,102,0.12),0 0 24px rgba(255,209,102,0.06)}
-    .cube.c5{background:linear-gradient(135deg,var(--accent5),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(181,140,255,0.12),0 0 24px rgba(181,140,255,0.06)}
+    .neon-blocks {
+        position:absolute;
+        width:100%;
+        height:100%;
+        display:flex;
+        flex-wrap:wrap;
+        z-index:1;
+    }
 
-    /* Animations */
-    @keyframes floaty{0%{transform:translate3d(var(--tx,0px),var(--ty,0px),0) rotate(var(--r,0deg))}50%{transform:translate3d(calc(var(--tx,0px) + 10px),calc(var(--ty,0px) - 12px),0) rotate(calc(var(--r,0deg) + 18deg))}100%{transform:translate3d(var(--tx,0px),var(--ty,0px),0) rotate(var(--r,0deg))}}
-    .cube{animation:floaty 6s ease-in-out infinite}
+    .cube {
+        width:50px;
+        height:50px;
+        margin:5px;
+        background: linear-gradient(45deg, #0ff, #f0f);
+        box-shadow: 0 0 20px #0ff, 0 0 40px #f0f;
+        animation: float 5s infinite alternate;
+    }
 
-    /* GLASS CARD */
-    .card{position:relative;background:var(--glass);border:1px solid var(--glass-border);padding:20px;border-radius:14px;backdrop-filter: blur(6px);box-shadow:0 6px 40px rgba(0,0,0,0.6);z-index:10}
+    @keyframes float {
+        0%{ transform: translateY(0px); }
+        100%{ transform: translateY(-20px); }
+    }
 
-    /* Buttons */
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
-    .btn.ghost{background:transparent;color:var(--fg);border:1px solid rgba(255,255,255,0.05)}
-    .btn.neon{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#04111a}
+    .content {
+        position:relative;
+        z-index:20;
+    }
 
-    /* member grid */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-top:18px}
-    .member{padding:20px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:transform .18s,box-shadow .18s}
-    .member:hover{transform:translateY(-8px);box-shadow:0 10px 40px rgba(0,0,0,0.6)}
-    .member .mname{font-family:'Press Start 2P',monospace;font-size:12px}
+    .member-card, .team-card, .story-card, .gallery-card {
+        background: rgba(0,0,0,0.6);
+        border:2px solid #0ff;
+        padding:20px;
+        margin:20px;
+        cursor:pointer;
+        transition: all 0.3s;
+    }
 
-    /* modal */
-    .modal-backdrop{position:fixed;inset:0;background:linear-gradient(180deg,rgba(2,2,6,0.6),rgba(2,2,6,0.6));display:none;align-items:center;justify-content:center;z-index:60}
-    .modal{width:min(980px,92vw);border-radius:16px;padding:22px;display:grid;grid-template-columns:120px 1fr;gap:20px}
-    .avatar{width:110px;height:110px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace}
-    .modal h3{margin:0;font-size:18px}
-    .modal p{margin:6px 0 0}
-    .close{position:absolute;right:18px;top:12px;background:transparent;border:0;color:var(--fg);font-weight:700;cursor:pointer}
+    .member-card:hover, .team-card:hover, .story-card:hover, .gallery-card:hover {
+        transform: scale(1.05);
+        border-color: #f0f;
+        box-shadow:0 0 30px #f0f;
+    }
 
-    /* page-specific accent tint */
-    section[data-accent="1"]{--accent1:#00f0ff}
-    section[data-accent="2"]{--accent1:#ff48d1}
-    section[data-accent="3"]{--accent1:#9cff4a}
-    section[data-accent="4"]{--accent1:#ffd166}
-    section[data-accent="5"]{--accent1:#b58cff}
+    nav {
+        position:fixed;
+        top:10px;
+        left:50%;
+        transform:translateX(-50%);
+        z-index:30;
+    }
 
-    /* small screens */
-    @media (max-width:720px){h1.title{font-size:28px} .modal{grid-template-columns:1fr;align-items:center}}
+    nav button {
+        margin:5px;
+        padding:10px 15px;
+        cursor:pointer;
+        background:transparent;
+        border:2px solid #0ff;
+        color:#fff;
+        font-weight:bold;
+        transition: all 0.3s;
+    }
 
-    /* page indicator */
-    .pager{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:50}
-    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.03)}
-    .dot.active{background:var(--accent1);box-shadow:0 6px 20px rgba(0,0,0,0.6)}
+    nav button:hover { background:#0ff; color:black; }
 
-    /* small helper */
-    .muted{opacity:0.8;font-size:13px}
-  </style>
+    a { color:#0ff; text-decoration:none; }
+    a:hover { color:#f0f; }
+</style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <nav>
-        <div class="logo">FELIZ</div>
-        <button data-page="1">Home</button>
-        <button data-page="2">About</button>
-        <button data-page="3">Story</button>
-        <button data-page="4">Owner</button>
-        <button data-page="5">Founders</button>
-        <button data-page="6">Members</button>
-        <button data-page="7">Team Feliz</button>
-        <button data-page="8">Team Xenon</button>
-        <button data-page="9">Gallery</button>
-        <button data-page="10">Realm</button>
-      </nav>
-    </header>
 
-    <main class="pages" id="pages">
-      <!-- floating neon field container -->
-      <div class="neon-field" id="neonField"></div>
+<nav>
+    <button onclick="showPage(1)">Home</button>
+    <button onclick="showPage(2)">Owner & Founders</button>
+    <button onclick="showPage(3)">Members</button>
+    <button onclick="showPage(4)">Team Feliz</button>
+    <button onclick="showPage(5)">Team Xenon</button>
+    <button onclick="showPage(6)">Gallery</button>
+    <button onclick="showPage(7)">Realm</button>
+    <button onclick="showPage(8)">Stories</button>
+    <button onclick="showPage(9)">Server Info</button>
+    <button onclick="showPage(10)">Discord</button>
+</nav>
 
-      <!-- Page 1 - Home -->
-      <section class="page" data-index="1" data-accent="1">
-        <div class="content card" style="text-align:center">
-          <h1 class="title">FELIZ</h1>
-          <p class="lead">Where Legends are Forged. Neon Minecraft hub — immersive, clickable, and alive.</p>
-          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-            <button class="btn neon" id="enterBtn">Enter the Realm</button>
-            <button class="btn ghost" id="joinQuick">Join / Discord</button>
-          </div>
-        </div>
-      </section>
+<!-- Neon Background -->
+<div class="neon-blocks">
+    <!-- Generate multiple cubes -->
+    <script>
+        for(let i=0;i<200;i++){
+            let div = document.createElement('div');
+            div.classList.add('cube');
+            div.style.background = `linear-gradient(45deg, #${Math.floor(Math.random()*16777215).toString(16)}, #${Math.floor(Math.random()*16777215).toString(16)})`;
+            document.body.appendChild(div);
+        }
+    </script>
+</div>
 
-      <!-- Page 2 - About -->
-      <section class="page" data-index="2" data-accent="2">
-        <div class="content card">
-          <h1 class="title">About Feliz</h1>
-          <p class="lead">Feliz began as a spark between warriors who refused to fade. They built from dust and redstone, shaping chaos into brotherhood. Each member carves their name in obsidian and lights it by hand.</p>
-        </div>
-      </section>
-
-      <!-- Page 3 - Story -->
-      <section class="page" data-index="3" data-accent="3">
-        <div class="content card">
-          <h1 class="title">The Story</h1>
-          <div style="text-align:left;margin-top:12px;line-height:1.6;max-width:900px;margin-left:auto;margin-right:auto">
-            <p class="muted">[Year 0] The First Forge — Small group, one anvil, endless nights.</p>
-            <p class="muted">[Year 1] The Citadel — They built a stronghold and defended it from raid after raid.</p>
-            <p class="muted">[Year 2] The Trials — Friendships hardened like diamond under pressure.</p>
-            <p class="muted">[Year 3] The Legacy — Feliz stands now as a place to test skill, share craft, and belong.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Page 4 - Owner -->
-      <section class="page" data-index="4" data-accent="4">
-        <div class="content card">
-          <h1 class="title">Owner</h1>
-          <div style="display:flex;gap:20px;align-items:center;flex-direction:column">
-            <div class="avatar" style="width:140px;height:140px;font-size:12px">FZ<br>JIMBRUZ</div>
-            <h2 style="margin:0">Fz_Jimbruz</h2>
-            <p class="muted">The mind behind the forge. Visionary and leader who turns sparks into storms.</p>
-            <div style="display:flex;gap:10px;margin-top:10px">
-              <button class="btn ghost" data-member="Fz_Jimbruz">View Profile</button>
-              <button class="btn neon" id="copyIpBtn">Copy Server IP</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Page 5 - Founders -->
-      <section class="page" data-index="5" data-accent="5">
-        <div class="content card" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
-          <div style="min-width:260px">
-            <h2 class="title" style="font-size:18px">Fz_Axe</h2>
-            <p class="muted">The precision of the blade. Calm, fierce, and unshakable — the edge of Feliz.</p>
-            <div style="margin-top:8px"><button class="btn ghost" data-member="Fz_Axe">Open Profile</button></div>
-          </div>
-          <div style="min-width:260px">
-            <h2 class="title" style="font-size:18px">Fz_Smooth</h2>
-            <p class="muted">Strategy and soul. Keeps the chaos sharp and the team sharper.</p>
-            <div style="margin-top:8px"><button class="btn ghost" data-member="Fz_Smooth">Open Profile</button></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Page 6 - Members -->
-      <section class="page" data-index="6" data-accent="1">
-        <div class="content card">
-          <h1 class="title">Members</h1>
-          <p class="muted">All members are clickable. Open any to view their profile, lore, and role.</p>
-          <div class="grid" id="membersGrid" style="margin-top:18px"></div>
-        </div>
-      </section>
-
-      <!-- Page 7 - Team Feliz -->
-      <section class="page" data-index="7" data-accent="2">
-        <div class="content card">
-          <h1 class="title">Team Feliz</h1>
-          <p class="muted">Proud lineup and notable builds.</p>
-          <div class="grid" id="teamFelizGrid" style="margin-top:18px"></div>
-        </div>
-      </section>
-
-      <!-- Page 8 - Team Xenon -->
-      <section class="page" data-index="8" data-accent="3">
-        <div class="content card">
-          <h1 class="title">Team Xenon</h1>
-          <p class="muted">A fierce group with style. Click a name to view their profile.</p>
-          <div class="grid" id="teamXGrid" style="margin-top:18px"></div>
-        </div>
-      </section>
-
-      <!-- Page 9 - Gallery -->
-      <section class="page" data-index="9" data-accent="4">
-        <div class="content card">
-          <h1 class="title">Gallery</h1>
-          <p class="muted">Server screenshots and cinematic captures. Click to expand.</p>
-          <div class="grid" id="galleryGrid" style="margin-top:18px"></div>
-        </div>
-      </section>
-
-      <!-- Page 10 - Realm / Footer hub -->
-      <section class="page" data-index="10" data-accent="5">
-        <div class="content card">
-          <h1 class="title">Realm Info</h1>
-          <p class="muted">Server details and quick links.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px">
-            <div class="card" style="padding:12px">
-              <div style="font-family:'Press Start 2P',monospace">Server IP</div>
-              <div style="margin-top:6px;font-weight:700">in-blr-001.altr.cc:25442</div>
-              <div style="margin-top:8px"><button class="btn neon" id="copyIpBtn2">Copy IP</button></div>
-            </div>
-            <div class="card" style="padding:12px">
-              <div style="font-family:'Press Start 2P',monospace">Discord</div>
-              <div style="margin-top:6px;font-weight:700">discord.gg/8UXjesM3</div>
-              <div style="margin-top:8px"><button class="btn ghost" id="openDiscord">Open Discord</button></div>
-            </div>
-          </div>
-
-          <div style="margin-top:18px;text-align:center;opacity:0.9">"Not just a server — a legacy."</div>
-        </div>
-      </section>
-
-    </main>
-
-    <div class="pager" id="pager"></div>
-
-    <!-- modal -->
-    <div class="modal-backdrop" id="modal">
-      <div class="modal card" role="dialog" aria-modal="true">
-        <button class="close" id="closeModal">✕</button>
-        <div class="avatar" id="modalAvatar">MC</div>
-        <div>
-          <h3 id="modalName">Name</h3>
-          <div id="modalRole" class="muted">Role</div>
-          <p id="modalDesc"></p>
-          <div style="margin-top:12px;display:flex;gap:8px">
-            <button class="btn neon" id="modalVisit">Visit</button>
-            <button class="btn ghost" id="modalCopy">Copy Name</button>
-          </div>
-        </div>
-      </div>
+<!-- Pages -->
+<div id="page1" class="page active">
+    <div class="content">
+        <h1>Welcome to Feliz Minecraft Server</h1>
+        <p>Click the buttons above to explore!</p>
     </div>
+</div>
 
-  </div>
+<div id="page2" class="page">
+    <div class="content">
+        <h1>Owner & Founders</h1>
+        <div class="member-card" onclick="alert('Fz_jimbruz - Owner')">Fz_jimbruz</div>
+        <div class="member-card" onclick="alert('Fz_Axe - Founder')">Fz_Axe</div>
+        <div class="member-card" onclick="alert('Fz_Smooth - Founder')">Fz_Smooth</div>
+    </div>
+</div>
 
-  <script>
-    // ---------- Data ----------
-    const members = [
-      {id:'Fz_Jimbruz',name:'Fz_Jimbruz',role:'Owner',desc:'The mind behind the forge. Visionary and leader who turns sparks into storms.',accent:4},
-      {id:'Fz_Axe',name:'Fz_Axe',role:'Founder',desc:'The precision of the blade. Calm, fierce, and unshakable.',accent:4},
-      {id:'Fz_Smooth',name:'Fz_Smooth',role:'Founder',desc:'Strategy and soul. Keeps the chaos sharp and the team sharper.',accent:2},
-      {id:'Fz_Kevin',name:'Fz_Kevin',role:'Member',desc:'The smith. Forger of power and sharper instincts.',accent:1},
-      {id:'Fz_Kannan',name:'Fz_Kannan',role:'Member',desc:'The vanguard — first into battle, last to fall.',accent:3},
-      {id:'HORIZONXD12344',name:'HORIZONXD12344',role:'Member',desc:'The horizon watcher. Quiet, focused, always one move ahead.',accent:5},
-      {id:'MAXII',name:'MAXII',role:'Team Xenon',desc:'Relentless energy, the spark that never dies.',accent:2},
-      {id:'ItsTrueBlood_',name:'ItsTrueBlood_',role:'Team Xenon',desc:'Blood, honor, and no wasted motion.',accent:3},
-      {id:'Cleati',name:'Cleati',role:'Team Xenon',desc:'Silent operator. Calm before every storm.',accent:5},
-      {id:'ENDLESS_AKKU',name:'ENDLESS_AKKU',role:'Team Xenon',desc:'A wall of will — steady, unbreakable.',accent:1},
-      // extra names from earlier context
-      {id:'Fz_Samridh',name:'Fz_Samridh',role:'Member',desc:'Builder and rhythm keeper.',accent:2},
-      {id:'Fz_Rythem',name:'Fz_Rythem',role:'Member',desc:'Music and morale.',accent:3},
-      {id:'Fz_NqN',name:'Fz_NqN',role:'Member',desc:'Quiet coder and map maker.',accent:4},
-      {id:'Fz_Carl',name:'Fz_Carl',role:'Member',desc:'Steady hand and steady aim.',accent:5},
-      {id:'Fz_Mee',name:'Fz_Mee',role:'Member',desc:'The spark that keeps nights alive.',accent:1},
-      {id:'Fz_Akinator',name:'Fz_Akinator',role:'Member',desc:'Curious mind, knows a thing or two.',accent:2}
-    ];
+<div id="page3" class="page">
+    <div class="content">
+        <h1>Members</h1>
+        <div class="member-card" onclick="alert('Fz_Kevin - Member')">Fz_Kevin</div>
+        <div class="member-card" onclick="alert('Fz_Kannan - Member')">Fz_Kannan</div>
+        <div class="member-card" onclick="alert('HORIZONXD12344 - Member')">HORIZONXD12344</div>
+        <!-- Add more members here -->
+    </div>
+</div>
 
-    const teamFeliz = ['Fz_Jimbruz','Fz_Axe','Fz_Smooth','Fz_Kannan','Fz_Kevin','Fz_Samridh','Fz_Rythem','Fz_NqN','Fz_Carl','Fz_Mee','Fz_Akinator'];
-    const teamX = ['MAXII','ItsTrueBlood_','Cleati','ENDLESS_AKKU'];
-    const serverIP = 'in-blr-001.altr.cc:25442';
-    const discord = 'https://discord.gg/8UXjesM3';
+<div id="page4" class="page">
+    <div class="content">
+        <h1>Team Feliz</h1>
+        <div class="team-card" onclick="alert('Team Feliz Members')">Fz_jimbruz, Fz_Axe, Fz_Kannan, Fz_Kevin, Fz_Smooth, HORIZONXD12344</div>
+    </div>
+</div>
 
-    // ---------- Helpers ----------
-    function $(s,root=document){return root.querySelector(s)}
-    function $all(s,root=document){return Array.from(root.querySelectorAll(s))}
+<div id="page5" class="page">
+    <div class="content">
+        <h1>Team Xenon</h1>
+        <div class="team-card" onclick="alert('Team Xenon Members')">MAXII, ItsTrueBlood_, Cleati, ENDLESS_AKKU</div>
+    </div>
+</div>
 
-    // build dynamic grids
-    const membersGrid = $('#membersGrid');
-    const teamFelizGrid = $('#teamFelizGrid');
-    const teamXGrid = $('#teamXGrid');
+<div id="page6" class="page">
+    <div class="content">
+        <h1>Gallery</h1>
+        <div class="gallery-card" onclick="alert('Screenshot 1')">Screenshot 1</div>
+        <div class="gallery-card" onclick="alert('Screenshot 2')">Screenshot 2</div>
+        <div class="gallery-card" onclick="alert('Screenshot 3')">Screenshot 3</div>
+        <!-- Add more screenshots -->
+    </div>
+</div>
 
-    function buildMemberCard(m){
-      const el = document.createElement('div');el.className='member';
-      el.innerHTML = `<div class="mname">${m.name}</div><div class="muted">${m.role}</div>`;
-      el.addEventListener('click',()=>openProfile(m.id));
-      return el;
-    }
+<div id="page7" class="page">
+    <div class="content">
+        <h1>Realm</h1>
+        <p>Join our Minecraft Realm and enjoy!</p>
+        <p>IP: in-blr-001.altr.cc:25442</p>
+    </div>
+</div>
 
-    members.forEach(m=>{
-      membersGrid.appendChild(buildMemberCard(m));
-      if(teamFeliz.includes(m.id)) teamFelizGrid.appendChild(buildMemberCard(m));
+<div id="page8" class="page">
+    <div class="content">
+        <h1>Stories</h1>
+        <div class="story-card" onclick="alert('Epic Adventures of Team Feliz')">Epic Adventures of Team Feliz</div>
+        <div class="story-card" onclick="alert('Team Xenon Journey')">Team Xenon Journey</div>
+        <!-- Add more stories -->
+    </div>
+</div>
+
+<div id="page9" class="page">
+    <div class="content">
+        <h1>Server Info</h1>
+        <p>IP: in-blr-001.altr.cc:25442</p>
+        <p>Version: 1.20</p>
+        <p>Min Players: 1 | Max Players: 50</p>
+    </div>
+</div>
+
+<div id="page10" class="page">
+    <div class="content">
+        <h1>Discord</h1>
+        <p>Join our community:</p>
+        <a href="https://discord.gg/8UXjesM3" target="_blank">Discord Invite</a>
+    </div>
+</div>
+
+<script>
+const pages = document.querySelectorAll('.page');
+function showPage(n){
+    pages.forEach((p,idx)=>{
+        if(idx===n-1){
+            p.classList.add('active');
+        } else {
+            p.classList.remove('active');
+        }
     });
-    teamX.forEach(id=>{
-      const m = members.find(x=>x.id===id); if(m) teamXGrid.appendChild(buildMemberCard(m));
-    });
+}
+</script>
 
-    // gallery placeholder
-    const galleryGrid = $('#galleryGrid');
-    for(let i=1;i<=8;i++){
-      const g = document.createElement('div');g.className='member';g.innerHTML=`<div style="height:120px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:grid;place-items:center">Screenshot ${i}</div>`;
-      g.addEventListener('click',()=>alert('Open image viewer - replace with real screenshots'));
-      galleryGrid.appendChild(g);
-    }
-
-    // ---------- Page navigation ----------
-    const pages = $all('section.page');
-    const pager = $('#pager');
-    pages.forEach((p,i)=>{
-      const d = document.createElement('div');d.className='dot';d.title = p.dataset.index;pager.appendChild(d);
-      d.addEventListener('click',()=>showPage(i+1));
-    });
-
-    function showPage(n){
-      pages.forEach(p=>p.style.opacity='0.02');
-      const sel = pages[n-1]; sel.style.opacity='1';
-      // set body accent to page's accent
-      document.documentElement.style.setProperty('--accent1', getComputedStyle(sel).getPropertyValue('--accent1') || getComputedStyle(sel).getPropertyValue('--accent1'));
-      // update active dot
-      $all('.dot').forEach((d,idx)=>d.classList.toggle('active',(idx===n-1)));
-      // ensure focus
-      window.scrollTo({top:0,behavior:'smooth'});
-    }
-
-    // init show page 1
-    showPage(1);
-
-    // nav buttons
-    $all('nav button[data-page]').forEach(b=>b.addEventListener('click',e=>showPage(Number(e.currentTarget.dataset.page))))
-
-    // enter button scrolls to about
-    $('#enterBtn').addEventListener('click',()=>showPage(2));
-    $('#joinQuick').addEventListener('click',()=>{showModalManual({name:'Connect',role:'Server',desc:`IP: ${serverIP}\nDiscord: ${discord}`,id:'__connect'});});
-
-    // copy ip
-    function copyToClipboard(text){navigator.clipboard.writeText(text).then(()=>{flashMessage('Copied to clipboard')}).catch(()=>{flashMessage('Copy failed')})}
-    $('#copyIpBtn').addEventListener('click',()=>copyToClipboard(serverIP));
-    $('#copyIpBtn2').addEventListener('click',()=>copyToClipboard(serverIP));
-    $('#openDiscord').addEventListener('click',()=>window.open(discord,'_blank'));
-
-    // ---------- Modal / profile ----------
-    const modal = $('#modal');
-    const modalName = $('#modalName');
-    const modalRole = $('#modalRole');
-    const modalDesc = $('#modalDesc');
-    const modalAvatar = $('#modalAvatar');
-
-    function openProfile(id){
-      const m = members.find(x=>x.id===id); if(!m) return;
-      modalAvatar.textContent = m.name.split('_')[0];
-      modalName.textContent = m.name;
-      modalRole.textContent = m.role;
-      modalDesc.textContent = m.desc;
-      modal.style.display = 'flex';
-      // tint neon to their accent while modal open
-      document.documentElement.style.setProperty('--accent1', getAccentHex(m.accent));
-    }
-    function showModalManual(obj){
-      modalAvatar.textContent = obj.name||obj.id||'MC';
-      modalName.textContent = obj.name||obj.id||'Connect';
-      modalRole.textContent = obj.role||'';
-      modalDesc.textContent = obj.desc||'';
-      modal.style.display = 'flex';
-    }
-    $('#closeModal').addEventListener('click',()=>{modal.style.display='none';showPage(1);});
-    modal.addEventListener('click',(e)=>{if(e.target===modal) modal.style.display='none';});
-
-    $('#modalCopy').addEventListener('click',()=>copyToClipboard(modalName.textContent));
-    $('#modalVisit').addEventListener('click',()=>{if(modalName.textContent==='Connect'){copyToClipboard(serverIP);window.open(discord,'_blank')}else{alert('In-game visit placeholder for '+modalName.textContent)}});
-
-    // ---------- neon field generation ----------
-    const neonField = $('#neonField');
-    const colors = ['c1','c2','c3','c4','c5'];
-    for(let i=0;i<28;i++){
-      const cube = document.createElement('div');cube.className='cube '+colors[i%colors.length];
-      const left = Math.random()*100; const top = Math.random()*100; const size = 20 + Math.random()*36;
-      cube.style.width = cube.style.height = size+'px';
-      cube.style.left = left+'%'; cube.style.top = top+'%';
-      cube.style.opacity = 0.45 + Math.random()*0.6;
-      cube.style.setProperty('--tx','0px'); cube.style.setProperty('--ty','0px'); cube.style.setProperty('--r', (Math.random()*40-20)+'deg');
-      cube.style.animationDuration = (6 + Math.random()*8)+'s';
-      neonField.appendChild(cube);
-    }
-
-    // mouse parallax
-    document.addEventListener('mousemove',(e)=>{
-      const x = (e.clientX - innerWidth/2)/innerWidth*30;
-      const y = (e.clientY - innerHeight/2)/innerHeight*30;
-      $all('.cube').forEach((c,idx)=>{
-        const depth = (idx%6)/6 + 0.2; c.style.transform = `translate3d(${x*depth}px,${y*depth}px,0)`;
-      });
-    });
-
-    // flash message
-    function flashMessage(t){
-      const el = document.createElement('div');el.textContent=t;el.style.position='fixed';el.style.left='50%';el.style.bottom='40px';el.style.transform='translateX(-50%)';el.style.background='rgba(0,0,0,0.6)';el.style.padding='8px 12px';el.style.borderRadius='8px';el.style.zIndex='120';document.body.appendChild(el);
-      setTimeout(()=>el.style.opacity='0',1200);setTimeout(()=>el.remove(),2000);
-    }
-
-    // small accessibility: keyboard nav between pages
-    document.addEventListener('keydown',e=>{
-      const idx = pages.findIndex(p=>p.style.opacity==='1');
-      if(e.key==='ArrowRight'){showPage(Math.min(pages.length,idx+2))}
-      if(e.key==='ArrowLeft'){showPage(Math.max(1,idx))}
-    });
-
-  </script>
 </body>
 </html>
