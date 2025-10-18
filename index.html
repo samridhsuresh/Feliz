@@ -5,98 +5,98 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Feliz Minecraft Server</title>
 <style>
-    html, body {
-        margin:0;
-        padding:0;
-        height:100%;
-        font-family: 'Minecraft', sans-serif;
-        overflow:hidden;
-        background:black;
-        color:#fff;
-    }
-    body { display:flex; flex-direction:column; }
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+    font-family: 'Minecraft', sans-serif;
+    overflow:hidden;
+    background:black;
+    color:#fff;
+}
+body { display:flex; flex-direction:column; }
 
-    .page {
-        display:none;
-        position:absolute;
-        width:100%;
-        height:100%;
-        justify-content:center;
-        align-items:center;
-        text-align:center;
-        padding:50px;
-        box-sizing:border-box;
-        z-index:10;
-    }
+.page {
+    display:none;
+    position:absolute;
+    width:100%;
+    height:100%;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:50px;
+    box-sizing:border-box;
+    z-index:10;
+    overflow-y:auto;
+}
+.active { display:grid; }
 
-    .active { display:grid; }
+.neon-blocks {
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-wrap:wrap;
+    z-index:1;
+}
 
-    .neon-blocks {
-        position:absolute;
-        width:100%;
-        height:100%;
-        display:flex;
-        flex-wrap:wrap;
-        z-index:1;
-    }
+.cube {
+    width:50px;
+    height:50px;
+    margin:3px;
+    background: linear-gradient(45deg, #0ff, #f0f);
+    box-shadow: 0 0 20px #0ff, 0 0 40px #f0f;
+    animation: float 5s infinite alternate;
+}
+@keyframes float {
+    0%{ transform: translateY(0px); }
+    100%{ transform: translateY(-20px); }
+}
 
-    .cube {
-        width:50px;
-        height:50px;
-        margin:5px;
-        background: linear-gradient(45deg, #0ff, #f0f);
-        box-shadow: 0 0 20px #0ff, 0 0 40px #f0f;
-        animation: float 5s infinite alternate;
-    }
+.content {
+    position:relative;
+    z-index:20;
+}
 
-    @keyframes float {
-        0%{ transform: translateY(0px); }
-        100%{ transform: translateY(-20px); }
-    }
+.card {
+    background: rgba(0,0,0,0.6);
+    border:2px solid #0ff;
+    padding:20px;
+    margin:15px;
+    cursor:pointer;
+    transition: all 0.3s;
+    display:inline-block;
+    width:200px;
+}
+.card:hover {
+    transform: scale(1.1);
+    border-color: #f0f;
+    box-shadow:0 0 40px #f0f;
+}
 
-    .content {
-        position:relative;
-        z-index:20;
-    }
-
-    .member-card, .team-card, .story-card, .gallery-card {
-        background: rgba(0,0,0,0.6);
-        border:2px solid #0ff;
-        padding:20px;
-        margin:20px;
-        cursor:pointer;
-        transition: all 0.3s;
-    }
-
-    .member-card:hover, .team-card:hover, .story-card:hover, .gallery-card:hover {
-        transform: scale(1.05);
-        border-color: #f0f;
-        box-shadow:0 0 30px #f0f;
-    }
-
-    nav {
-        position:fixed;
-        top:10px;
-        left:50%;
-        transform:translateX(-50%);
-        z-index:30;
-    }
-
-    nav button {
-        margin:5px;
-        padding:10px 15px;
-        cursor:pointer;
-        background:transparent;
-        border:2px solid #0ff;
-        color:#fff;
-        font-weight:bold;
-        transition: all 0.3s;
-    }
-
-    nav button:hover { background:#0ff; color:black; }
-
-    a { color:#0ff; text-decoration:none; }
-    a:hover { color:#f0f; }
+nav {
+    position:fixed;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:30;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+nav button {
+    margin:5px;
+    padding:10px 15px;
+    cursor:pointer;
+    background:transparent;
+    border:2px solid #0ff;
+    color:#fff;
+    font-weight:bold;
+    transition: all 0.3s;
+}
+nav button:hover { background:#0ff; color:black; }
+a { color:#0ff; text-decoration:none; }
+a:hover { color:#f0f; }
 </style>
 </head>
 <body>
@@ -114,67 +114,67 @@
     <button onclick="showPage(10)">Discord</button>
 </nav>
 
-<!-- Neon Background -->
-<div class="neon-blocks">
-    <!-- Generate multiple cubes -->
-    <script>
-        for(let i=0;i<200;i++){
-            let div = document.createElement('div');
-            div.classList.add('cube');
-            div.style.background = `linear-gradient(45deg, #${Math.floor(Math.random()*16777215).toString(16)}, #${Math.floor(Math.random()*16777215).toString(16)})`;
-            document.body.appendChild(div);
-        }
-    </script>
-</div>
+<div class="neon-blocks" id="neonBackground"></div>
+<script>
+for(let i=0;i<300;i++){
+    let div = document.createElement('div');
+    div.classList.add('cube');
+    div.style.background = `linear-gradient(45deg, #${Math.floor(Math.random()*16777215).toString(16)}, #${Math.floor(Math.random()*16777215).toString(16)})`;
+    document.getElementById('neonBackground').appendChild(div);
+}
+</script>
 
-<!-- Pages -->
 <div id="page1" class="page active">
     <div class="content">
         <h1>Welcome to Feliz Minecraft Server</h1>
-        <p>Click the buttons above to explore!</p>
+        <p>Click the buttons above to explore all members, teams, stories, and more!</p>
     </div>
 </div>
 
 <div id="page2" class="page">
     <div class="content">
         <h1>Owner & Founders</h1>
-        <div class="member-card" onclick="alert('Fz_jimbruz - Owner')">Fz_jimbruz</div>
-        <div class="member-card" onclick="alert('Fz_Axe - Founder')">Fz_Axe</div>
-        <div class="member-card" onclick="alert('Fz_Smooth - Founder')">Fz_Smooth</div>
+        <div class="card" onclick="alert('Fz_jimbruz - Owner of Feliz Server')">Fz_jimbruz</div>
+        <div class="card" onclick="alert('Fz_Axe - Founder')">Fz_Axe</div>
+        <div class="card" onclick="alert('Fz_Smooth - Founder')">Fz_Smooth</div>
     </div>
 </div>
 
 <div id="page3" class="page">
     <div class="content">
         <h1>Members</h1>
-        <div class="member-card" onclick="alert('Fz_Kevin - Member')">Fz_Kevin</div>
-        <div class="member-card" onclick="alert('Fz_Kannan - Member')">Fz_Kannan</div>
-        <div class="member-card" onclick="alert('HORIZONXD12344 - Member')">HORIZONXD12344</div>
-        <!-- Add more members here -->
+        <div class="card" onclick="alert('Fz_Kevin - Member')">Fz_Kevin</div>
+        <div class="card" onclick="alert('Fz_Kannan - Member')">Fz_Kannan</div>
+        <div class="card" onclick="alert('HORIZONXD12344 - Member')">HORIZONXD12344</div>
+        <div class="card" onclick="alert('MAXII - Member')">MAXII</div>
+        <div class="card" onclick="alert('ItsTrueBlood_ - Member')">ItsTrueBlood_</div>
+        <div class="card" onclick="alert('Cleati - Member')">Cleati</div>
+        <div class="card" onclick="alert('ENDLESS_AKKU - Member')">ENDLESS_AKKU</div>
     </div>
 </div>
 
 <div id="page4" class="page">
     <div class="content">
         <h1>Team Feliz</h1>
-        <div class="team-card" onclick="alert('Team Feliz Members')">Fz_jimbruz, Fz_Axe, Fz_Kannan, Fz_Kevin, Fz_Smooth, HORIZONXD12344</div>
+        <div class="card" onclick="alert('Team Feliz Members: Fz_jimbruz, Fz_Axe, Fz_Kannan, Fz_Kevin, Fz_Smooth, HORIZONXD12344')">Team Feliz Members</div>
     </div>
 </div>
 
 <div id="page5" class="page">
     <div class="content">
         <h1>Team Xenon</h1>
-        <div class="team-card" onclick="alert('Team Xenon Members')">MAXII, ItsTrueBlood_, Cleati, ENDLESS_AKKU</div>
+        <div class="card" onclick="alert('Team Xenon Members: MAXII, ItsTrueBlood_, Cleati, ENDLESS_AKKU')">Team Xenon Members</div>
     </div>
 </div>
 
 <div id="page6" class="page">
     <div class="content">
         <h1>Gallery</h1>
-        <div class="gallery-card" onclick="alert('Screenshot 1')">Screenshot 1</div>
-        <div class="gallery-card" onclick="alert('Screenshot 2')">Screenshot 2</div>
-        <div class="gallery-card" onclick="alert('Screenshot 3')">Screenshot 3</div>
-        <!-- Add more screenshots -->
+        <div class="card" onclick="alert('Screenshot 1')">Screenshot 1</div>
+        <div class="card" onclick="alert('Screenshot 2')">Screenshot 2</div>
+        <div class="card" onclick="alert('Screenshot 3')">Screenshot 3</div>
+        <div class="card" onclick="alert('Screenshot 4')">Screenshot 4</div>
+        <div class="card" onclick="alert('Screenshot 5')">Screenshot 5</div>
     </div>
 </div>
 
@@ -189,9 +189,9 @@
 <div id="page8" class="page">
     <div class="content">
         <h1>Stories</h1>
-        <div class="story-card" onclick="alert('Epic Adventures of Team Feliz')">Epic Adventures of Team Feliz</div>
-        <div class="story-card" onclick="alert('Team Xenon Journey')">Team Xenon Journey</div>
-        <!-- Add more stories -->
+        <div class="card" onclick="alert('Epic Adventures of Team Feliz')">Epic Adventures of Team Feliz</div>
+        <div class="card" onclick="alert('Team Xenon Journey')">Team Xenon Journey</div>
+        <div class="card" onclick="alert('Server Events & Tournaments')">Server Events & Tournaments</div>
     </div>
 </div>
 
@@ -224,6 +224,5 @@ function showPage(n){
     });
 }
 </script>
-
 </body>
 </html>
