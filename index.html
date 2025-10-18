@@ -4,31 +4,36 @@
   <meta charset="UTF-8">
   <title>Feliz – Where Legends are Forged</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#000;
       --bg2:rgba(10,10,10,.85);
       --cyan:#00ffff;
-      --glow:0 0 4px var(--cyan),0 0 8px var(--cyan),0 0 16px var(--cyan);
+      --amber:#ffb000;
+      --magenta:#ff00ff;
+      --lime:#00ff00;
+      --violet:#8000ff;
+      --pink:#ff47d4;
+      --blue:#0080ff;
+      --glow:0 0 4px,0 0 8px,0 0 16px;
       --pixel:'Press Start 2P',cursive;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
+    html,body{height:100%;width:100%;overflow:hidden}
     body{
       background:var(--bg);
       color:#fff;
       font-family:var(--pixel);
-      overflow:hidden;
       display:flex;
-      flex-direction:column;
       align-items:center;
       justify-content:center;
       perspective:1200px;
     }
     a{color:var(--cyan);text-decoration:none}
 
-    /* ------ PIXEL PARTICLES / EMBERS ------ */
-    .particles{
+    /* ------ 3-D FLOATING BLOCKS & XP ORBS ------ */
+    .universe{
       position:fixed;
       inset:0;
       pointer-events:none;
@@ -36,204 +41,388 @@
     }
     .cube{
       position:absolute;
+      width:12px;
+      height:12px;
+      background:var(--cyan);
+      opacity:.7;
+      animation:drift 30s linear infinite;
+      image-rendering:pixelated;
+      box-shadow:0 0 6px var(--cyan);
+    }
+    @keyframes drift{
+      0%{transform:translateY(110vh) rotateX(0) rotateY(0) scale(0);opacity:0}
+      10%{opacity:.7}
+      100%{transform:translateY(-10vh) rotateX(720deg) rotateY(720deg) scale(1.2);opacity:0}
+    }
+    .xp-orb{
+      position:absolute;
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--lime);
+      box-shadow:0 0 8px var(--lime);
+      animation:floatOrb 25s linear infinite;
+    }
+    @keyframes floatOrb{
+      0%{transform:translateY(110vh) scale(0);opacity:0}
+      10%{opacity:1}
+      100%{transform:translateY(-10vh) scale(1.5);opacity:0}
+    }
+
+    /* ------ PORTAL SCATTER TRANSITION ------ */
+    .scatter{
+      position:fixed;
+      inset:0;
+      background:#000;
+      z-index:9999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+    }
+    .pixel{
       width:8px;
       height:8px;
       background:var(--cyan);
-      opacity:.6;
-      animation:drift 25s linear infinite;
+      margin:2px;
+      animation:scatter 1s ease-out forwards;
       image-rendering:pixelated;
-      box-shadow:var(--glow);
     }
-    @keyframes drift{
-      0%{transform:translateY(110vh) rotate(0deg) scale(0);opacity:0}
-      10%{opacity:.6}
-      100%{transform:translateY(-10vh) rotate(720deg) scale(1.2);opacity:0}
+    @keyframes scatter{
+      0%{transform:scale(1) translate(0,0);opacity:1}
+      100%{transform:scale(0) translate(var(--x),var(--y));opacity:0}
     }
 
-    /* ------ ROTATING BLOCK OUTLINES ------ */
-    .block-outline{
+    /* ------ GLOBAL PAGE WRAPPER ------ */
+    .page{
       position:absolute;
-      width:64px;
-      height:64px;
-      border:2px solid var(--cyan);
-      opacity:.15;
-      animation:floatBlock 30s linear infinite;
-      image-rendering:pixelated;
-    }
-    @keyframes floatBlock{
-      0%{transform:translateY(120vh) rotateX(0) rotateY(0);}
-      100%{transform:translateY(-20vh) rotateX(360deg) rotateY(360deg);}
-    }
-
-    /* ------ MAIN TITLE ------ */
-    h1{
-      font-size:clamp(3rem,10vw,7rem);
+      inset:0;
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
       text-align:center;
+      padding:40px 20px;
+      z-index:1;
+    }
+    .page.active{display:flex}
+
+    /* ------ PIXEL GLOW TEXT ------ */
+    h1,h2,h3{letter-spacing:3px;text-transform:uppercase}
+    .neon{
       text-shadow:var(--glow);
       animation:pulse 2s ease-in-out infinite alternate;
-      letter-spacing:6px;
-      z-index:2;
-      position:relative;
     }
     @keyframes pulse{
-      from{text-shadow:var(--glow);}
-      to{text-shadow:0 0 6px var(--cyan),0 0 12px var(--cyan),0 0 30px var(--cyan);}
-    }
-    .tagline{
-      font-size:clamp(.9rem,2vw,1.4rem);
-      margin:10px 0 40px;
-      opacity:.9;
-      letter-spacing:2px;
-      text-align:center;
-      z-index:2;
-      position:relative;
+      from{text-shadow:var(--glow)}
+      to{text-shadow:0 0 6px,0 0 12px,0 0 30px}
     }
 
-    /* ------ RUNE NAMES ------ */
-    .runes{
-      display:flex;
-      flex-wrap:wrap;
-      gap:20px;
-      justify-content:center;
-      z-index:2;
-      position:relative;
+    /* ------ BUTTONS ------ */
+    .btn{
+      display:inline-block;
+      margin-top:25px;
+      padding:14px 32px;
+      border:2px solid var(--cyan);
+      background:transparent;
+      color:var(--cyan);
+      font-weight:bold;
+      border-radius:4px;
+      transition:.3s;
+      box-shadow:var(--glow);
+      cursor:pointer;
     }
-    .rune{
+    .btn:hover{background:var(--cyan);color:#000}
+
+    /* ------ HOME (PAGE 1) ------ */
+    #home h1{font-size:clamp(4rem,12vw,8rem);color:var(--cyan)}
+    #home .tagline{font-size:clamp(1rem,2.5vw,1.6rem);margin:15px 0 50px;opacity:.9}
+    #home .runes{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-bottom:40px}
+    #home .rune{
       padding:10px 18px;
       border:2px solid var(--cyan);
       background:rgba(0,255,255,.05);
-      transition:transform .2s,box-shadow .2s;
       cursor:pointer;
-      image-rendering:pixelated;
+      transition:transform .2s,box-shadow .2s;
       text-shadow:0 0 4px var(--cyan);
     }
-    .rune:hover{
-      transform:translateY(-4px);
-      box-shadow:var(--glow);
-    }
+    #home .rune:hover{transform:translateY(-4px);box-shadow:var(--glow)}
 
-    /* ------ COMMAND-BLOCK HOLOGRAM ------ */
-    .hologram{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.7);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:999;
-    }
-    .command-block{
-      background:#0a0a0a;
-      border:3px solid var(--cyan);
-      padding:30px 40px;
-      text-align:center;
-      box-shadow:var(--glow);
-      border-radius:4px;
-      image-rendering:pixelated;
-    }
-    .command-block h3{margin-bottom:15px;letter-spacing:2px}
-    .ip-box{display:flex;gap:12px;align-items:center;margin-bottom:15px}
-    .ip{font-family:monospace;font-size:1rem}
-    .close-btn{margin-top:15px;padding:8px 20px;border:1px solid var(--cyan);background:transparent;color:var(--cyan);cursor:pointer;transition:.3s}
-    .close-btn:hover{background:var(--cyan);color:#000}
-
-    /* ------ ENCHANTED BOOK (PROFILE) ------ */
-    .book-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.85);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1001;
-    }
-    .enchanted-book{
-      width:90%;max-width:500px;
-      background:rgba(10,10,10,.95);
-      border:3px solid var(--cyan);
-      box-shadow:var(--glow);
-      border-radius:6px;
-      padding:30px;
-      text-align:center;
-      position:relative;
-      image-rendering:pixelated;
-    }
-    .book-title{font-size:1.6rem;margin-bottom:8px;text-shadow:var(--glow)}
-    .book-role{font-size:1rem;opacity:.8;margin-bottom:12px}
-    .book-desc{font-size:.9rem;line-height:1.6;opacity:.9}
-    .book-close{
+    /* ------ ABOUT (PAGE 2) ------ */
+    #about .lore{max-width:700px;font-size:clamp(.9rem,2vw,1.2rem);line-height:2;opacity:.9}
+    #about .torch{
       position:absolute;
-      top:10px;right:15px;
-      font-size:1.2rem;
-      cursor:pointer;
-      color:var(--cyan);
-      transition:color .3s;
+      width:60px;
+      height:60px;
+      background:radial-gradient(circle,var(--amber) 0%,transparent 70%);
+      opacity:.4;
+      animation:flicker 4s ease-in-out infinite;
+      filter:blur(20px);
     }
-    .book-close:hover{color:#fff}
+    @keyframes flicker{
+      0%,100%{opacity:.3}
+      50%{opacity:.6}
+    }
 
-    /* ------ FOOTER ------ */
-    footer{
-      margin-top:auto;
-      padding:30px 20px 20px;
+    /* ------ STORY (PAGE 3) ------ */
+    #story .chat{
+      max-width:700px;
+      text-align:left;
+      font-size:clamp(.8rem,1.8vw,1.1rem);
+      line-height:1.8;
+    }
+    #story .line{
+      opacity:0;
+      animation:type 1s forwards;
+      margin:8px 0;
+      padding-left:10px;
+      border-left:2px solid var(--cyan);
+    }
+    @keyframes type{
+      to{opacity:1}
+    }
+
+    /* ------ OWNER / FOUNDERS (PAGES 4-5) ------ */
+    .profile-card{
+      background:var(--bg2);
+      border:2px solid var(--cyan);
+      padding:30px 40px;
+      border-radius:6px;
+      max-width:500px;
+      transform-style:preserve-3d;
+      transition:transform .4s;
+      cursor:pointer;
+    }
+    .profile-card:hover{transform:rotateY(15deg) rotateX(10deg)}
+    .profile-card h2{margin-bottom:10px;text-shadow:var(--glow)}
+    .profile-card .role{font-size:1rem;opacity:.8;margin-bottom:12px}
+    .profile-card .desc{font-size:.9rem;line-height:1.6;opacity:.9}
+
+    /* ------ TEAM GRIDS (PAGES 6-7) ------ */
+    .team-grid{
+      display:grid;
+      gap:25px;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      max-width:900px;
+      width:100%;
+    }
+    .team-block{
+      background:var(--bg2);
+      border:2px solid var(--cyan);
+      padding:20px;
       text-align:center;
-      font-size:.8rem;
-      opacity:.7;
-      z-index:2;
-      position:relative;
+      cursor:pointer;
+      transition:transform .3s,box-shadow .3s;
     }
-    .pixel-icon{
-      display:inline-block;
-      width:24px;
-      height:24px;
-      margin:0 8px;
+    .team-block:hover{transform:translateY(-6px);box-shadow:var(--glow)}
+
+    /* ------ REALM INFO (PAGE 8) ------ */
+    #realm .holo-card{
+      background:var(--bg2);
+      border:3px solid var(--cyan);
+      padding:40px 50px;
+      border-radius:8px;
+      box-shadow:var(--glow);
+      max-width:500px;
+    }
+    #realm .holo-card h2{margin-bottom:20px}
+    #realm .ip-box{display:flex;gap:15px;align-items:center;justify-content:center;margin-bottom:20px}
+    #realm .ip{font-family:monospace;font-size:1.1rem}
+
+    /* ------ MEDIA GALLERY (PAGE 9) ------ */
+    .gallery{
+      display:grid;
+      gap:15px;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      max-width:1000px;
+      width:100%;
+    }
+    .gallery img{
+      width:100%;
+      border:2px solid transparent;
+      border-radius:4px;
+      transition:transform .3s,filter .3s,border-color .3s;
+      cursor:pointer;
       image-rendering:pixelated;
-      vertical-align:middle;
-      filter:drop-shadow(0 0 3px var(--cyan));
-      transition:transform .3s;
     }
-    .pixel-icon:hover{transform:scale(1.2)}
+    .gallery img:hover{
+      transform:scale(1.05);
+      filter:brightness(1.3);
+      border-color:var(--cyan);
+    }
+
+    /* ------ LEGACY (PAGE 10) ------ */
+    #legacy .glass-logo{
+      font-size:clamp(4rem,12vw,8rem);
+      background:linear-gradient(45deg,var(--cyan),var(--violet),var(--lime),var(--cyan));
+      background-size:400% 400%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:rainbow 4s linear infinite;
+      text-shadow:0 0 10px rgba(255,255,255,.3);
+    }
+    @keyframes rainbow{
+      0%{background-position:0%}
+      100%{background-position:100%}
+    }
+    #legacy .ring{
+      width:200px;
+      height:200px;
+      border:2px solid var(--cyan);
+      border-radius:50%;
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      animation:spin 10s linear infinite;
+      box-shadow:var(--glow);
+    }
+    @keyframes spin{
+      to{transform:translate(-50%,-50%) rotate(360deg)}
+    }
   </style>
 </head>
 <body>
 
-  <!-- ------ PARTICLES & BLOCKS ------ -->
-  <div class="particles" id="particles"></div>
-  <div id="blocks"></div>
+  <!-- ====== UNIVERSE (3-D BLOCKS & ORBS) ====== -->
+  <div class="universe" id="universe"></div>
 
-  <!-- ------ MAIN CONTENT ------ -->
-  <h1>FELIZ</h1>
-  <p class="tagline">Where Legends are Forged.</p>
+  <!-- ====== PORTAL SCATTER OVERLAY ====== -->
+  <div class="scatter" id="scatter"></div>
 
-  <div class="runes">
-    <span class="label">Owner:</span>
-    <a class="rune" data-member="fz_jimbruz">Fz_Jimbruz</a>
+  <!-- ====== AUDIO (OPTIONAL) ====== -->
+  <audio id="bgHum" loop>
+    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmFgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+  </audio>
 
-    <span class="label">Founders:</span>
-    <a class="rune" data-member="fz_axe">Fz_Axe</a>
-    <a class="rune" data-member="fz_smooth">Fz_Smooth</a>
+  <!-- ====== PAGE 1 HOME ====== -->
+  <section class="page active" id="home">
+    <h1 class="neon">FELIZ</h1>
+    <p class="tagline">Where Legends are Forged.</p>
+    <div class="runes">
+      <span class="label">Owner:</span>
+      <a class="rune" onclick="showMember('fz_jimbruz')">Fz_Jimbruz</a>
 
-    <span class="label">Teams:</span>
-    <a class="rune" data-member="team_feliz">Team Feliz</a>
-    <a class="rune" data-member="team_xenon">Team Xenon</a>
-  </div>
+      <span class="label">Founders:</span>
+      <a class="rune" onclick="showMember('fz_axe')">Fz_Axe</a>
+      <a class="rune" onclick="showMember('fz_smooth')">Fz_Smooth</a>
 
-  <button class="rune" style="margin-top:40px" onclick="showHolo()">Join the Realm</button>
+      <span class="label">Teams:</span>
+      <a class="rune" onclick="showMember('team_feliz')">Team Feliz</a>
+      <a class="rune" onclick="showMember('team_xenon')">Team Xenon</a>
+    </div>
+    <button class="btn" onclick="toPage(2)">Enter the Realm</button>
+  </section>
 
-  <!-- ------ HOLOGRAM ------ -->
-  <div class="hologram" id="holo">
-    <div class="command-block">
-      <h3>Connect</h3>
+  <!-- ====== PAGE 2 ABOUT ====== -->
+  <section class="page" id="about">
+    <h2 class="neon">About Feliz</h2>
+    <div class="torch" style="top:20%;left:10%"></div>
+    <div class="torch" style="bottom:20%;right:10%"></div>
+    <p class="lore">
+      Feliz began as a spark between warriors who refused to fade. They built from dust and redstone, shaping chaos into brotherhood.
+    </p>
+    <button class="btn" onclick="toPage(3)">Read the Story</button>
+  </section>
+
+  <!-- ====== PAGE 3 STORY ====== -->
+  <section class="page" id="story">
+    <h2 class="neon">The Saga</h2>
+    <div class="chat" id="chat"></div>
+    <button class="btn" onclick="toPage(4)">Meet the Owner</button>
+  </section>
+
+  <!-- ====== PAGE 4 OWNER ====== -->
+  <section class="page" id="owner">
+    <h2 class="neon">The Mind Behind the Forge</h2>
+    <div class="profile-card" onclick="showMember('fz_jimbruz')">
+      <h2>Fz_Jimbruz</h2>
+      <div class="role">Owner</div>
+      <div class="desc">Leader of Feliz, turns sparks into storms.</div>
+    </div>
+    <button class="btn" onclick="toPage(5)">Meet the Founders</button>
+  </section>
+
+  <!-- ====== PAGE 5 FOUNDERS ====== -->
+  <section class="page" id="founders">
+    <h2 class="neon">The First Blades</h2>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;justify-content:center">
+      <div class="profile-card" style="border-color:var(--amber);box-shadow:0 0 12px var(--amber)" onclick="showMember('fz_axe')">
+        <h2>Fz_Axe</h2>
+        <div class="role">Founder</div>
+        <div class="desc">The blade of Feliz. Calm, fierce, and unshakable.</div>
+      </div>
+      <div class="profile-card" style="border-color:var(--magenta);box-shadow:0 0 12px var(--magenta)" onclick="showMember('fz_smooth')">
+        <h2>Fz_Smooth</h2>
+        <div class="role">Founder</div>
+        <div class="desc">Strategy and soul. Keeps the chaos sharp.</div>
+      </div>
+    </div>
+    <button class="btn" onclick="toPage(6)">Team Feliz</button>
+  </section>
+
+  <!-- ====== PAGE 6 TEAM FELIZ ====== -->
+  <section class="page" id="teamFeliz">
+    <h2 class="neon">Team Feliz</h2>
+    <div class="team-grid">
+      <div class="team-block" onclick="showMember('fz_kevin')">Fz_Kevin<br><small>Smith</small></div>
+      <div class="team-block" onclick="showMember('fz_kannan')">Fz_Kannan<br><small>Vanguard</small></div>
+      <div class="team-block" onclick="showMember('horizonxd12344')">HORIZON<br><small>Scout</small></div>
+    </div>
+    <button class="btn" onclick="toPage(7)">Team Xenon</button>
+  </section>
+
+  <!-- ====== PAGE 7 TEAM XENON ====== -->
+  <section class="page" id="teamXenon">
+    <h2 class="neon">Team Xenon</h2>
+    <div class="team-grid">
+      <div class="team-block" style="border-color:var(--pink)" onclick="showMember('maxii')">MAXII<br><small>Spark</small></div>
+      <div class="team-block" style="border-color:var(--blue)" onclick="showMember('itstrueblood_')">TrueBlood<br><small>Warrior</small></div>
+      <div class="team-block" style="border-color:var(--violet)" onclick="showMember('cleati')">Cleati<br><small>Silent Op</small></div>
+      <div class="team-block" style="border-color:var(--lime)" onclick="showMember('endless_akku')">ENDLESS<br><small>Wall</small></div>
+    </div>
+    <button class="btn" onclick="toPage(8)">Realm Info</button>
+  </section>
+
+  <!-- ====== PAGE 8 REALM INFO ====== -->
+  <section class="page" id="realm">
+    <h2 class="neon">Connect</h2>
+    <div class="holo-card">
       <div class="ip-box">
         <span class="ip">in-blr-001.altr.cc:25442</span>
-        <button class="close-btn" onclick="copyIP()">Copy</button>
+        <button class="btn" onclick="copyIP()">Copy IP</button>
       </div>
-      <a class="close-btn" href="https://discord.gg/8UXjesM3" target="_blank">Discord</a>
-      <br>
-      <button class="close-btn" onclick="hideHolo()">Close</button>
+      <a class="btn" href="https://discord.gg/8UXjesM3" target="_blank">Join Discord</a>
     </div>
-  </div>
+    <button class="btn" onclick="toPage(9)">Media Gallery</button>
+  </section>
 
-  <!-- ------ ENCHANTED BOOK ------ -->
+  <!-- ====== PAGE 9 MEDIA ====== -->
+  <section class="page" id="media">
+    <h2 class="neon">Forged Frames</h2>
+    <div class="gallery">
+      <img src="https://i.imgur.com/J4Q5lLO.jpeg" alt="Castle Siege" onclick="openFull(this)">
+      <img src="https://i.imgur.com/9p5aB5R.jpeg" alt="Nether Battle" onclick="openFull(this)">
+      <img src="https://i.imgur.com/5gVjyP6.jpeg" alt="Forge Ceremony" onclick="openFull(this)">
+      <img src="https://i.imgur.com/7nG8HDO.jpeg" alt="PvP Finals" onclick="openFull(this)">
+      <img src="https://i.imgur.com/eXKZ1lS.jpeg" alt="Base Tour" onclick="openFull(this)">
+      <img src="https://i.imgur.com/8Z1BOVM.jpeg" alt="Citadel Dawn" onclick="openFull(this)">
+    </div>
+    <button class="btn" onclick="toPage(10)">Enter the Legacy</button>
+  </section>
+
+  <!-- ====== PAGE 10 LEGACY ====== -->
+  <section class="page" id="legacy">
+    <div class="ring"></div>
+    <h1 class="glass-logo neon">FELIZ</h1>
+    <p style="margin-top:20px;font-size:1.2rem;opacity:.9">“Not just a server — a legacy.”</p>
+    <div style="margin-top:30px">
+      <a class="pixel-icon" href="https://discord.gg/8UXjesM3" target="_blank" title="Discord">💎</a>
+      <a class="pixel-icon" href="https://youtube.com/@FelizMC" target="_blank" title="YouTube">📀</a>
+      <a class="pixel-icon" href="https://twitch.tv/FelizMC" target="_blank" title="Twitch">🎮</a>
+    </div>
+    <button class="btn" onclick="toPage(1)" style="margin-top:40px">Back to Home</button>
+  </section>
+
+  <!-- ====== MEMBER OVERLAY (ENCHANTED BOOK) ====== -->
   <div class="book-overlay" id="bookOverlay">
     <div class="enchanted-book">
       <span class="book-close" onclick="closeBook()">✖</span>
@@ -241,27 +430,21 @@
     </div>
   </div>
 
-  <!-- ------ FOOTER ------ -->
-  <footer>
-    <div>◇◇◇ FELIZ ◇◇◇</div>
-    <p>“Not just a server — a legacy.”</p>
-    <div>
-      <a class="pixel-icon" href="https://discord.gg/8UXjesM3" target="_blank" title="Discord">💎</a>
-      <a class="pixel-icon" href="https://youtube.com/@FelizMC" target="_blank" title="YouTube">📀</a>
-      <a class="pixel-icon" href="https://twitch.tv/FelizMC" target="_blank" title="Twitch">🎮</a>
-    </div>
-  </footer>
+  <!-- ====== FULLSCREEN IMAGE VIEWER ====== -->
+  <div class="book-overlay" id="fullOverlay" onclick="closeFull()">
+    <img id="fullImg" style="max-width:90%;max-height:90%;border:3px solid var(--cyan);border-radius:6px;box-shadow:var(--glow)">
+  </div>
 
   <script>
-    /* ------ MEMBER DATA ------ */
+    /* ====== MEMBER DATA ====== */
     const members={
-      fz_jimbruz:{name:"Fz_Jimbruz",role:"Owner",desc:"The mind behind the forge. Leader of Feliz, turning sparks into storms."},
+      fz_jimbruz:{name:"Fz_Jimbruz",role:"Owner",desc:"The mind behind the forge. Leader of Feliz, turns sparks into storms."},
       fz_axe:{name:"Fz_Axe",role:"Founder",desc:"The blade of Feliz. Calm, fierce, and unshakable."},
-      fz_smooth:{name:"Fz_Smooth",role:"Founder",desc:"Strategy and soul. Keeps the chaos sharp and the team sharper."},
+      fz_smooth:{name:"Fz_Smooth",role:"Founder",desc:"Strategy and soul. Keeps the chaos sharp."},
       fz_kevin:{name:"Fz_Kevin",role:"Smith",desc:"Forges power where others see iron."},
       fz_kannan:{name:"Fz_Kannan",role:"Vanguard",desc:"First into battle, last to fall."},
       horizonxd12344:{name:"HORIZONXD12344",role:"Scout",desc:"The horizon watcher. Quiet, focused, always one move ahead."},
-      maxii:{name:"MAXII",role:"Spark",desc:"Relentless spark of the realm."},
+      maxii:{name:"MAXII",role:"Spark",desc:"Relentless energy of the realm."},
       itstrueblood_:{name:"ItsTrueBlood_",role:"Warrior",desc:"Blood, honor, and no wasted motion."},
       cleati:{name:"Cleati",role:"Silent Op",desc:"Calm before every storm."},
       endless_akku:{name:"ENDLESS_AKKU",role:"Wall",desc:"A wall of will — steady, unbreakable."},
@@ -269,32 +452,74 @@
       team_xenon:{name:"Team Xenon",role:"Strike Unit",desc:"Fast, precise, unstoppable."}
     };
 
-    /* ------ PARTICLES ------ */
-    const pContainer=document.getElementById('particles');
-    for(let i=0;i<60;i++){
+    /* ====== CREATE 3-D UNIVERSE ====== */
+    const univ=document.getElementById('universe');
+    for(let i=0;i<70;i++){
       const c=document.createElement('div');
       c.className='cube';
       c.style.left=Math.random()*100+'%';
-      c.style.animationDelay=Math.random()*25+'s';
-      pContainer.appendChild(c);
+      c.style.animationDelay=Math.random()*30+'s';
+      univ.appendChild(c);
+    }
+    for(let i=0;i<40;i++){
+      const o=document.createElement('div');
+      o.className='xp-orb';
+      o.style.left=Math.random()*100+'%';
+      o.style.animationDelay=Math.random()*25+'s';
+      univ.appendChild(o);
     }
 
-    /* ------ ROTATING BLOCK OUTLINES ------ */
-    const bContainer=document.getElementById('blocks');
-    for(let i=0;i<6;i++){
-      const b=document.createElement('div');
-      b.className='block-outline';
-      b.style.left=Math.random()*100+'%';
-      b.style.animationDelay=Math.random()*30+'s';
-      bContainer.appendChild(b);
+    /* ====== PAGE NAVIGATION ====== */
+    let current=1;
+    function toPage(n){
+      scatterTransition(()=>{
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        document.getElementById(['home','about','story','owner','founders','teamFeliz','teamXenon','realm','media','legacy'][n-1]).classList.add('active');
+        current=n;
+        if(n===3)typeStory();
+      });
     }
 
-    /* ------ RUNE CLICK → BOOK ------ */
-    document.querySelectorAll('.rune[data-member]').forEach(rune=>{
-      rune.addEventListener('click',()=>openBook(rune.dataset.member));
-    });
+    /* ====== PORTAL SCATTER TRANSITION ====== */
+    function scatterTransition(callback){
+      const s=document.getElementById('scatter');
+      s.innerHTML='';
+      s.style.display='flex';
+      const cols=Math.floor(window.innerWidth/12);
+      const rows=Math.floor(window.innerHeight/12);
+      for(let i=0;i<cols*rows;i++){
+        const p=document.createElement('div');
+        p.className='pixel';
+        p.style.setProperty('--x',(Math.random()-0.5)*window.innerWidth+'px');
+        p.style.setProperty('--y',(Math.random()-0.5)*window.innerHeight+'px');
+        p.style.animationDelay=(Math.random()*0.5)+'s';
+        s.appendChild(p);
+      }
+      setTimeout(()=>{s.style.display='none';callback()},1000);
+    }
 
-    function openBook(key){
+    /* ====== STORY TYPING ====== */
+    const storyLines=[
+      "[Chat] Fz_Jimbruz: A spark in the dark... we refuse to fade.",
+      "[Chat] Fz_Axe: Dust and redstone in our hands — we shape the storm.",
+      "[Chat] Fz_Smooth: First forge lit — chaos becomes brotherhood.",
+      "[Chat] System: ⭐ Realm Wars won — Citadel foundations placed.",
+      "[Chat] System: ⭐ Trials passed — Feliz forged in fire."
+    ];
+    function typeStory(){
+      const chat=document.getElementById('chat');
+      chat.innerHTML='';
+      storyLines.forEach((line,i)=>{
+        const div=document.createElement('div');
+        div.className='line';
+        div.textContent=line;
+        div.style.animationDelay=i*1.2+'s';
+        chat.appendChild(div);
+      });
+    }
+
+    /* ====== MEMBER POP-UP BOOK ====== */
+    function showMember(key){
       const m=members[key];
       document.getElementById('bookContent').innerHTML=`
         <div class="book-title">${m.name}</div>
@@ -303,17 +528,27 @@
       `;
       document.getElementById('bookOverlay').style.display='flex';
     }
-    function closeBook(){
-      document.getElementById('bookOverlay').style.display='none';
-    }
+    function closeBook(){document.getElementById('bookOverlay').style.display='none'}
 
-    /* ------ HOLOGRAM ------ */
-    function showHolo(){document.getElementById('holo').style.display='flex';}
-    function hideHolo(){document.getElementById('holo').style.display='none';}
+    /* ====== MEDIA FULLSCREEN ====== */
+    function openFull(img){
+      document.getElementById('fullImg').src=img.src;
+      document.getElementById('fullOverlay').style.display='flex';
+    }
+    function closeFull(){document.getElementById('fullOverlay').style.display='none'}
+
+    /* ====== COPY IP ====== */
     function copyIP(){
       navigator.clipboard.writeText('in-blr-001.altr.cc:25442');
       alert('IP copied!');
     }
+
+    /* ====== OPTIONAL AMBIENT AUDIO ====== */
+    window.addEventListener('click',()=>{
+      const hum=document.getElementById('bgHum');
+      hum.volume=0.08;
+      hum.play().catch(()=>{});
+    },{once:true});
   </script>
 </body>
 </html>
