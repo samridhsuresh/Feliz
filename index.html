@@ -389,7 +389,34 @@
     // ---------- neon field generation ----------
     const neonField = $('#neonField');
     const colors = ['c1','c2','c3','c4','c5'];
-    for(let i=0;i<28;i++){
+    const totalCubes = 100;
+    for(let i=0;i< totalCubes;i++){
+      //random position
+      const left = Math.random() * 100;
+      const top = Math.random() * 100;
+      // random size for variety
+      const size = 10 + Math.random() * 50;
+      cube.style.width = cube.style.height = size + 'px';
+      
+      // brighter/more visible opacity
+      cube.style.opacity = 0.5 + Math.random() * 0.5;
+      // floating offsets
+      cube.style.setProperty('--tx', (Math.random() * 20 - 10) + 'px');
+      cube.style.setProperty('--ty', (Math.random() * 20 - 10) + 'px');
+      cube.style.setProperty('--r', (Math.random() * 60 - 30) + 'deg');
+      // random animation duration for more natural movement
+      cube.style.animationDuration = (4 + Math.random() * 8) + 's';
+      // random z-index depth effect (optional)
+      cube.style.zIndex = Math.floor(Math.random() * 5 + 1);
+      // apply position
+      cube.style.left = left + '%';
+      cube.style.top = top + '%';
+
+      neonField.appendChild(cube);
+    }
+
+      
+
       const cube = document.createElement('div');cube.className='cube '+colors[i%colors.length];
       const left = Math.random()*100; const top = Math.random()*100; const size = 20 + Math.random()*36;
       cube.style.width = cube.style.height = size+'px';
