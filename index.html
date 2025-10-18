@@ -6,13 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
-      --bg: #0a0a0a;
-      --bg2: rgba(17,17,17,.75);
+      --bg: #000;
+      --bg2: rgba(17,17,17,.85);
       --cyan: #00ffff;
       --glow: 0 0 5px var(--cyan), 0 0 10px var(--cyan), 0 0 20px var(--cyan);
       --font: 'Segoe UI', 'Roboto', sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
     body {
       background: var(--bg);
       color: #fff;
@@ -32,12 +33,11 @@
       overflow: hidden;
     }
 
-    /* ----- SIMPLE CSS PARTICLES ----- */
+    /* ----- FULL-SCREEN PARTICLES ----- */
     .particles {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      overflow: hidden;
     }
     .particle {
       position: absolute;
@@ -114,7 +114,7 @@
       .discord-fab { display: block; }
     }
 
-    /* ----- HERO ----- */
+    /* ----- HERO FULLSCREEN ----- */
     #hero {
       min-height: 100vh;
       display: flex;
@@ -226,7 +226,7 @@
 <!-- ---------- FLOATING DISCORD (mobile) ---------- -->
 <a class="btn discord-fab" href="https://discord.gg/8UXjesM3" target="_blank">Discord</a>
 
-<!-- ---------- HERO ---------- -->
+<!-- ---------- HERO (FULL-SCREEN BLACK + PARTICLES) ---------- -->
 <section id="hero">
   <div class="particles"></div>
   <div class="hero-content">
