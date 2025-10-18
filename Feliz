@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feliz Minecraft Server</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --card: #121218;
+      --accent: #00f2a0;
+      --text: #e0e0e0;
+      --sub: #8a8a9e;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: url("https://i.imgur.com/5eQ0eD5.jpeg") center/cover no-repeat;
+      position: relative;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+    }
+    .hero {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #fff;
+      text-shadow: 0 0 15px var(--accent);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+      }
+      to {
+        text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+      }
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: .9rem 2.2rem;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: transform .2s;
+    }
+    .btn:hover {
+      transform: scale(1.08);
+    }
+    section {
+      padding: 4rem 1rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      font-size: 2.2rem;
+      color: var(--accent);
+    }
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      width: 260px;
+      text-align: center;
+      transition: transform .2s;
+    }
+    .card:hover {
+      transform: translateY(-7px);
+    }
+    .card img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      margin-bottom: 1rem;
+    }
+    .role {
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: .5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: .9rem;
+      color: var(--sub);
+    }
+    /* micro nav */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #0003;
+      backdrop-filter: blur(6px);
+      padding: .8rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1rem;
+    }
+    /* tiny screens */
+    @media (max-width: 600px) {
+      .cards {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div style="font-weight:700;color:var(--accent);">FELIZ</div>
+    <div>
+      <a href="#team">Team</a>
+      <a href="https://discord.gg/vd6SEAGG" target="_blank" rel="noopener">Discord</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <h1>FELIZ</h1>
+      <p>Survival re-imagined. 1.20+ Java & Bedrock</p>
+      <a class="btn" href="https://discord.gg/vd6SEAGG" target="_blank" rel="noopener">Join Discord</a>
+    </div>
+  </header>
+
+  <section id="team">
+    <h2>Meet the Team</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://mc-heads.net/avatar/Fz_smooth/90" alt="Fz_smooth">
+        <div class="role">Founder</div>
+        <h3>Fz_smooth</h3>
+        <p>Builder & plugin curator. Loves terraforming and redstone.</p>
+      </div>
+
+      <div class="card">
+        <img src="https://mc-heads.net/avatar/Fz_Axe/90" alt="Fz_Axe">
+        <div class="role">Founder</div>
+        <h3>Fz_Axe</h3>
+        <p>Community strategist. Keeps the vibes chill and fair.</p>
+      </div>
+
+      <div class="card">
+        <img src="https://mc-heads.net/avatar/Fz_jimbruz/90" alt="Fz_jimbruz">
+        <div class="role">Owner</div>
+        <h3>Fz_jimbruz</h3>
+        <p>Lead dev & sys-admin. Hardware and lag-slayer.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Feliz Minecraft Server &nbsp;•&nbsp;
+    <a href="https://discord.gg/vd6SEAGG" style="color:var(--accent)">Discord</a>
+  </footer>
+</body>
+</html>
