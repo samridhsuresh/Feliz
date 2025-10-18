@@ -36,11 +36,11 @@
     section.page{min-height:100vh;display:grid;place-items:center;padding:80px 24px;position:relative;overflow:hidden}
     .page .content{max-width:1100px;width:100%;text-align:center}
     h1.title{font-family:'Press Start 2P',monospace;font-size:48px;margin:0;text-transform:uppercase;letter-spacing:4px}
-    p.lead{opacity:0.95;margin:12px 0 24px}
+    p.lead{opacity:0.9;margin:12px 0 24px}
 
     /* FULLSCREEN BLOCKY NEON BACKGROUND */
     .neon-field{position:absolute;inset:0;z-index:0;pointer-events:none}
-    .cube{position:absolute;width:28px;height:28px;transform-style:preserve-3d;opacity:0.95;border-radius:4px;box-shadow:0 2px 18px rgba(0,0,0,0.65)}
+    .cube{position:absolute;width:28px;height:28px;transform-style:preserve-3d;opacity:0.9;border-radius:4px;box-shadow:0 2px 18px rgba(0,0,0,0.65)}
     .cube::before,.cube::after{content:"";position:absolute;inset:0;border-radius:4px}
     /* Use CSS variables for colors */
     .cube.c1{background:linear-gradient(135deg,var(--accent1),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(0,240,255,0.18),0 0 24px rgba(0,240,255,0.08)}
@@ -91,7 +91,7 @@
     .dot.active{background:var(--accent1);box-shadow:0 6px 20px rgba(0,0,0,0.6)}
 
     /* small helper */
-    .muted{opacity:0.95;font-size:13px}
+    .muted{opacity:10;font-size:13px}
   </style>
 </head>
 <body>
@@ -113,8 +113,10 @@
     </header>
 
     <main class="pages" id="pages">
+      <!-- floating neon field container -->
       <div class="neon-field" id="neonField"></div>
 
+      <!-- Page 1 - Home -->
       <section class="page" data-index="1" data-accent="1">
         <div class="content card" style="text-align:center">
           <h1 class="title">FELIZ</h1>
@@ -126,6 +128,7 @@
         </div>
       </section>
 
+      <!-- Page 2 - About -->
       <section class="page" data-index="2" data-accent="2">
         <div class="content card">
           <h1 class="title">About Feliz</h1>
@@ -133,6 +136,7 @@
         </div>
       </section>
 
+      <!-- Page 3 - Story -->
       <section class="page" data-index="3" data-accent="3">
         <div class="content card">
           <h1 class="title">The Story</h1>
@@ -145,6 +149,7 @@
         </div>
       </section>
 
+      <!-- Page 4 - Owner -->
       <section class="page" data-index="4" data-accent="4">
         <div class="content card">
           <h1 class="title">Owner</h1>
@@ -160,6 +165,7 @@
         </div>
       </section>
 
+      <!-- Page 5 - Founders -->
       <section class="page" data-index="5" data-accent="5">
         <div class="content card" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="min-width:260px">
@@ -175,6 +181,7 @@
         </div>
       </section>
 
+      <!-- Page 6 - Members -->
       <section class="page" data-index="6" data-accent="1">
         <div class="content card">
           <h1 class="title">Members</h1>
@@ -183,42 +190,52 @@
         </div>
       </section>
 
+      <!-- Page 7 - Team Feliz -->
       <section class="page" data-index="7" data-accent="2">
         <div class="content card">
           <h1 class="title">Team Feliz</h1>
-          <div class="grid">
-            <div class="member" data-member="Fz_Jimbruz"><div class="mname">Fz_Jimbruz</div></div>
-            <div class="member" data-member="Fz_Axe"><div class="mname">Fz_Axe</div></div>
-            <div class="member" data-member="Fz_Kannan"><div class="mname">Fz_Kannan</div></div>
-            <div class="member" data-member="Fz_Kevin"><div class="mname">Fz_Kevin</div></div>
-            <div class="member" data-member="Fz_Smooth"><div class="mname">Fz_Smooth</div></div>
-          </div>
+          <p class="muted">Proud lineup and notable builds.</p>
+          <div class="grid" id="teamFelizGrid" style="margin-top:18px"></div>
         </div>
       </section>
 
+      <!-- Page 8 - Team Xenon -->
       <section class="page" data-index="8" data-accent="3">
         <div class="content card">
           <h1 class="title">Team Xenon</h1>
-          <div class="grid">
-            <div class="member" data-member="MAXII"><div class="mname">MAXII</div></div>
-            <div class="member" data-member="ItsTrueBlood_"><div class="mname">ItsTrueBlood_</div></div>
-            <div class="member" data-member="Cleati"><div class="mname">Cleati</div></div>
-            <div class="member" data-member="ENDLESS_AKKU"><div class="mname">ENDLESS_AKKU</div></div>
-          </div>
+          <p class="muted">A fierce group with style. Click a name to view their profile.</p>
+          <div class="grid" id="teamXGrid" style="margin-top:18px"></div>
         </div>
       </section>
 
+      <!-- Page 9 - Gallery -->
       <section class="page" data-index="9" data-accent="4">
         <div class="content card">
           <h1 class="title">Gallery</h1>
-          <p class="muted">Screenshots, builds, and epic moments from Feliz.</p>
+          <p class="muted">Server screenshots and cinematic captures. Click to expand.</p>
+          <div class="grid" id="galleryGrid" style="margin-top:18px"></div>
         </div>
       </section>
 
+      <!-- Page 10 - Realm / Footer hub -->
       <section class="page" data-index="10" data-accent="5">
         <div class="content card">
-          <h1 class="title">Realm</h1>
-          <p class="muted">Enter the live server and experience the neon-blocked chaos.</p>
+          <h1 class="title">Realm Info</h1>
+          <p class="muted">Server details and quick links.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px">
+            <div class="card" style="padding:12px">
+              <div style="font-family:'Press Start 2P',monospace">Server IP</div>
+              <div style="margin-top:6px;font-weight:700">in-blr-001.altr.cc:25442</div>
+              <div style="margin-top:8px"><button class="btn neon" id="copyIpBtn2">Copy IP</button></div>
+            </div>
+            <div class="card" style="padding:12px">
+              <div style="font-family:'Press Start 2P',monospace">Discord</div>
+              <div style="margin-top:6px;font-weight:700">discord.gg/8UXjesM3</div>
+              <div style="margin-top:8px"><button class="btn ghost" id="openDiscord">Open Discord</button></div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;text-align:center;opacity:0.9">"Not just a server — a legacy."</div>
         </div>
       </section>
 
@@ -226,6 +243,7 @@
 
     <div class="pager" id="pager"></div>
 
+    <!-- modal -->
     <div class="modal-backdrop" id="modal">
       <div class="modal card" role="dialog" aria-modal="true">
         <button class="close" id="closeModal">✕</button>
@@ -245,67 +263,165 @@
   </div>
 
   <script>
-    const pages = [...document.querySelectorAll('.page')];
-    const dotsContainer = document.getElementById('pager');
-    const modal = document.getElementById('modal');
-    const membersGrid = document.getElementById('membersGrid');
+    // ---------- Data ----------
+    const members = [
+      {id:'Fz_Jimbruz',name:'Fz_Jimbruz',role:'Owner',desc:'The mind behind the forge. Visionary and leader who turns sparks into storms.',accent:4},
+      {id:'Fz_Axe',name:'Fz_Axe',role:'Founder',desc:'The precision of the blade. Calm, fierce, and unshakable.',accent:4},
+      {id:'Fz_Smooth',name:'Fz_Smooth',role:'Founder',desc:'Strategy and soul. Keeps the chaos sharp and the team sharper.',accent:2},
+      {id:'Fz_Kevin',name:'Fz_Kevin',role:'Member',desc:'The smith. Forger of power and sharper instincts.',accent:1},
+      {id:'Fz_Kannan',name:'Fz_Kannan',role:'Member',desc:'The vanguard — first into battle, last to fall.',accent:3},
+      {id:'HORIZONXD12344',name:'HORIZONXD12344',role:'Member',desc:'The horizon watcher. Quiet, focused, always one move ahead.',accent:5},
+      {id:'MAXII',name:'MAXII',role:'Team Xenon',desc:'Relentless energy, the spark that never dies.',accent:2},
+      {id:'ItsTrueBlood_',name:'ItsTrueBlood_',role:'Team Xenon',desc:'Blood, honor, and no wasted motion.',accent:3},
+      {id:'Cleati',name:'Cleati',role:'Team Xenon',desc:'Silent operator. Calm before every storm.',accent:5},
+      {id:'ENDLESS_AKKU',name:'ENDLESS_AKKU',role:'Team Xenon',desc:'A wall of will — steady, unbreakable.',accent:1},
+      // extra names from earlier context
+      {id:'Fz_Samridh',name:'Fz_Samridh',role:'Member',desc:'Builder and rhythm keeper.',accent:2},
+      {id:'Fz_Rythem',name:'Fz_Rythem',role:'Member',desc:'Music and morale.',accent:3},
+      {id:'Fz_NqN',name:'Fz_NqN',role:'Member',desc:'Quiet coder and map maker.',accent:4},
+      {id:'Fz_Carl',name:'Fz_Carl',role:'Member',desc:'Steady hand and steady aim.',accent:5},
+      {id:'Fz_Mee',name:'Fz_Mee',role:'Member',desc:'The spark that keeps nights alive.',accent:1},
+      {id:'Fz_Akinator',name:'Fz_Akinator',role:'Member',desc:'Curious mind, knows a thing or two.',accent:2}
+    ];
 
-    // Generate dots
-    pages.forEach((_,i)=>{
-      const dot = document.createElement('div'); dot.className='dot';
-      dot.addEventListener('click',()=>showPage(i+1));
-      dotsContainer.appendChild(dot);
+    const teamFeliz = ['Fz_Jimbruz','Fz_Axe','Fz_Smooth','Fz_Kannan','Fz_Kevin','Fz_Samridh','Fz_Rythem','Fz_NqN','Fz_Carl','Fz_Mee','Fz_Akinator'];
+    const teamX = ['MAXII','ItsTrueBlood_','Cleati','ENDLESS_AKKU'];
+    const serverIP = 'in-blr-001.altr.cc:25442';
+    const discord = 'https://discord.gg/8UXjesM3';
+
+    // ---------- Helpers ----------
+    function $(s,root=document){return root.querySelector(s)}
+    function $all(s,root=document){return Array.from(root.querySelectorAll(s))}
+
+    // build dynamic grids
+    const membersGrid = $('#membersGrid');
+    const teamFelizGrid = $('#teamFelizGrid');
+    const teamXGrid = $('#teamXGrid');
+
+    function buildMemberCard(m){
+      const el = document.createElement('div');el.className='member';
+      el.innerHTML = `<div class="mname">${m.name}</div><div class="muted">${m.role}</div>`;
+      el.addEventListener('click',()=>openProfile(m.id));
+      return el;
+    }
+
+    members.forEach(m=>{
+      membersGrid.appendChild(buildMemberCard(m));
+      if(teamFeliz.includes(m.id)) teamFelizGrid.appendChild(buildMemberCard(m));
+    });
+    teamX.forEach(id=>{
+      const m = members.find(x=>x.id===id); if(m) teamXGrid.appendChild(buildMemberCard(m));
     });
 
-    // Show page function with fixed opacity
+    // gallery placeholder
+    const galleryGrid = $('#galleryGrid');
+    for(let i=1;i<=8;i++){
+      const g = document.createElement('div');g.className='member';g.innerHTML=`<div style="height:120px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:grid;place-items:center">Screenshot ${i}</div>`;
+      g.addEventListener('click',()=>alert('Open image viewer - replace with real screenshots'));
+      galleryGrid.appendChild(g);
+    }
+
+    // ---------- Page navigation ----------
+    const pages = $all('section.page');
+    const pager = $('#pager');
+    pages.forEach((p,i)=>{
+      const d = document.createElement('div');d.className='dot';d.title = p.dataset.index;pager.appendChild(d);
+      d.addEventListener('click',()=>showPage(i+1));
+    });
+
     function showPage(n){
-      pages.forEach(p=>p.style.opacity='0.15');
+      pages.forEach(p=>p.style.opacity='0.02');
       const sel = pages[n-1]; sel.style.opacity='1';
+      // set body accent to page's accent
       document.documentElement.style.setProperty('--accent1', getComputedStyle(sel).getPropertyValue('--accent1') || getComputedStyle(sel).getPropertyValue('--accent1'));
-      document.querySelectorAll('.dot').forEach((d,idx)=>d.classList.toggle('active',(idx===n-1)));
+      // update active dot
+      $all('.dot').forEach((d,idx)=>d.classList.toggle('active',(idx===n-1)));
+      // ensure focus
       window.scrollTo({top:0,behavior:'smooth'});
     }
 
-    // Initial
+    // init show page 1
     showPage(1);
 
-    // Nav buttons
-    document.querySelectorAll('nav button[data-page]').forEach(btn=>{
-      btn.addEventListener('click',()=>showPage(btn.dataset.page));
-    });
+    // nav buttons
+    $all('nav button[data-page]').forEach(b=>b.addEventListener('click',e=>showPage(Number(e.currentTarget.dataset.page))))
 
-    // Members setup
-    const members = [
-      {name:'Fz_Jimbruz',role:'Owner',desc:'Visionary leader of Feliz',avatar:'MC'},
-      {name:'Fz_Axe',role:'Team Lead',desc:'Precision of the blade',avatar:'AX'},
-      {name:'Fz_Kannan',role:'Builder',desc:'Master of structures',avatar:'KK'},
-      {name:'Fz_Kevin',role:'Redstone',desc:'Engineer of circuits',avatar:'KV'},
-      {name:'Fz_Smooth',role:'Strategist',desc:'Planner of chaos',avatar:'SM'},
-      {name:'MAXII',role:'Xenon',desc:'Elite fighter',avatar:'MX'},
-      {name:'ItsTrueBlood_',role:'Xenon',desc:'Silent shadow',avatar:'TB'},
-      {name:'Cleati',role:'Xenon',desc:'Brave scout',avatar:'CL'},
-      {name:'ENDLESS_AKKU',role:'Xenon',desc:'Relentless attacker',avatar:'EA'}
-    ];
+    // enter button scrolls to about
+    $('#enterBtn').addEventListener('click',()=>showPage(2));
+    $('#joinQuick').addEventListener('click',()=>{showModalManual({name:'Connect',role:'Server',desc:`IP: ${serverIP}\nDiscord: ${discord}`,id:'__connect'});});
 
-    members.forEach(m=>{
-      const div = document.createElement('div'); div.className='member'; div.dataset.member=m.name;
-      div.innerHTML=`<div class="mname">${m.name}</div>`;
-      div.addEventListener('click',()=>openModal(m));
-      membersGrid.appendChild(div);
-    });
+    // copy ip
+    function copyToClipboard(text){navigator.clipboard.writeText(text).then(()=>{flashMessage('Copied to clipboard')}).catch(()=>{flashMessage('Copy failed')})}
+    $('#copyIpBtn').addEventListener('click',()=>copyToClipboard(serverIP));
+    $('#copyIpBtn2').addEventListener('click',()=>copyToClipboard(serverIP));
+    $('#openDiscord').addEventListener('click',()=>window.open(discord,'_blank'));
 
-    // Modal functions
-    function openModal(member){
-      document.getElementById('modalName').textContent = member.name;
-      document.getElementById('modalRole').textContent = member.role;
-      document.getElementById('modalDesc').textContent = member.desc;
-      document.getElementById('modalAvatar').textContent = member.avatar;
-      modal.style.display='flex';
+    // ---------- Modal / profile ----------
+    const modal = $('#modal');
+    const modalName = $('#modalName');
+    const modalRole = $('#modalRole');
+    const modalDesc = $('#modalDesc');
+    const modalAvatar = $('#modalAvatar');
+
+    function openProfile(id){
+      const m = members.find(x=>x.id===id); if(!m) return;
+      modalAvatar.textContent = m.name.split('_')[0];
+      modalName.textContent = m.name;
+      modalRole.textContent = m.role;
+      modalDesc.textContent = m.desc;
+      modal.style.display = 'flex';
+      // tint neon to their accent while modal open
+      document.documentElement.style.setProperty('--accent1', getAccentHex(m.accent));
     }
-    document.getElementById('closeModal').addEventListener('click',()=>modal.style.display='none');
-    document.getElementById('modalCopy').addEventListener('click',()=>{
-      navigator.clipboard.writeText(document.getElementById('modalName').textContent);
+    function showModalManual(obj){
+      modalAvatar.textContent = obj.name||obj.id||'MC';
+      modalName.textContent = obj.name||obj.id||'Connect';
+      modalRole.textContent = obj.role||'';
+      modalDesc.textContent = obj.desc||'';
+      modal.style.display = 'flex';
+    }
+    $('#closeModal').addEventListener('click',()=>{modal.style.display='none';showPage(1);});
+    modal.addEventListener('click',(e)=>{if(e.target===modal) modal.style.display='none';});
+
+    $('#modalCopy').addEventListener('click',()=>copyToClipboard(modalName.textContent));
+    $('#modalVisit').addEventListener('click',()=>{if(modalName.textContent==='Connect'){copyToClipboard(serverIP);window.open(discord,'_blank')}else{alert('In-game visit placeholder for '+modalName.textContent)}});
+
+    // ---------- neon field generation ----------
+    const neonField = $('#neonField');
+    const colors = ['c1','c2','c3','c4','c5'];
+    for(let i=0;i<28;i++){
+      const cube = document.createElement('div');cube.className='cube '+colors[i%colors.length];
+      const left = Math.random()*100; const top = Math.random()*100; const size = 20 + Math.random()*36;
+      cube.style.width = cube.style.height = size+'px';
+      cube.style.left = left+'%'; cube.style.top = top+'%';
+      cube.style.opacity = 0.45 + Math.random()*0.6;
+      cube.style.setProperty('--tx','0px'); cube.style.setProperty('--ty','0px'); cube.style.setProperty('--r', (Math.random()*40-20)+'deg');
+      cube.style.animationDuration = (6 + Math.random()*8)+'s';
+      neonField.appendChild(cube);
+    }
+
+    // mouse parallax
+    document.addEventListener('mousemove',(e)=>{
+      const x = (e.clientX - innerWidth/2)/innerWidth*30;
+      const y = (e.clientY - innerHeight/2)/innerHeight*30;
+      $all('.cube').forEach((c,idx)=>{
+        const depth = (idx%6)/6 + 0.2; c.style.transform = `translate3d(${x*depth}px,${y*depth}px,0)`;
+      });
     });
+
+    // flash message
+    function flashMessage(t){
+      const el = document.createElement('div');el.textContent=t;el.style.position='fixed';el.style.left='50%';el.style.bottom='40px';el.style.transform='translateX(-50%)';el.style.background='rgba(0,0,0,0.6)';el.style.padding='8px 12px';el.style.borderRadius='8px';el.style.zIndex='120';document.body.appendChild(el);
+      setTimeout(()=>el.style.opacity='0',1200);setTimeout(()=>el.remove(),2000);
+    }
+
+    // small accessibility: keyboard nav between pages
+    document.addEventListener('keydown',e=>{
+      const idx = pages.findIndex(p=>p.style.opacity==='1');
+      if(e.key==='ArrowRight'){showPage(Math.min(pages.length,idx+2))}
+      if(e.key==='ArrowLeft'){showPage(Math.max(1,idx))}
+    });
+
   </script>
 </body>
 </html>
