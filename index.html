@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Feliz – Where Legends are Forged</title>
+  <title>Feliz – Where Legends Forge Their Worlds</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
@@ -10,12 +10,11 @@
       --bg:#000;
       --bg2:rgba(10,10,10,.85);
       --cyan:#00ffff;
-      --amber:#ffb000;
+      --lime:#00ff41;
       --magenta:#ff00ff;
-      --lime:#00ff00;
       --violet:#8000ff;
-      --pink:#ff47d4;
       --blue:#0080ff;
+      --amber:#ffb000;
       --glow:0 0 4px,0 0 8px,0 0 16px;
       --pixel:'Press Start 2P',cursive;
     }
@@ -32,15 +31,38 @@
     }
     a{color:var(--cyan);text-decoration:none}
 
-    /* 3-D blocks & XP orbs */
+    /* 3-D floating neon blocks & XP orbs */
     .universe{position:fixed;inset:0;pointer-events:none;z-index:0}
     .cube,.xp-orb{position:absolute;image-rendering:pixelated}
-    .cube{width:12px;height:12px;background:var(--cyan);box-shadow:0 0 6px var(--cyan);animation:drift 30s linear infinite}
-    .xp-orb{width:10px;height:10px;border-radius:50%;background:#00ff00;box-shadow:0 0 8px #00ff00;animation:floatOrb 25s linear infinite}
-    @keyframes drift{0%{transform:translateY(110vh) rotateX(0) rotateY(0) scale(0);opacity:0}10%{opacity:.7}100%{transform:translateY(-10vh) rotateX(720deg) rotateY(720deg) scale(1.2);opacity:0}}
+    .cube{width:14px;height:14px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:drift 35s linear infinite}
+    .xp-orb{width:12px;height:12px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);animation:floatOrb 28s linear infinite}
+    @keyframes drift{0%{transform:translateY(110vh) rotateX(0) rotateY(0) scale(0);opacity:0}10%{opacity:.8}100%{transform:translateY(-10vh) rotateX(720deg) rotateY(720deg) scale(1.3);opacity:0}}
     @keyframes floatOrb{0%{transform:translateY(110vh) scale(0);opacity:0}10%{opacity:1}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
 
-    /* page skeleton */
+    /* neon nav bar */
+    nav{
+      position:fixed;
+      top:0;left:0;right:0;
+      display:flex;
+      gap:20px;
+      justify-content:center;
+      padding:15px 20px;
+      background:rgba(0,0,0,.5);
+      backdrop-filter:blur(10px);
+      z-index:1000;
+    }
+    nav .nav-btn{
+      padding:8px 16px;
+      border:2px solid transparent;
+      background:transparent;
+      color:var(--cyan);
+      cursor:pointer;
+      transition:border-color .3s,box-shadow .3s;
+      text-shadow:0 0 4px var(--cyan);
+    }
+    nav .nav-btn:hover{border-color:var(--cyan);box-shadow:var(--glow)}
+
+    /* page shell */
     .page{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;z-index:1}
     .page.active{display:flex}
     h1,h2,h3{letter-spacing:3px;text-transform:uppercase}
@@ -56,7 +78,7 @@
     .pixel{width:8px;height:8px;background:var(--cyan);margin:2px;animation:scatter 1s ease-out forwards;image-rendering:pixelated}
     @keyframes scatter{0%{transform:scale(1) translate(0,0);opacity:1}100%{transform:scale(0) translate(var(--x),var(--y));opacity:0}}
 
-    /* modal pop-up (member window) */
+    /* modal member pop-up */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1000}
     .modal-card{background:var(--bg2);border:3px solid var(--cyan);border-radius:8px;padding:25px 30px;max-width:420px;text-align:center;box-shadow:var(--glow)}
     .modal-card img{width:100%;border-radius:4px;margin:12px 0}
@@ -66,24 +88,23 @@
     .modal-close{margin-top:15px;padding:8px 18px;border:1px solid var(--cyan);background:transparent;color:var(--cyan);cursor:pointer;transition:.3s}
     .modal-close:hover{background:var(--cyan);color:#000}
 
-    /* HOME */
-    #home h1{font-size:clamp(4rem,12vw,8rem);color:var(--cyan)}
-    #home .tagline{font-size:clamp(1rem,2.5vw,1.6rem);margin:15px 0 50px;opacity:.9}
-    #home .runes{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-bottom:40px}
-    #home .rune{padding:10px 18px;border:2px solid var(--cyan);background:rgba(0,255,255,.05);cursor:pointer;transition:transform .2s,box-shadow .2s;text-shadow:0 0 4px var(--cyan)}
-    #home .rune:hover{transform:translateY(-4px);box-shadow:var(--glow)}
+    /* HOME neon block build */
+    #home h1{font-size:clamp(5rem,15vw,10rem);background:linear-gradient(45deg,var(--cyan),var(--lime),var(--magenta),var(--violet));background-size:400% 400%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:rainbow 4s linear infinite;text-shadow:0 0 10px rgba(255,255,255,.3)}
+    @keyframes rainbow{0%{background-position:0%}100%{background-position:100%}}
+    #home .tagline{font-size:clamp(1rem,2.5vw,1.6rem);margin:15px 0 40px;opacity:.9}
+    #home .ip-discord{margin-top:30px;display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+    #home .ip-box{display:flex;gap:12px;align-items:center;padding:10px 15px;border:2px solid var(--cyan);border-radius:4px;background:rgba(0,255,255,.05)}
+    #home .ip{font-family:monospace;font-size:1rem}
 
     /* ABOUT */
     #about .lore{max-width:700px;font-size:clamp(.9rem,2vw,1.2rem);line-height:2;opacity:.9}
-    #about .torch{position:absolute;width:60px;height:60px;background:radial-gradient(circle,var(--amber) 0%,transparent 70%);opacity:.4;animation:flicker 4s ease-in-out infinite;filter:blur(20px)}
-    @keyframes flicker{0%,100%{opacity:.3}50%{opacity:.6}}
 
-    /* STORY */
-    #story .chat{max-width:700px;text-align:left;font-size:clamp(.8rem,1.8vw,1.1rem);line-height:1.8}
-    #story .line{opacity:0;animation:type 1s forwards;margin:8px 0;padding-left:10px;border-left:2px solid var(--cyan)}
-    @keyframes type{to{opacity:1}}
+    /* SERVER INFO */
+    #server .map-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));max-width:900px;width:100%}
+    #server .map-card{padding:20px;border:2px solid var(--cyan);border-radius:6px;background:rgba(0,255,255,.05);transition:transform .3s,box-shadow .3s}
+    #server .map-card:hover{transform:translateY(-6px);box-shadow:var(--glow)}
 
-    /* OWNER / FOUNDERS */
+    /* OWNER / FOUNDERS / MEMBERS */
     .profile-card{background:var(--bg2);border:2px solid var(--cyan);padding:30px 40px;border-radius:6px;max-width:500px;transform-style:preserve-3d;transition:transform .4s;cursor:pointer}
     .profile-card:hover{transform:rotateY(15deg) rotateX(10deg)}
     .profile-card h2{margin-bottom:10px;text-shadow:var(--glow)}
@@ -95,102 +116,137 @@
     .team-block{background:var(--bg2);border:2px solid var(--cyan);padding:20px;text-align:center;cursor:pointer;transition:transform .3s,box-shadow .3s}
     .team-block:hover{transform:translateY(-6px);box-shadow:var(--glow)}
 
-    /* REALM INFO */
-    #realm .holo-card{background:var(--bg2);border:3px solid var(--cyan);padding:40px 50px;border-radius:8px;box-shadow:var(--glow);max-width:500px}
-    #realm .holo-card h2{margin-bottom:20px}
-    #realm .ip-box{display:flex;gap:15px;align-items:center;justify-content:center;margin-bottom:20px}
-    #realm .ip{font-family:monospace;font-size:1.1rem}
-
-    /* MEDIA */
+    /* GALLERY */
     .gallery{display:grid;gap:15px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));max-width:1000px;width:100%}
     .gallery img{width:100%;border:2px solid transparent;border-radius:4px;transition:transform .3s,filter .3s,border-color .3s;cursor:pointer;image-rendering:pixelated}
     .gallery img:hover{transform:scale(1.05);filter:brightness(1.3);border-color:var(--cyan)}
 
-    /* LEGACY */
-    #legacy .glass-logo{font-size:clamp(4rem,12vw,8rem);background:linear-gradient(45deg,var(--cyan),var(--violet),var(--lime),var(--cyan));background-size:400% 400%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:rainbow 4s linear infinite;text-shadow:0 0 10px rgba(255,255,255,.3)}
-    @keyframes rainbow{0%{background-position:0%}100%{background-position:100%}}
+    /* STORY RUNES */
+    #story .runes{max-width:700px;text-align:left;font-size:clamp(.8rem,1.8vw,1.1rem);line-height:1.8}
+    #story .line{opacity:0;animation:type 1s forwards;margin:8px 0;padding-left:10px;border-left:2px solid var(--cyan)}
+    @keyframes type{to{opacity:1}}
+
+    /* LEGACY RING */
     #legacy .ring{width:200px;height:200px;border:2px solid var(--cyan);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);animation:spin 10s linear infinite;box-shadow:var(--glow)}
     @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
   </style>
 </head>
 <body>
 
-  <!-- 3-D universe -->
+  <!-- 3-D UNIVERSE -->
   <div class="universe" id="universe"></div>
-  <!-- portal scatter overlay -->
+
+  <!-- PORTAL SCATTER OVERLAY -->
   <div class="scatter" id="scatter"></div>
 
-  <!-- PAGE 1 HOME -->
+  <!-- NEON NAV -->
+  <nav>
+    <button class="nav-btn" onclick="toPage(1)">Home</button>
+    <button class="nav-btn" onclick="toPage(2)">About</button>
+    <button class="nav-btn" onclick="toPage(3)">Server</button>
+    <button class="nav-btn" onclick="toPage(4)">Owner</button>
+    <button class="nav-btn" onclick="toPage(5)">Founders</button>
+    <button class="nav-btn" onclick="toPage(6)">Members</button>
+    <button class="nav-btn" onclick="toPage(7)">Team Feliz</button>
+    <button class="nav-btn" onclick="toPage(8)">Team Xenon</button>
+    <button class="nav-btn" onclick="toPage(9)">Gallery</button>
+    <button class="nav-btn" onclick="toPage(10)">Story</button>
+  </nav>
+
+  <!-- HOME PAGE -->
   <section class="page active" id="home">
     <h1 class="neon">FELIZ</h1>
-    <p class="tagline">Where Legends are Forged.</p>
-    <div class="runes">
-      <a class="rune" onclick="showModal('fz_jimbruz')">Fz_Jimbruz</a>
-      <a class="rune" onclick="showModal('fz_axe')">Fz_Axe</a>
-      <a class="rune" onclick="showModal('fz_smooth')">Fz_Smooth</a>
-      <a class="rune" onclick="showModal('team_feliz')">Team Feliz</a>
-      <a class="rune" onclick="showModal('team_xenon')">Team Xenon</a>
+    <p class="tagline">Where Legends Forge Their Worlds.</p>
+    <div class="ip-discord">
+      <div class="ip-box">
+        <span class="ip">in-blr-001.altr.cc:25442</span>
+        <button class="btn" onclick="copyIP()">Copy IP</button>
+      </div>
+      <a class="btn" href="https://discord.gg/8UXjesM3" target="_blank">Join Discord</a>
     </div>
     <button class="btn" onclick="toPage(2)">Enter the Realm</button>
   </section>
 
-  <!-- PAGE 2 ABOUT -->
+  <!-- ABOUT PAGE -->
   <section class="page" id="about">
     <h2 class="neon">About Feliz</h2>
-    <div class="torch" style="top:20%;left:10%"></div>
-    <div class="torch" style="bottom:20%;right:10%"></div>
-    <p class="lore">Feliz began as a spark between warriors who refused to fade. They built from dust and redstone, shaping chaos into brotherhood.</p>
-    <button class="btn" onclick="toPage(3)">Read the Story</button>
+    <p class="lore">
+      Feliz began as a spark between warriors who refused to fade. From dust and redstone they forged a brotherhood — a neon-lit realm where creativity, skill, and loyalty shine brighter than diamonds.
+    </p>
+    <button class="btn" onclick="toPage(3)">Explore the Server</button>
   </section>
 
-  <!-- PAGE 3 STORY -->
-  <section class="page" id="story">
-    <h2 class="neon">The Saga</h2>
-    <div class="chat" id="chat"></div>
+  <!-- SERVER INFO PAGE -->
+  <section class="page" id="server">
+    <h2 class="neon">Realm Features</h2>
+    <div class="map-grid">
+      <div class="map-card"><h3>PvP Arenas</h3><p>Neon-lit battlegrounds</p></div>
+      <div class="map-card"><h3>Build Contests</h3><p>Show your glow</p></div>
+      <div class="map-card"><h3>Lore Events</h3><p>Forge the story</p></div>
+      <div class="map-card"><h3>Redstone wars</h3><p>Tech vs magic</p></div>
+    </div>
     <button class="btn" onclick="toPage(4)">Meet the Owner</button>
   </section>
 
-  <!-- PAGE 4 OWNER -->
+  <!-- OWNER PAGE -->
   <section class="page" id="owner">
-    <h2 class="neon">The Mind Behind the Forge</h2>
+    <h2 class="neon">The Spark</h2>
     <div class="profile-card" onclick="showModal('fz_jimbruz')">
       <h2>Fz_Jimbruz</h2>
       <div class="role">Owner</div>
-      <div class="desc">Leader of Feliz, turns sparks into storms.</div>
+      <div class="desc">Visionary behind Feliz — the spark that keeps the world glowing.</div>
     </div>
     <button class="btn" onclick="toPage(5)">Meet the Founders</button>
   </section>
 
-  <!-- PAGE 5 FOUNDERS -->
+  <!-- FOUNDERS PAGE -->
   <section class="page" id="founders">
     <h2 class="neon">The First Blades</h2>
     <div style="display:flex;gap:40px;flex-wrap:wrap;justify-content:center">
       <div class="profile-card" style="border-color:var(--amber);box-shadow:0 0 12px var(--amber)" onclick="showModal('fz_axe')">
         <h2>Fz_Axe</h2>
         <div class="role">Founder</div>
-        <div class="desc">The blade of Feliz. Calm, fierce, and unshakable.</div>
+        <div class="desc">Precision and calm — the edge of Feliz.</div>
       </div>
       <div class="profile-card" style="border-color:var(--magenta);box-shadow:0 0 12px var(--magenta)" onclick="showModal('fz_smooth')">
         <h2>Fz_Smooth</h2>
         <div class="role">Founder</div>
-        <div class="desc">Strategy and soul. Keeps the chaos sharp.</div>
+        <div class="desc">Strategy and soul — keeps the chaos sharp.</div>
       </div>
     </div>
-    <button class="btn" onclick="toPage(6)">Team Feliz</button>
+    <button class="btn" onclick="toPage(6)">Meet the Members</button>
   </section>
 
-  <!-- PAGE 6 TEAM FELIZ -->
-  <section class="page" id="teamFeliz">
-    <h2 class="neon">Team Feliz</h2>
+  <!-- MEMBERS PAGE -->
+  <section class="page" id="members">
+    <h2 class="neon">The Forge-Born</h2>
     <div class="team-grid">
       <div class="team-block" onclick="showModal('fz_kevin')">Fz_Kevin<br><small>Smith</small></div>
       <div class="team-block" onclick="showModal('fz_kannan')">Fz_Kannan<br><small>Vanguard</small></div>
       <div class="team-block" onclick="showModal('horizonxd12344')">HORIZON<br><small>Scout</small></div>
+      <div class="team-block" onclick="showModal('maxii')">MAXII<br><small>Spark</small></div>
+      <div class="team-block" onclick="showModal('itstrueblood_')">TrueBlood<br><small>Warrior</small></div>
+      <div class="team-block" onclick="showModal('cleati')">Cleati<br><small>Silent Op</small></div>
+      <div class="team-block" onclick="showModal('endless_akku')">ENDLESS<br><small>Wall</small></div>
     </div>
-    <button class="btn" onclick="toPage(7)">Team Xenon</button>
+    <button class="btn" onclick="toPage(7)">Team Feliz</button>
   </section>
 
-  <!-- PAGE 7 TEAM XENON -->
+  <!-- TEAM FELIZ PAGE -->
+  <section class="page" id="teamFeliz">
+    <h2 class="neon">Team Feliz</h2>
+    <div class="team-grid">
+      <div class="team-block" onclick="showModal('fz_jimbruz')">Fz_Jimbruz<br><small>Owner</small></div>
+      <div class="team-block" onclick="showModal('fz_axe')">Fz_Axe<br><small>Founder</small></div>
+      <div class="team-block" onclick="showModal('fz_smooth')">Fz_Smooth<br><small>Founder</small></div>
+      <div class="team-block" onclick="showModal('fz_kannan')">Fz_Kannan<br><small>Vanguard</small></div>
+      <div class="team-block" onclick="showModal('fz_kevin')">Fz_Kevin<br><small>Smith</small></div>
+      <div class="team-block" onclick="showModal('horizonxd12344')">HORIZON<br><small>Scout</small></div>
+    </div>
+    <button class="btn" onclick="toPage(8)">Team Xenon</button>
+  </section>
+
+  <!-- TEAM XENON PAGE -->
   <section class="page" id="teamXenon">
     <h2 class="neon">Team Xenon</h2>
     <div class="team-grid">
@@ -199,24 +255,11 @@
       <div class="team-block" style="border-color:var(--violet)" onclick="showModal('cleati')">Cleati<br><small>Silent Op</small></div>
       <div class="team-block" style="border-color:var(--lime)" onclick="showModal('endless_akku')">ENDLESS<br><small>Wall</small></div>
     </div>
-    <button class="btn" onclick="toPage(8)">Realm Info</button>
+    <button class="btn" onclick="toPage(9)">Gallery</button>
   </section>
 
-  <!-- PAGE 8 REALM INFO -->
-  <section class="page" id="realm">
-    <h2 class="neon">Connect</h2>
-    <div class="holo-card">
-      <div class="ip-box">
-        <span class="ip">in-blr-001.altr.cc:25442</span>
-        <button class="btn" onclick="copyIP()">Copy IP</button>
-      </div>
-      <a class="btn" href="https://discord.gg/8UXjesM3" target="_blank">Join Discord</a>
-    </div>
-    <button class="btn" onclick="toPage(9)">Media Gallery</button>
-  </section>
-
-  <!-- PAGE 9 MEDIA -->
-  <section class="page" id="media">
+  <!-- GALLERY PAGE -->
+  <section class="page" id="gallery">
     <h2 class="neon">Forged Frames</h2>
     <div class="gallery">
       <img src="https://i.imgur.com/J4Q5lLO.jpeg" alt="Castle Siege" onclick="openFull(this)">
@@ -226,20 +269,14 @@
       <img src="https://i.imgur.com/eXKZ1lS.jpeg" alt="Base Tour" onclick="openFull(this)">
       <img src="https://i.imgur.com/8Z1BOVM.jpeg" alt="Citadel Dawn" onclick="openFull(this)">
     </div>
-    <button class="btn" onclick="toPage(10)">Enter the Legacy</button>
+    <button class="btn" onclick="toPage(10)">Read the Story</button>
   </section>
 
-  <!-- PAGE 10 LEGACY -->
-  <section class="page" id="legacy">
-    <div class="ring"></div>
-    <h1 class="glass-logo neon">FELIZ</h1>
-    <p style="margin-top:20px;font-size:1.2rem;opacity:.9">“Not just a server — a legacy.”</p>
-    <div style="margin-top:30px">
-      <a class="pixel-icon" href="https://discord.gg/8UXjesM3" target="_blank" title="Discord">💎</a>
-      <a class="pixel-icon" href="https://youtube.com/@FelizMC" target="_blank" title="YouTube">📀</a>
-      <a class="pixel-icon" href="https://twitch.tv/FelizMC" target="_blank" title="Twitch">🎮</a>
-    </div>
-    <button class="btn" onclick="toPage(1)" style="margin-top:40px">Back to Home</button>
+  <!-- STORY PAGE -->
+  <section class="page" id="story">
+    <h2 class="neon">The Saga</h2>
+    <div class="runes" id="storyLines"></div>
+    <button class="btn" onclick="toPage(1)">Back to Home</button>
   </section>
 
   <!-- MODAL MEMBER POP-UP -->
@@ -255,206 +292,125 @@
     <img id="fullImg" style="max-width:90%;max-height:90%;border:3px solid var(--cyan);border-radius:6px;box-shadow:var(--glow)">
   </div>
 
+  <!-- AUDIO (optional) -->
+  <audio id="bgHum" loop>
+    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmFgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+  </audio>
+
   <script>
-    /* ---------- MEMBER DATA ---------- */
+    /* ---------- MEMBER DATA + IMAGES ---------- */
     const members={
-      fz_jimbruz:{name:"Fz_Jimbruz",role:"Owner",desc:"The mind behind the forge. Leader of Feliz, turns sparks into storms.",face:"https://crafatar.com/renders/head/853c80ef3c3749fdaa49938b674adae6?overlay",img:"https://i.imgur.com/8Z1BOVM.jpeg"},
-      fz_axe:{name:"Fz_Axe",role:"Founder",desc:"The blade of Feliz. Calm, fierce, and unshakable.",face:"https://crafatar.com/renders/head/00000000000000000000000000000000?overlay&default=MHF_Alex",img:"https://i.imgur.com/9p5aB5R.jpeg"},
-      fz_smooth:{name:"Fz_Smooth",role:"Founder",desc:"Strategy and soul. Keeps the chaos sharp.",face:"https://crafatar.com/renders/head/11111111111111111111111111111111?overlay&default=MHF_Steve",img:"https://i.imgur.com/5gVjyP6.jpeg"},
-      fz_kevin:{name:"Fz_Kevin",role:"Smith",desc:"Forges power where others see iron.",face:"https://crafatar.com/renders/head/22222222222222222222222222222222?overlay&default=MHF_Cactus",img:"https://i.imgur.com/J4Q5lLO.jpeg"},
-      fz_kannan:{name:"Fz_Kannan",role:"Vanguard",desc:"First into battle, last to fall.",face:"https://crafatar.com/renders/head/33333333333333333333333333333333?overlay&default=MHF_Pig",img:"https://i.imgur.com/7nG8HDO.jpeg"},
-      horizonxd12344:{name:"HORIZONXD12344",role:"Scout",desc:"The horizon watcher. Quiet, focused, always one move ahead.",face:"https://crafatar.com/renders/head/44444444444444444444444444444444?overlay&default=MHF_Spider",img:"https://i.imgur.com/eXKZ1lS.jpeg"},
-      maxii:{name:"MAXII",role:"Spark",desc:"Relentless spark of the realm.",face:"https://crafatar.com/renders/head/55555555555555555555555555555555?overlay&default=MHF_Golem",img:"https://i.imgur.com/8Z1BOVM.jpeg"},
-      itstrueblood_:{name:"ItsTrueBlood_",role:"Warrior",desc:"Blood, honor, and no wasted motion.",face:"https://crafatar.com/renders/head/66666666666666666666666666666666?overlay&default=MHF_Skeleton",img:"https://i.imgur.com/9p5aB5R.jpeg"},
+      fz_jimbruz:{name:"Fz_Jimbruz",role:"Owner",desc:"Visionary behind Feliz — the spark that keeps the world glowing.",face:"https://crafatar.com/renders/head/853c80ef3c3749fdaa49938b674adae6?overlay",img:"https://i.imgur.com/8Z1BOVM.jpeg"},
+      fz_axe:{name:"Fz_Axe",role:"Founder",desc:"The blade of Feliz — calm, fierce, unshakable.",face:"https://crafatar.com/renders/head/00000000000000000000000000000000?overlay&default=MHF_Alex",img:"https://i.imgur.com/9p5aB5R.jpeg"},
+      fz_smooth:{name:"Fz_Smooth",role:"Founder",desc:"Strategy and soul — keeps the chaos sharp.",face:"https://crafatar.com/renders/head/11111111111111111111111111111111?overlay&default=MHF_Steve",img:"https://i.imgur.com/5gVjyP6.jpeg"},
+      fz_kevin:{name:"Fz_Kevin",role:"Smith",desc:"Forges power where others see iron.",face:"https://crafatar.com/renders/head/22222222222222222222222222222222?overlay&default=MHF_Pig",img:"https://i.imgur.com/J4Q5lLO.jpeg"},
+      fz_kannan:{name:"Fz_Kannan",role:"Vanguard",desc:"First into battle, last to fall.",face:"https://crafatar.com/renders/head/33333333333333333333333333333333?overlay&default=MHF_Cactus",img:"https://i.imgur.com/7nG8HDO.jpeg"},
+      horizonxd12344:{name:"HORIZONXD12344",role:"Scout",desc:"The horizon watcher — quiet, focused, always ahead.",face:"https://crafatar.com/renders/head/44444444444444444444444444444444?overlay&default=MHF_Golem",img:"https://i.imgur.com/eXKZ1lS.jpeg"},
+      maxii:{name:"MAXII",role:"Spark",desc:"Relentless energy of the realm.",face:"https://crafatar.com/renders/head/55555555555555555555555555555555?overlay&default=MHF_Ender",img:"https://i.imgur.com/8Z1BOVM.jpeg"},
+      itstrueblood_:{name:"ItsTrueBlood_",role:"Warrior",desc:"Blood, honor, no wasted motion.",face:"https://crafatar.com/renders/head/66666666666666666666666666666666?overlay&default=MHF_Skeleton",img:"https://i.imgur.com/9p5aB5R.jpeg"},
       cleati:{name:"Cleati",role:"Silent Op",desc:"Calm before every storm.",face:"https://crafatar.com/renders/head/77777777777777777777777777777777?overlay&default=MHF_Creeper",img:"https://i.imgur.com/5gVjyP6.jpeg"},
-      endless_akku:{name:"ENDLESS_AKKU",role:"Wall",desc:"A wall of will — steady, unbreakable.",face:"https://crafatar.com/renders/head/88888888888888888888888888888888?overlay&default=MHF_Zombie",img:"https://i.imgur.com/J4Q5lLO.jpeg"},
-      team_feliz:{name:"Team Feliz",role:"Elite Squad",desc:"The original forge-born brothers.",face:"https://crafatar.com/renders/head/99999999999999999999999999999999?overlay&default=MHF_Steve",img:"https://i.imgur.com/8Z1BOVM.jpeg"},
-      team_xenon:{name:"Team Xenon",role:"Strike Unit",desc:"Fast, precise, unstoppable.",face:"https://crafatar.com/renders/head/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?overlay&default=MHF_Alex",img:"https://i.imgur.com/7nG8HDO.jpeg"}
+      endless_akku:{name:"ENDLESS_AKKU",role:"Wall",desc:"A wall of will — steady, unbreakable.",face:"https://crafatar.com/renders/head/88888888888888888888888888888888?overlay&default=MHF_Zombie",img:"https://i.imgur.com/J4Q5lLO.jpeg"}
     };
 
-    /* ---------- universe particles ---------- */
+    /* ---------- 3-D UNIVERSE ---------- */
     const univ=document.getElementById('universe');
-    for(let i=0;i<60;i++){
+    for(let i=0;i<70;i++){
       const c=document.createElement('div');c.className='cube';
-      c.style.left=Math.random()*100+'%';c.style.animationDelay=Math.random()*30+'s';univ.appendChild(c);
+      c.style.left=Math.random()*100+'%';c.style.animationDelay=Math.random()*35+'s';univ.appendChild(c);
     }
-    for(let i=0;i<40;i++){
+    for(let i=0;i<50;i++){
       const o=document.createElement('div');o.className='xp-orb';
-      o.style.left=Math.random()*100+'%';o.style.animationDelay=Math.random()*25+'s';univ.appendChild(o);
+      o.style.left=Math.random()*100+'%';o.style.animationDelay=Math.random()*28+'s';univ.appendChild(o);
     }
 
-    /* ---------- page nav ---------- */
+    /* ---------- PAGE NAVIGATION ---------- */
     let current=1;
     function toPage(n){
       scatterTransition(()=>{
         document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-        document.getElementById(['home','about','story','owner','founders','teamFeliz','teamXenon','realm','media','legacy'][n-1]).classList.add('active');
+        const pages=['home','about','server','owner','founders','members','teamFeliz','teamXenon','gallery','story'];
+        document.getElementById(pages[n-1]).classList.add('active');
         current=n;
-        if(n===3)typeStory();
+        if(n===10)typeStory();
       });
     }
+
+    /* ---------- PORTAL SCATTER TRANSITION ---------- */
     function scatterTransition(callback){
       const s=document.getElementById('scatter');
       s.innerHTML='';
       s.style.display='flex';
       const cols=Math.floor(window.innerWidth/12);
       const rows=Math.floor(window.innerHeight/12);
-      for(let i=0;i<cols*rows;i++){
-        const p=document.createElement('div');
-        p.className='pixel';
-        p.style.setProperty('--x',(Math.random()-0.5)*window.innerWidth+'px');
-        p.style.setProperty('--y',(Math.random()-0.5)*window.innerHeight+'px');
-        p.style.animationDelay=(Math.random()*0.5)+'s';
-        s.appendChild(p);
-      }
-      setTimeout(()=>{s.style.display='none';callback()},1000);
-    }
+      for(let i=0;i<cols*rows8)">Team Xenon</button>
+  </section>
 
-    /* ---------- story typing ---------- */
-    const storyLines=[
-      "[Chat] Fz_Jimbruz: A spark in the dark... we refuse to fade.",
-      "[Chat] Fz_Axe: Dust and redstone in our hands — we shape the storm.",
-      "[Chat] Fz_Smooth: First forge lit — chaos becomes brotherhood.",
-      "[Chat] System: ⭐ Realm Wars won — Citadel foundations placed.",
-      "[Chat] System: ⭐ Trials passed — Feliz forged in fire."
-    ];
-    function typeStory(){
-      const chat=document.getElementById('chat');
-      chat.innerHTML='';
-      storyLines.forEach((line,i)=>{
-        const div=document.createElement('div');
-        div.className='line';
-        div.textContent=line;
-        div.style.animationDelay=i*1.2+'s';
-        chat.appendChild(div);
-      });
-    }
+  <!-- TEAM XENON PAGE -->
+  <section class="page" id="teamXenon">
+    <h2 class="neon">Team Xenon</h2>
+    <div class="team-grid">
+      <div class="team-block" style="border-color:var(--pink)" onclick="showModal('maxii')">MAXII<br><small>Spark</small></div>
+      <div class="team-block" style="border-color:var(--blue)" onclick="showModal('itstrueblood_')">TrueBlood<br><small>Warrior</small></div>
+      <div class="team-block" style="border-color:var(--violet)" onclick="showModal('cleati')">Cleati<br><small>Silent Op</small></div>
+      <div class="team-block" style="border-color:var(--lime)" onclick="showModal('endless_akku')">ENDLESS<br><small>Wall</small></div>
+    </div>
+    <button class="btn" onclick="toPage(9)">Gallery</button>
+  </section>
 
-    /* ---------- modal member pop-up ----------.jpeg" alt="PvP Finals" onclick="openFull(this)">
+  <!-- GALLERY PAGE -->
+  <section class="page" id="gallery">
+    <h2 class="neon">Forged Frames</h2>
+    <div class="gallery">
+      <img src="https://i.imgur.com/J4Q5lLO.jpeg" alt="Castle Siege" onclick="openFull(this)">
+      <img src="https://i.imgur.com/9p5aB5R.jpeg" alt="Nether Battle" onclick="openFull(this)">
+      <img src="https://i.imgur.com/5gVjyP6.jpeg" alt="Forge Ceremony" onclick="openFull(this)">
+      <img src="https://i.imgur.com/7nG8HDO.jpeg" alt="PvP Finals" onclick="openFull(this)">
       <img src="https://i.imgur.com/eXKZ1lS.jpeg" alt="Base Tour" onclick="openFull(this)">
       <img src="https://i.imgur.com/8Z1BOVM.jpeg" alt="Citadel Dawn" onclick="openFull(this)">
     </div>
-    <button class="btn" onclick="toPage(10)">Enter the Legacy</button>
+    <button class="btn" onclick="toPage(10)">Read the Story</button>
   </section>
 
-  <!-- PAGE 10 LEGACY -->
-  <section class="page" id="legacy">
-    <div class="ring"></div>
-    <h1 class="glass-logo neon">FELIZ</h1>
-    <p style="margin-top:20px;font-size:1.2rem;opacity:.9">“Not just a server — a legacy.”</p>
-    <div style="margin-top:30px">
-      <a class="pixel-icon" href="https://discord.gg/8UXjesM3" target="_blank" title="Discord">💎</a>
-      <a class="pixel-icon" href="https://youtube.com/@FelizMC" target="_blank" title="YouTube">📀</a>
-      <a class="pixel-icon" href="https://twitch.tv/FelizMC" target="_blank" title="Twitch">🎮</a>
-    </div>
-    <button class="btn" onclick="toPage(1)" style="margin-top:40px">Back to Home</button>
+  <!-- STORY PAGE -->
+  <section class="page" id="story">
+    <h2 class="neon">The Saga</h2>
+    <div class="runes" id="storyLines"></div>
+    <button class="btn" onclick="toPage(1)">Back to Home</button>
   </section>
 
-  <!-- MEMBER MODAL (separate window) -->
+  <!-- MEMBER MODAL -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-card">
       <span class="modal-close" onclick="closeModal()">✖</span>
       <div id="modalContent"></div>
     </div>
-  </section>
+  </div>
 
   <!-- FULLSCREEN IMAGE VIEWER -->
-  <div class="book-overlay" id="fullOverlay" onclick="closeFull()">
+  <div class="modal-overlay" id="fullOverlay" onclick="closeFull()">
     <img id="fullImg" style="max-width:90%;max-height:90%;border:3px solid var(--cyan);border-radius:6px;box-shadow:var(--glow)">
   </div>
 
   <script>
     /* ---------- MEMBER DATA + IMAGES ---------- */
     const members={
-      fz_jimbruz:{
-        name:"Fz_Jimbruz",
-        role:"Owner",
-        desc:"The mind behind the forge. Leader of Feliz, turns sparks into storms.",
-        face:"https://crafatar.com/renders/head/853c80ef3c3749fdaa49938b674adae6?overlay",
-        img:"https://i.imgur.com/8Z1BOVM.jpeg"
-      },
-      fz_axe:{
-        name:"Fz_Axe",
-        role:"Founder",
-        desc:"The blade of Feliz. Calm, fierce, and unshakable.",
-        face:"https://crafatar.com/renders/head/00000000000000000000000000000000?overlay&default=MHF_Alex",
-        img:"https://i.imgur.com/9p5aB5R.jpeg"
-      },
-      fz_smooth:{
-        name:"Fz_Smooth",
-        role:"Founder",
-        desc:"Strategy and soul. Keeps the chaos sharp.",
-        face:"https://crafatar.com/renders/head/11111111111111111111111111111111?overlay&default=MHF_Steve",
-        img:"https://i.imgur.com/5gVjyP6.jpeg"
-      },
-      fz_kevin:{
-        name:"Fz_Kevin",
-        role:"Smith",
-        desc:"Forges power where others see iron.",
-        face:"https://crafatar.com/renders/head/22222222222222222222222222222222?overlay&default=MHF_Pig",
-        img:"https://i.imgur.com/J4Q5lLO.jpeg"
-      },
-      fz_kannan:{
-        name:"Fz_Kannan",
-        role:"Vanguard",
-        desc:"First into battle, last to fall.",
-        face:"https://crafatar.com/renders/head/33333333333333333333333333333333?overlay&default=MHF_Cactus",
-        img:"https://i.imgur.com/7nG8HDO.jpeg"
-      },
-      horizonxd12344:{
-        name:"HORIZONXD12344",
-        role:"Scout",
-        desc:"The horizon watcher. Quiet, focused, always one move ahead.",
-        face:"https://crafatar.com/renders/head/44444444444444444444444444444444?overlay&default=MHF_Golem",
-        img:"https://i.imgur.com/eXKZ1lS.jpeg"
-      },
-      maxii:{
-        name:"MAXII",
-        role:"Spark",
-        desc:"Relentless spark of the realm.",
-        face:"https://crafatar.com/renders/head/55555555555555555555555555555555?overlay&default=MHF_Ender",
-        img:"https://i.imgur.com/8Z1BOVM.jpeg"
-      },
-      itstrueblood_:{
-        name:"ItsTrueBlood_",
-        role:"Warrior",
-        desc:"Blood, honor, and no wasted motion.",
-        face:"https://crafatar.com/renders/head/66666666666666666666666666666666?overlay&default=MHF_Herobrine",
-        img:"https://i.imgur.com/9p5aB5R.jpeg"
-      },
-      cleati:{
-        name:"Cleati",
-        role:"Silent Op",
-        desc:"Calm before every storm.",
-        face:"https://crafatar.com/renders/head/77777777777777777777777777777777?overlay&default=MHF_Slime",
-        img:"https://i.imgur.com/5gVjyP6.jpeg"
-      },
-      endless_akku:{
-        name:"ENDLESS_AKKU",
-        role:"Wall",
-        desc:"A wall of will — steady, unbreakable.",
-        face:"https://crafatar.com/renders/head/88888888888888888888888888888888?overlay&default=MHF_Spider",
-        img:"https://i.imgur.com/J4Q5lLO.jpeg"
-      },
-      team_feliz:{
-        name:"Team Feliz",
-        role:"Elite Squad",
-        desc:"The original forge-born brothers.",
-        face:"https://crafatar.com/renders/head/ffffffffffffffffffffffffffffffff?overlay&default=MHF_Cactus",
-        img:"https://i.imgur.com/J4Q5lLO.jpeg"
-      },
-      team_xenon:{
-        name:"Team Xenon",
-        role:"Strike Unit",
-        desc:"Fast, precise, unstoppable.",
-        face:"https://crafatar.com/renders/head/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?overlay&default=MHF_Ender",
-        img:"https://i.imgur.com/7nG8HDO.jpeg"
-      }
+      fz_jimbruz:{name:"Fz_Jimbruz",role:"Owner",desc:"Visionary behind Feliz — the spark that keeps the world glowing.",face:"https://crafatar.com/renders/head/853c80ef3c3749fdaa49938b674adae6?overlay",img:"https://i.imgur.com/8Z1BOVM.jpeg"},
+      fz_axe:{name:"Fz_Axe",role:"Founder",desc:"The blade of Feliz. Calm, fierce, and unshakable.",face:"https://crafatar.com/renders/head/00000000000000000000000000000000?overlay&default=MHF_Alex",img:"https://i.imgur.com/9p5aB5R.jpeg"},
+      fz_smooth:{name:"Fz_Smooth",role:"Founder",desc:"Strategy and soul — keeps the chaos sharp.",face:"https://crafatar.com/renders/head/11111111111111111111111111111111?overlay&default=MHF_Steve",img:"https://i.imgur.com/5gVjyP6.jpeg"},
+      fz_kevin:{name:"Fz_Kevin",role:"Smith",desc:"Forges power where others see iron.",face:"https://crafatar.com/renders/head/22222222222222222222222222222222?overlay&default=MHF_Pig",img:"https://i.imgur.com/J4Q5lLO.jpeg"},
+      fz_kannan:{name:"Fz_Kannan",role:"Vanguard",desc:"First into battle, last to fall.",face:"https://crafatar.com/renders/head/33333333333333333333333333333333?overlay&default=MHF_Cactus",img:"https://i.imgur.com/7nG8HDO.jpeg"},
+      horizonxd12344:{name:"HORIZONXD12344",role:"Scout",desc:"The horizon watcher — quiet, focused, always ahead.",face:"https://crafatar.com/renders/head/44444444444444444444444444444444?overlay&default=MHF_Golem",img:"https://i.imgur.com/eXKZ1lS.jpeg"},
+      maxii:{name:"MAXII",role:"Spark",desc:"Relentless energy of the realm.",face:"https://crafatar.com/renders/head/55555555555555555555555555555555?overlay&default=MHF_Ender",img:"https://i.imgur.com/8Z1BOVM.jpeg"},
+      itstrueblood_:{name:"ItsTrueBlood_",role:"Warrior",desc:"Blood, honor, and no wasted motion.",face:"https://crafatar.com/renders/head/66666666666666666666666666666666?overlay&default=MHF_Skeleton",img:"https://i.imgur.com/9p5aB5R.jpeg"},
+      cleati:{name:"Cleati",role:"Silent Op",desc:"Calm before every storm.",face:"https://crafatar.com/renders/head/77777777777777777777777777777777?overlay&default=MHF_Creeper",img:"https://i.imgur.com/5gVjyP6.jpeg"},
+      endless_akku:{name:"ENDLESS_AKKU",role:"Wall",desc:"A wall of will — steady, unbreakable.",face:"https://crafatar.com/renders/head/88888888888888888888888888888888?overlay&default=MHF_Zombie",img:"https://i.imgur.com/J4Q5lLO.jpeg"},
+      team_feliz:{name:"Team Feliz",role:"Elite Squad",desc:"The original forge-born brothers.",face:"https://crafatar.com/renders/head/ffffffffffffffffffffffffffffffff?overlay&default=MHF_Steve",img:"https://i.imgur.com/J4Q5lLO.jpeg"},
+      team_xenon:{name:"Team Xenon",role:"Strike Unit",desc:"Fast, precise, unstoppable.",face:"https://crafatar.com/renders/head/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?overlay&default=MHF_Alex",img:"https://i.imgur.com/7nG8HDO.jpeg"}
     };
 
     /* ---------- universe particles ---------- */
     const univ=document.getElementById('universe');
-    for(let i=0;i<60;i++){
+    for(let i=0;i<70;i++){
       const c=document.createElement('div');c.className='cube';
       c.style.left=Math.random()*100+'%';c.style.animationDelay=Math.random()*30+'s';univ.appendChild(c);
     }
@@ -468,13 +424,11 @@
     function toPage(n){
       scatterTransition(()=>{
         document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-        document.getElementById(['home','about','story','owner','founders','teamFeliz','teamXenon','realm','media','legacy'][n-1]).classList.add('active');
+        document.getElementById(['home','about','server','owner','founders','members','teamFeliz','teamXenon','gallery','story'][n-1]).classList.add('active');
         current=n;
-        if(n===3)typeStory();
+        if(n===10)typeStory();
       });
     }
-
-    /* ---------- portal scatter transition ---------- */
     function scatterTransition(callback){
       const s=document.getElementById('scatter');
       s.innerHTML='';s.style.display='flex';
@@ -490,21 +444,21 @@
 
     /* ---------- story typing ---------- */
     const storyLines=[
-      "[Chat] Fz_Jimbruz: A spark in the dark... we refuse to fade.",
-      "[Chat] Fz_Axe: Dust and redstone in our hands — we shape the storm.",
-      "[Chat] Fz_Smooth: First forge lit — chaos becomes brotherhood.",
-      "[Chat] System: ⭐ Realm Wars won — Citadel foundations placed.",
-      "[Chat] System: ⭐ Trials passed — Feliz forged in fire."
+      "[Runes] Fz_Jimbruz: A spark in the dark... we refuse to fade.",
+      "[Runes] Fz_Axe: Dust and redstone in our hands — we shape the storm.",
+      "[Runes] Fz_Smooth: First forge lit — chaos becomes brotherhood.",
+      "[Runes] System: ⭐ Realm Wars won — Citadel foundations placed.",
+      "[Runes] System: ⭐ Trials passed — Feliz forged in neon fire."
     ];
     function typeStory(){
-      const chat=document.getElementById('chat');chat.innerHTML='';
+      const chat=document.getElementById('storyLines');chat.innerHTML='';
       storyLines.forEach((line,i)=>{
         const div=document.createElement('div');div.className='line';div.textContent=line;
         div.style.animationDelay=i*1.2+'s';chat.appendChild(div);
       });
     }
 
-    /* ---------- member modal ---------- */
+    /* ---------- modal member pop-up ---------- */
     function showModal(key){
       const m=members[key];
       document.getElementById('modalContent').innerHTML=`
