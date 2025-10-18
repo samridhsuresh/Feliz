@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -33,7 +33,8 @@
 
     /* PAGES (sections) */
     .pages{position:relative;min-height:100vh}
-    section.page{min-height:100vh;display:grid;place-items:center;padding:80px 24px;position:relative;overflow:hidden}
+    section.page{min-height:100vh;display:grid;place-items:center;padding:80px 24px;position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s}
+    section.page.active{opacity:1;pointer-events:auto}
     .page .content{max-width:1100px;width:100%;text-align:center}
     h1.title{font-family:'Press Start 2P',monospace;font-size:48px;margin:0;text-transform:uppercase;letter-spacing:4px}
     p.lead{opacity:0.9;margin:12px 0 24px}
@@ -91,7 +92,7 @@
     .dot.active{background:var(--accent1);box-shadow:0 6px 20px rgba(0,0,0,0.6)}
 
     /* small helper */
-    .muted{opacity:10;font-size:13px}
+    .muted{opacity:0.8;font-size:13px}
   </style>
 </head>
 <body>
@@ -117,7 +118,7 @@
       <div class="neon-field" id="neonField"></div>
 
       <!-- Page 1 - Home -->
-      <section class="page" data-index="1" data-accent="1">
+      <section class="page active" data-index="1" data-accent="1">
         <div class="content card" style="text-align:center">
           <h1 class="title">FELIZ</h1>
           <p class="lead">Where Legends are Forged. Neon Minecraft hub — immersive, clickable, and alive.</p>
@@ -275,6 +276,162 @@
       {id:'ItsTrueBlood_',name:'ItsTrueBlood_',role:'Team Xenon',desc:'Blood, honor, and no wasted motion.',accent:3},
       {id:'Cleati',name:'Cleati',role:'Team Xenon',desc:'Silent operator. Calm before every storm.',accent:5},
       {id:'ENDLESS_AKKU',name:'ENDLESS_AKKU',role:'Team Xenon',desc:'A wall of will — steady, unbreakable.',accent:1},
+      {id:'Fz_Samridh',name:'Fz_Samridh',role:'Member',desc:'Builder and rhythm keeper.',accent:2},
+      {id:'Fz_Rythem',name:'Fz_Rythem',role:'Member',desc:'Music and morale.',accent:3},
+      {id:'Fz_NqN',name:'Fz_NqN',role:'Member',desc:'Quiet coder and map maker.',accent:4},
+      {id:'Fz_Carl',name:'Fz_Carl',role:'Member',desc:'Steady hand and steady aim.',accent:5},
+      {id:'Fz_Mee',name:'Fz_Mee',role:'Member',desc:'The spark that keeps nights alive.',accent:1},
+      {id:'Fz_Akinator',name:'Fz_Akinator',role:'Member',desc:'Curious mind, knows a thing or two.',accent:2}
+    ];
+
+    const serverIP = 'in-blr-001.altr.cc:25442';
+    const discord = 'https://discord.gg/8UXjesM3';
+
+    // ---------- Helpers ----------
+    function $(s,root=document){return root.querySelector(s)}
+    function $all(s,root=document){return Array.from(root.querySelectorAll(s))}
+
+    // build dynamic grids
+    const membersGrid = $('#membersGrid');
+    const teamFelizGrid = $('#teamFelizGrid');
+    const teamXGrid = $('#teamXGrid');
+
+    function buildMemberCard(m){
+      const el = document.createElement('div');el.className='member';
+      el.innerHTML = `<div class="mname">${m.name}</div><div class="muted">${m.role}</div>`;
+      el.addEventListener('click',()=>openProfile(m.id));
+      return el;
+    }
+
+    members.forEach(m=>{
+      membersGrid.appendChild(buildMemberCard(m));
+      if(['Fz_Jimbruz','Fz_Axe','Fz_Smooth','Fz_Kannan','Fz_Kevin','Fz_Samridh','Fz_Rythem','Fz_NqN','Fz_Carl','Fz_Mee','Fz_Akinator'].includes(m.id)) teamFelizGrid.appendChild(buildMemberCard(m));
+    });
+    ['MAXII','ItsTrueBlood_','Cleati','ENDLESS_AKKU'].forEach(id=>{
+      const m = members.find(x=>x.id===id); if(m) teamXGrid.appendChild(buildMemberCard(m));
+    });
+
+    // gallery placeholder
+    const galleryGrid = $('#galleryGrid');
+    for(let i=1;i<=8;i++){
+      const g = document.createElement('div');g.className='member';g.innerHTML=`<div style="height:120px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:grid;place-items:center">Screenshot ${i}</div>`;
+      g.addEventListener('click',()=>alert('Open image viewer - replace with real screenshots'));
+      galleryGrid.appendChild(g);
+    }
+
+    // ---------- Page navigation ----------
+    const pages = $all('section.page');
+    const pager = $('#pager');
+    let currentPage = 1;
+
+    function showPage(n){
+      // portal scatter transition
+      scatterTransition(()=>{
+        pages.forEach((p,i)=>{
+          p.classList.toggle('active',i===n-1);
+          // set body accent to page's accent
+          document.documentElement.style.setProperty('--accent1', getComputedStyle(p).getPropertyValue('--accent1'));
+        });
+        currentPage = n;
+        // update active dot
+        $all('.dot').forEach((d,idx)=>d.classList.toggle('active',(idx===n-1)));
+      });
+    }
+    function scatterTransition(callback){
+      const s=document.createElement('div');
+      s.className='scatter';s.style.display='flex';
+      const cols=Math.floor(window.innerWidth/12),rows=Math.floor(window.innerHeight/12);
+      for(let i=0;i<cols*rows;i++){
+        const p=document.createElement('div');p.className='pixel';
+        p.style.setProperty('--x',(Math.random()-0.5)*window.innerWidth+'px');
+        p.style.setProperty('--y',(Math.random()-0.5)*window.innerHeight+'px');
+        p.style.animationDelay=(Math.random()*0.5)+'s';s.appendChild(p);
+      }
+      document.body.appendChild(s);
+      setTimeout(()=>{s.remove();callback()},1000);
+    }
+
+    // build pager dots
+    pages.forEach((p,i)=>{
+      const d = document.createElement('div');d.className='dot';d.title = p.dataset.index;
+      pager.appendChild(d);
+      d.addEventListener('click',()=>showPage(i+1));
+    });
+
+    // init show page 1
+    showPage(1);
+
+    // nav buttons
+    $all('nav button[data-page]').forEach(b=>b.addEventListener('click',e=>showPage(Number(e.currentTarget.dataset.page))));
+
+    // enter button
+    $('#enterBtn').addEventListener('click',()=>showPage(2));
+    $('#joinQuick').addEventListener('click',()=>{openProfile('__connect');});
+
+    // copy ip
+    function copyToClipboard(text){navigator.clipboard.writeText(text).then(()=>{flashMessage('Copied to clipboard')}).catch(()=>{flashMessage('Copy failed')})}
+    $('#copyIpBtn').addEventListener('click',()=>copyToClipboard(serverIP));
+    $('#copyIpBtn2').addEventListener('click',()=>copyToClipboard(serverIP));
+    $('#openDiscord').addEventListener('click',()=>window.open(discord,'_blank'));
+
+    // ---------- Modal / profile ----------
+    const modal = $('#modal');
+    const modalName = $('#modalName');
+    const modalRole = $('#modalRole');
+    const modalDesc = $('#modalDesc');
+    const modalAvatar = $('#modalAvatar');
+
+    function openProfile(id){
+      const m = members.find(x=>x.id===id); if(!m) return;
+      modalAvatar.textContent = m.name.split('_')[0];
+      modalName.textContent = m.name;
+      modalRole.textContent = m.role;
+      modalDesc.textContent = m.desc;
+      modal.style.display = 'flex';
+     ="btn ghost" id="openDiscord">Open Discord</button></div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;text-align:center;opacity:0.9">"Not just a server — a legacy."</div>
+        </div>
+      </section>
+
+    </main>
+
+    <div class="pager" id="pager"></div>
+
+    <!-- modal -->
+    <div class="modal-backdrop" id="modal">
+      <div class="modal card" role="dialog" aria-modal="true">
+        <button class="close" id="closeModal">✕</button>
+        <div class="avatar" id="modalAvatar">MC</div>
+        <div>
+          <h3 id="modalName">Name</h3>
+          <div id="modalRole" class="muted">Role</div>
+          <p id="modalDesc"></p>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn neon" id="modalVisit">Visit</button>
+            <button class="btn ghost" id="modalCopy">Copy Name</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ---------- Data ----------
+    const members = [
+      {id:'Fz_Jimbruz',name:'Fz_Jimbruz',role:'Owner',desc:'The mind behind the forge. Visionary and leader who turns sparks into storms.',accent:4},
+      {id:'Fz_Axe',name:'Fz_Axe',role:'Founder',desc:'The precision of the blade. Calm, fierce, and unshakable.',accent:4},
+      {id:'Fz_Smooth',name:'Fz_Smooth',role:'Founder',desc:'Strategy and soul. Keeps the chaos sharp and the team sharper.',accent:2},
+      {id:'Fz_Kevin',name:'Fz_Kevin',role:'Member',desc:'The smith. Forger of power and sharper instincts.',accent:1},
+      {id:'Fz_Kannan',name:'Fz_Kannan',role:'Member',desc:'The vanguard — first into battle, last to fall.',accent:3},
+      {id:'HORIZONXD12344',name:'HORIZONXD12344',role:'Member',desc:'The horizon watcher. Quiet, focused, always one move ahead.',accent:5},
+      {id:'MAXII',name:'MAXII',role:'Team Xenon',desc:'Relentless energy, the spark that never dies.',accent:2},
+      {id:'ItsTrueBlood_',name:'ItsTrueBlood_',role:'Team Xenon',desc:'Blood, honor, and no wasted motion.',accent:3},
+      {id:'Cleati',name:'Cleati',role:'Team Xenon',desc:'Silent operator. Calm before every storm.',accent:5},
+      {id:'ENDLESS_AKKU',name:'ENDLESS_AKKU',role:'Team Xenon',desc:'A wall of will — steady, unbreakable.',accent:1},
       // extra names from earlier context
       {id:'Fz_Samridh',name:'Fz_Samridh',role:'Member',desc:'Builder and rhythm keeper.',accent:2},
       {id:'Fz_Rythem',name:'Fz_Rythem',role:'Member',desc:'Music and morale.',accent:3},
@@ -287,7 +444,7 @@
     const teamFeliz = ['Fz_Jimbruz','Fz_Axe','Fz_Smooth','Fz_Kannan','Fz_Kevin','Fz_Samridh','Fz_Rythem','Fz_NqN','Fz_Carl','Fz_Mee','Fz_Akinator'];
     const teamX = ['MAXII','ItsTrueBlood_','Cleati','ENDLESS_AKKU'];
     const serverIP = 'in-blr-001.altr.cc:25442';
-    const discord = 'https://discord.gg/8UXjesM3';
+    const discord = 'https://discord.gg/8UXjesM3 ';
 
     // ---------- Helpers ----------
     function $(s,root=document){return root.querySelector(s)}
@@ -324,14 +481,10 @@
     // ---------- Page navigation ----------
     const pages = $all('section.page');
     const pager = $('#pager');
-    pages.forEach((p,i)=>{
-      const d = document.createElement('div');d.className='dot';d.title = p.dataset.index;pager.appendChild(d);
-      d.addEventListener('click',()=>showPage(i+1));
-    });
 
     function showPage(n){
-      pages.forEach(p=>p.style.opacity='0.02');
-      const sel = pages[n-1]; sel.style.opacity='1';
+      pages.forEach(p=>p.classList.remove('active'));
+      const sel = pages[n-1]; sel.classList.add('active');
       // set body accent to page's accent
       document.documentElement.style.setProperty('--accent1', getComputedStyle(sel).getPropertyValue('--accent1') || getComputedStyle(sel).getPropertyValue('--accent1'));
       // update active dot
@@ -380,7 +533,7 @@
       modalDesc.textContent = obj.desc||'';
       modal.style.display = 'flex';
     }
-    $('#closeModal').addEventListener('click',()=>{modal.style.display='none';showPage(1);});
+    $('#closeModal').addEventListener('click',()=>{modal.style.display='none';});
     modal.addEventListener('click',(e)=>{if(e.target===modal) modal.style.display='none';});
 
     $('#modalCopy').addEventListener('click',()=>copyToClipboard(modalName.textContent));
@@ -417,7 +570,7 @@
 
     // small accessibility: keyboard nav between pages
     document.addEventListener('keydown',e=>{
-      const idx = pages.findIndex(p=>p.style.opacity==='1');
+      const idx = pages.findIndex(p=>p.classList.contains('active'));
       if(e.key==='ArrowRight'){showPage(Math.min(pages.length,idx+2))}
       if(e.key==='ArrowLeft'){showPage(Math.max(1,idx))}
     });
