@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FELIZ  ×  XENON</title>
-  <meta name="description" content="Neon Minecraft hub — immersive, clickable, alive.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <title>FELIZ X XENON — Minecraft Server</title>
+  <meta name="description" content="Feliz Minecraft server — blocky, immersive." />
+  <link rel="preconnect" href="https://fonts.googleapis.com ">
+  <link rel="preconnect" href="https://fonts.gstatic.com " crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300 ;400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#000000;
+      --bg:#030308;
       --glass: rgba(255,255,255,0.04);
       --accent1: #00f0ff; /* cyan */
       --accent2: #ff48d1; /* magenta */
@@ -21,53 +21,53 @@
       --glass-border: rgba(255,255,255,0.06);
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Arial,sans-serif;overflow:hidden}
-    .app{min-height:100vh;display:flex;flex-direction:column;position:relative}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Arial,sans-serif}
+    .app{min-height:100vh;display:flex;flex-direction:column}
 
-    /* ---------- NAV (top-centre glass pill) ---------- */
+    /* NAV */
     header{position:fixed;left:0;right:0;top:14px;display:flex;align-items:center;justify-content:center;z-index:40;pointer-events:none}
     nav{display:flex;gap:10px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));backdrop-filter:blur(6px);padding:8px;border-radius:999px;pointer-events:auto;border:1px solid var(--glass-border)}
-    nav button{background:transparent;border:0;padding:10px 14px;color:var(--fg);font-weight:600;cursor:pointer;border-radius:10px;outline:none;transition:.2s}
-    nav button:hover{transform:translateY(-3px)}
+    nav button{background:transparent;border:0;padding:10px 14px;color:var(--fg);font-weight:600;cursor:pointer;border-radius:10px;outline:none}
+    nav button:hover{transform:translateY(-3px);}
     nav .logo{font-family:'Press Start 2P',monospace;font-size:14px;margin-right:6px}
 
-    /* ---------- PAGES (snap full-screen) ---------- */
-    .pages{position:relative;width:100%;height:100vh;scroll-snap-type:y mandatory;overflow-y:scroll}
-    section.page{width:100%;height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 24px;position:relative;scroll-snap-align:start}
-    .page .content{max-width:1100px;width:100%;text-align:center;z-index:10}
-    h1.title{font-family:'Press Start 2P',monospace;font-size:clamp(28px,5vw,48px);margin:0;text-transform:uppercase;letter-spacing:4px}
-    p.lead{opacity:0.9;margin:12px 0 24px;font-size:clamp(14px,2vw,18px)}
+    /* PAGES (sections) */
+    .pages{position:relative;min-height:100vh}
+    section.page{min-height:100vh;display:grid;place-items:center;padding:80px 24px;position:relative;overflow:hidden}
+    .page .content{max-width:1100px;width:100%;text-align:center}
+    h1.title{font-family:'Press Start 2P',monospace;font-size:48px;margin:0;text-transform:uppercase;letter-spacing:4px}
+    p.lead{opacity:0.9;margin:12px 0 24px}
 
-    /* ---------- FLOATING TUNNEL ---------- */
-    #tunnel{position:fixed;inset:0;z-index:0;perspective:1200px}
-    .cube{position:absolute;width:28px;height:28px;transform-style:preserve-3d;opacity:0.9;border-radius:4px}
+    /* FULLSCREEN BLOCKY NEON BACKGROUND */
+    .neon-field{position:absolute;inset:0;z-index:0;pointer-events:none}
+    .cube{position:absolute;width:28px;height:28px;transform-style:preserve-3d;opacity:0.9;border-radius:4px;box-shadow:0 2px 18px rgba(0,0,0,0.65)}
+    .cube::before,.cube::after{content:"";position:absolute;inset:0;border-radius:4px}
+    /* Use CSS variables for colors */
     .cube.c1{background:linear-gradient(135deg,var(--accent1),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(0,240,255,0.18),0 0 24px rgba(0,240,255,0.08)}
     .cube.c2{background:linear-gradient(135deg,var(--accent2),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(255,72,209,0.18),0 0 24px rgba(255,72,209,0.08)}
     .cube.c3{background:linear-gradient(135deg,var(--accent3),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(156,255,74,0.12),0 0 24px rgba(156,255,74,0.06)}
     .cube.c4{background:linear-gradient(135deg,var(--accent4),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(255,209,102,0.12),0 0 24px rgba(255,209,102,0.06)}
     .cube.c5{background:linear-gradient(135deg,var(--accent5),rgba(255,255,255,0.06));box-shadow:0 6px 30px rgba(181,140,255,0.12),0 0 24px rgba(181,140,255,0.06)}
 
-    @keyframes floaty{
-      0%{transform:translateZ(-3000px) translateY(var(--ty,0)) rotateX(var(--rx,0)) rotateY(var(--ry,0))}
-      100%{transform:translateZ(1000px) translateY(var(--ty,0)) rotateX(var(--rx,0)) rotateY(var(--ry,0))}
-    }
-    .cube{animation:floaty 20s linear infinite}
+    /* Animations */
+    @keyframes floaty{0%{transform:translate3d(var(--tx,0px),var(--ty,0px),0) rotate(var(--r,0deg))}50%{transform:translate3d(calc(var(--tx,0px) + 10px),calc(var(--ty,0px) - 12px),0) rotate(calc(var(--r,0deg) + 18deg))}100%{transform:translate3d(var(--tx,0px),var(--ty,0px),0) rotate(var(--r,0deg))}}
+    .cube{animation:floaty 6s ease-in-out infinite}
 
-    /* ---------- GLASS CARD ---------- */
-    .card{position:relative;background:var(--glass);border:1px solid var(--glass-border);padding:20px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 6px 40px rgba(0,0,0,0.6)}
+    /* GLASS CARD */
+    .card{position:relative;background:var(--glass);border:1px solid var(--glass-border);padding:20px;border-radius:14px;backdrop-filter: blur(6px);box-shadow:0 6px 40px rgba(0,0,0,0.6);z-index:10}
 
-    /* ---------- BUTTONS ---------- */
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;transition:.2s}
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
     .btn.ghost{background:transparent;color:var(--fg);border:1px solid rgba(255,255,255,0.05)}
     .btn.neon{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#04111a}
 
-    /* ---------- MEMBER GRID ---------- */
+    /* member grid */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-top:18px}
-    .member{padding:20px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:.18s}
+    .member{padding:20px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:transform .18s,box-shadow .18s}
     .member:hover{transform:translateY(-8px);box-shadow:0 10px 40px rgba(0,0,0,0.6)}
     .member .mname{font-family:'Press Start 2P',monospace;font-size:12px}
 
-    /* ---------- MODAL ---------- */
+    /* modal */
     .modal-backdrop{position:fixed;inset:0;background:linear-gradient(180deg,rgba(2,2,6,0.6),rgba(2,2,6,0.6));display:none;align-items:center;justify-content:center;z-index:60}
     .modal{width:min(980px,92vw);border-radius:16px;padding:22px;display:grid;grid-template-columns:120px 1fr;gap:20px}
     .avatar{width:110px;height:110px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace}
@@ -75,28 +75,30 @@
     .modal p{margin:6px 0 0}
     .close{position:absolute;right:18px;top:12px;background:transparent;border:0;color:var(--fg);font-weight:700;cursor:pointer}
 
-    /* ---------- PAGE ACCENT ---------- */
+    /* page-specific accent tint */
     section[data-accent="1"]{--accent1:#00f0ff}
     section[data-accent="2"]{--accent1:#ff48d1}
     section[data-accent="3"]{--accent1:#9cff4a}
     section[data-accent="4"]{--accent1:#ffd166}
     section[data-accent="5"]{--accent1:#b58cff}
 
-    /* ---------- DOT NAV (right) ---------- */
+    /* small screens */
+    @media (max-width:720px){h1.title{font-size:28px} .modal{grid-template-columns:1fr;align-items:center}}
+
+    /* page indicator */
     .pager{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:50}
-    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.03)}
     .dot.active{background:var(--accent1);box-shadow:0 6px 20px rgba(0,0,0,0.6)}
 
-    /* ---------- MISC ---------- */
+    /* small helper */
     .muted{opacity:0.8;font-size:13px}
-    @media (max-width:720px){.modal{grid-template-columns:1fr} h1.title{font-size:28px}}
   </style>
 </head>
 <body>
   <div class="app">
     <header>
       <nav>
-        <div class="logo">FELIZ  ×  XENON</div>
+        <div class="logo">FELIZ</div>
         <button data-page="1">Home</button>
         <button data-page="2">About</button>
         <button data-page="3">Story</button>
@@ -111,13 +113,14 @@
     </header>
 
     <main class="pages" id="pages">
-      <div id="tunnel"></div>
+      <!-- floating neon field container -->
+      <div class="neon-field" id="neonField"></div>
 
-      <!-- 1  HOME -->
+      <!-- Page 1 - Home -->
       <section class="page" data-index="1" data-accent="1">
-        <div class="content card">
-          <h1 class="title">FELIZ  ×  XENON</h1>
-          <p class="lead">Where Legends are Forged. Neon Minecraft hub — immersive, clickable, alive.</p>
+        <div class="content card" style="text-align:center">
+          <h1 class="title">FELIZ X XENON</h1>
+          <p class="lead">Where Legends are Forged. Minecraft hub — immersive, clickable, and alive.</p>
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
             <button class="btn neon" id="enterBtn">Enter the Realm</button>
             <button class="btn ghost" id="joinQuick">Join / Discord</button>
@@ -125,15 +128,24 @@
         </div>
       </section>
 
-      <!-- 2  ABOUT -->
+      <!-- Page 2 - About -->
       <section class="page" data-index="2" data-accent="2">
         <div class="content card">
           <h1 class="title">About Feliz</h1>
           <p class="lead">Feliz began as a spark between warriors who refused to fade. They built from dust and redstone, shaping chaos into brotherhood. Each member carves their name in obsidian and lights it by hand.</p>
         </div>
       </section>
+        <!-- ===== Page 3 - About Xenon ===== -->
+      <section class="page" data-index="3" data-accent="3">
+        <div class="content card">
+          <h1 class="title">About Xenon</h1>
+          <p class="lead">Xenon was forged in the same flash that lit Feliz—except they chose speed over stone, strike over shield. A silent wing that cuts across the realm, turning battles into stories before the echo fades.</p>
+          <p style="margin-top:12px;opacity:.8">Precision in motion. Lightning in loyalty. Xenon does not wait for the storm—they are the storm.</p>
+        </div>
+      </section>
+      
 
-      <!-- 3  STORY -->
+      <!-- Page 3 - Story -->
       <section class="page" data-index="3" data-accent="3">
         <div class="content card">
           <h1 class="title">The Story</h1>
@@ -146,7 +158,7 @@
         </div>
       </section>
 
-      <!-- 4  OWNER -->
+      <!-- Page 4 - Owner -->
       <section class="page" data-index="4" data-accent="4">
         <div class="content card">
           <h1 class="title">Owner</h1>
@@ -162,7 +174,7 @@
         </div>
       </section>
 
-      <!-- 5  FOUNDERS -->
+      <!-- Page 5 - Founders -->
       <section class="page" data-index="5" data-accent="5">
         <div class="content card" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="min-width:260px">
@@ -178,7 +190,7 @@
         </div>
       </section>
 
-      <!-- 6  MEMBERS -->
+      <!-- Page 6 - Members -->
       <section class="page" data-index="6" data-accent="1">
         <div class="content card">
           <h1 class="title">Members</h1>
@@ -187,7 +199,7 @@
         </div>
       </section>
 
-      <!-- 7  TEAM FELIZ -->
+      <!-- Page 7 - Team Feliz -->
       <section class="page" data-index="7" data-accent="2">
         <div class="content card">
           <h1 class="title">Team Feliz</h1>
@@ -196,7 +208,7 @@
         </div>
       </section>
 
-      <!-- 8  TEAM XENON -->
+      <!-- Page 8 - Team Xenon -->
       <section class="page" data-index="8" data-accent="3">
         <div class="content card">
           <h1 class="title">Team Xenon</h1>
@@ -205,16 +217,30 @@
         </div>
       </section>
 
-      <!-- 9  GALLERY -->
+      <!-- Page 9 - Gallery -->
       <section class="page" data-index="9" data-accent="4">
         <div class="content card">
           <h1 class="title">Gallery</h1>
           <p class="muted">Server screenshots and cinematic captures. Click to expand.</p>
           <div class="grid" id="galleryGrid" style="margin-top:18px"></div>
-        </div>
+            <div class="member">
+              <div style="height:120px;display:grid;place-items:center">
+                <img src="images/1.png" style="max-width:100%;max-height:100%;border-radius:8px"/>
+              </div>
+            </div>
+            <div class="member">
+              <div style="height:120px;display:grid;place-items:center">
+                <img src="images2.png" style="max-width:100%;max-height:100%;border-radius:8px"/>
+              </div>
+            </div>
+               <div class="member">
+                 <div style="height:120px;display:grid;place-items:center">
+                   <img src="images/3.png" style="max-width:100%;max-height:100%;border-radius:8px"/>
+                 </div>
+               </div>
       </section>
 
-      <!-- 10  REALM -->
+      <!-- Page 10 - Realm / Footer hub -->
       <section class="page" data-index="10" data-accent="5">
         <div class="content card">
           <h1 class="title">Realm Info</h1>
@@ -231,14 +257,16 @@
               <div style="margin-top:8px"><button class="btn ghost" id="openDiscord">Open Discord</button></div>
             </div>
           </div>
+
           <div style="margin-top:18px;text-align:center;opacity:0.9">"Not just a server — a legacy."</div>
         </div>
       </section>
+
     </main>
 
     <div class="pager" id="pager"></div>
 
-    <!-- ---------- MODAL ---------- -->
+    <!-- modal -->
     <div class="modal-backdrop" id="modal">
       <div class="modal card" role="dialog" aria-modal="true">
         <button class="close" id="closeModal">✕</button>
@@ -254,10 +282,11 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <script>
-    /* ---------- DATA ---------- */
+    // ---------- Data ----------
     const members = [
       {id:'Fz_Jimbruz', name:'Fz_Jimbruz', role:'Owner', desc:'The mind behind the forge. Visionary and leader who turns sparks into storms.', accent:4},
       {id:'Fz_Axe', name:'Fz_Axe', role:'Founder', desc:'The edge of calm, fierce, and unshakable.', accent:4},
@@ -267,9 +296,10 @@
       {id:'HORIZONXD12344', name:'HORIZONXD12344', role:'Team Xenon', desc:'Co-Owner of Xenon. Quiet, focused, always one move ahead.', accent:5},
       {id:'MAXII', name:'MAXII', role:'Team Xenon', desc:'Relentless energy, the spark that never dies.', accent:2},
       {id:'ItsTrueBlood_', name:'ItsTrueBlood_', role:'Team Xenon', desc:'Speed and no wasted motion.', accent:3},
-      {id:'Cleati1', name:'Cleati1', role:'Team Xenon', desc:'Silent operator. Calm before every storm.', accent:5},
+      {id:'Cleati', name:'Cleati', role:'Team Xenon', desc:'Silent operator. Calm before every storm.', accent:5},
       {id:'ENDLESS_AKKU', name:'ENDLESS_AKKU', role:'Team Xenon', desc:'A wall of will — steady, unbreakable.', accent:1},
-      {id:'SCOOBY_', name:'SCOOBY_', role:'Team Xenon', desc:'Silent tracker, never misses a trail.', accent:3},
+      {id:'SCOOBY_', name:'SCOOBY_', role:'Team Xenon', desc:'Silent tracker, never misses a trail.', accent:3 },
+
       {id:'Fz_Samridh', name:'Fz_HeckReborn', role:'Member', desc:'Builds and rhythm keeps balance.', accent:4},
       {id:'Fz_Momz', name:'Fz_Momz', role:'Member', desc:'BedRock Hero.', accent:3},
       {id:'Fz_Kuttan', name:'Fz_Kuttan', role:'Member', desc:'Always ready for the grind.', accent:4},
@@ -277,25 +307,28 @@
       {id:'Fz_Ripper', name:'Fz_Ripper', role:'Member', desc:'A blade through everything.', accent:1},
       {id:'Fz_Raihan', name:'Fz_Raihan', role:'Member', desc:'Curious mind, knows a thing or two.', accent:2}
     ];
-    const teamFeliz = ['Fz_Jimbruz','Fz_Axe','Fz_Smooth','Fz_Kannan','Fz_Kevin','Fz_HeckReborn','Fz_Momz','Fz_Kuttan','MasterEditzz','Fz_Ripper','Fz_Raihan'];
-    const teamX = ['MAXII','ItsTrueBlood_','Cleati1','ENDLESS_AKKU','SCOOBY_'];
-    const serverIP = 'in-blr-001.altr.cc:25442';
-    const discord = 'https://discord.gg/8UXjesM3';
 
-    /* ---------- HELPERS ---------- */
+    const teamFeliz = ['Fz_Jimbruz','Fz_Axe','Fz_Smooth','Fz_Kannan','Fz_Kevin','Fz_HeckReborn','Fz_Momz','Fz_Kuttan','MasterEditzz','Fz_Ripper','Fz_Raihan'];
+    const teamX = ['MAXII','ItsTrueBlood_','Cleati','ENDLESS_AKKU','SCOOBY_'];
+    const serverIP = 'in-blr-001.altr.cc:25442';
+    const discord = 'https://discord.gg/8UXjesM3 ';
+
+    // ---------- Helpers ----------
     function $(s,root=document){return root.querySelector(s)}
     function $all(s,root=document){return Array.from(root.querySelectorAll(s))}
 
-    /* ---------- BUILD GRIDS ---------- */
+    // build dynamic grids
     const membersGrid = $('#membersGrid');
     const teamFelizGrid = $('#teamFelizGrid');
     const teamXGrid = $('#teamXGrid');
+
     function buildMemberCard(m){
       const el = document.createElement('div');el.className='member';
       el.innerHTML = `<div class="mname">${m.name}</div><div class="muted">${m.role}</div>`;
       el.addEventListener('click',()=>openProfile(m.id));
       return el;
     }
+
     members.forEach(m=>{
       membersGrid.appendChild(buildMemberCard(m));
       if(teamFeliz.includes(m.id)) teamFelizGrid.appendChild(buildMemberCard(m));
@@ -304,183 +337,56 @@
       const m = members.find(x=>x.id===id); if(m) teamXGrid.appendChild(buildMemberCard(m));
     });
 
-    /* ---------- GALLERY PLACEHOLDER ---------- */
+    // gallery placeholder
     const galleryGrid = $('#galleryGrid');
     for(let i=1;i<=8;i++){
-      const g = document.createElement('div');g.className='member';
-      g.innerHTML=`<div style="height:120px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:grid;place-items:center">Screenshot ${i}</div>`;
+      const g = document.createElement('div');g.className='member';g.innerHTML=`<div style="height:120px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:grid;place-items:center">Screenshot ${i}</div>`;
       g.addEventListener('click',()=>alert('Open image viewer - replace with real screenshots'));
       galleryGrid.appendChild(g);
     }
 
-    /* ---------- NAV / DOTS ---------- */
+    // ---------- Page navigation ----------
     const pages = $all('section.page');
     const pager = $('#pager');
     pages.forEach((p,i)=>{
       const d = document.createElement('div');d.className='dot';d.title = p.dataset.index;pager.appendChild(d);
-      d.addEventListener('click',()=>pages[i].scrollIntoView({behavior:'smooth'}));
-    });
-    function updateDots(){
-      const idx = Math.round($('#pages').scrollTop / window.innerHeight);
-      $all('.dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
-    }
-    $('#pages').addEventListener('scroll',updateDots); updateDots();
-
-    $all('nav button[data-page]').forEach(b=>b.addEventListener('click',e=>{
-      pages[Number(e.currentTarget.dataset.page)-1].scrollIntoView({behavior:'smooth'});
-    }));
-
-    /* ---------- COPY / MODAL ---------- */
-    function copyToClipboard(text){
-      navigator.clipboard.writeText(text).then(()=>flashMessage('Copied')).catch(()=>flashMessage('Failed'));
-    }
-    $('#copyIpBtn').addEventListener('click',()=>copyToClipboard(serverIP));
-    $('#copyIpBtn2').addEventListener('click',()=>copyToClipboard(serverIP));
-    $('#openDiscord').addEventListener('click',()=>window.open(discord,'_blank'));
-    $('#enterBtn').addEventListener('click',()=>pages[1].scrollIntoView({behavior:'smooth'}));
-    $('#joinQuick').addEventListener('click',()=>{
-      copyToClipboard(serverIP); window.open(discord,'_blank');
-    });
-
-    const modal = $('#modal');
-    function openProfile(id){
-      const m = members.find(x=>x.id===id); if(!m) return;
-      $('#modalAvatar').textContent = m.name.split('_')[0];
-      $('#modalName').textContent = m.name;
-      $('#modalRole').textContent = m.role;
-      $('#modalDesc').textContent = m.desc;
-      modal.style.display = 'flex';
-    }
-    $('#closeModal').addEventListener('click',()=>modal.style.display='none');
-    modal.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
-    $('#modalCopy').addEventListener('click',()=>copyToClipboard($('#modalName').textContent));
-    $('#modalVisit').addEventListener('click',()=>{alert('In-game visit placeholder for '+$('#modalName').textContent)});
-
-    /* ---------- TUNNEL ---------- */
-    const tunnel = $('#tunnel');
-    const colors = ['c1','c2','c3','c4','c5'];
-    for(let i=0;i<120;i++){
-      const c = document.createElement('div'); c.className = 'cube ' + colors[i%colors.length];
-      c.style.left = Math.random()*100+'%';
-      c.style.top  = Math.random()*100+'%';
-      c.style.setProperty('--ty', (Math.random()*400-200)+'px');
-      c.style.setProperty('--rx', Math.random()*360+'deg');
-      c.style.setProperty('--ry', Math.random()*360+'deg');
-      c.style.animationDelay = Math.random()*20+'s';
-      c.style.animationDuration = (18+Math.random()*8)+'s';
-      tunnel.appendChild(c);
-    }
-
-    /* ---------- FLASH MESSAGE ---------- id="modal">
-      <div class="modal card" role="dialog" aria-modal="true">
-        <button class="close" id="closeModal">✕</button>
-        <div class="avatar" id="modalAvatar">MC</div>
-        <div>
-          <h3 id="modalName">Name</h3>
-          <div id="modalRole" class="muted">Role</div>
-          <p id="modalDesc"></p>
-          <div style="margin-top:12px;display:flex;gap:8px">
-            <button class="btn neon" id="modalVisit">Visit</button>
-            <button class="btn ghost" id="modalCopy">Copy Name</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    /* ---------- DATA ---------- */
-    const members = [
-      {id:'Fz_Jimbruz', name:'Fz_Jimbruz', role:'Owner', desc:'The mind behind the forge. Visionary and leader who turns sparks into storms.', accent:4},
-      {id:'Fz_Axe', name:'Fz_Axe', role:'Founder', desc:'The edge of calm, fierce, and unshakable.', accent:4},
-      {id:'Fz_Smooth', name:'Fz_Smooth', role:'Founder', desc:'Strategy and soul. Keeps the chaos sharp and the team sharper.', accent:2},
-      {id:'Fz_Kevin', name:'Fz_Kevin', role:'Member', desc:'Quiet drive and sharper instincts.', accent:1},
-      {id:'Fz_Kannan', name:'Fz_Kannan', role:'Member', desc:'The vanguard — first into battle, last to fall.', accent:3},
-      {id:'HORIZONXD12344', name:'HORIZONXD12344', role:'Team Xenon', desc:'Co-Owner of Xenon. Quiet, focused, always one move ahead.', accent:5},
-      {id:'MAXII', name:'MAXII', role:'Team Xenon', desc:'Relentless energy, the spark that never dies.', accent:2},
-      {id:'ItsTrueBlood_', name:'ItsTrueBlood_', role:'Team Xenon', desc:'Speed and no wasted motion.', accent:3},
-      {id:'Cleati1', name:'Cleati1', role:'Team Xenon', desc:'Silent operator. Calm before every storm.', accent:5},
-      {id:'ENDLESS_AKKU', name:'ENDLESS_AKKU', role:'Team Xenon', desc:'A wall of will — steady, unshakable.', accent:1},
-      {id:'SCOOBY_', name:'SCOOBY_', role:'Team Xenon', desc:'Silent tracker, never misses a trail.', accent:3},
-      {id:'Fz_Samridh', name:'Fz_Samridh', role:'Member', desc:'Builds and rhythm keeps balance.', accent:4},
-      {id:'Fz_Momz', name:'Fz_Momz', role:'Member', desc:'BedRock Hero.', accent:3},
-      {id:'Fz_Kuttan', name:'Fz_Kuttan', role:'Member', desc:'Always ready for the grind.', accent:4},
-      {id:'MasterEditzz', name:'MasterEditzz', role:'Member', desc:'Steady hand and the Developer.', accent:5},
-      {id:'Fz_Ripper', name:'Fz_Ripper', role:'Member', desc:'A blade through everything.', accent:1},
-      {id:'Fz_Raihan', name:'Fz_Raihan', role:'Member', desc:'Curious mind, knows a thing or two.', accent:2}
-    ];
-    const teamFeliz = ['Fz_Jimbruz','Fz_Axe','Fz_Smooth','Fz_Kannan','Fz_Kevin','Fz_Samridh','Fz_Momz','Fz_Kuttan','MasterEditzz','Fz_Ripper','Fz_Raihan'];
-    const teamX = ['MAXII','ItsTrueBlood_','Cleati1','ENDLESS_AKKU','SCOOBY_'];
-    const serverIP = 'in-blr-001.altr.cc:25442';
-    const discord = 'https://discord.gg/8UXjesM3';
-
-    /* ---------- HELPERS ---------- */
-    const $ = (s,root=document)=>root.querySelector(s);
-    const $all = (s,root=document)=>Array.from(root.querySelectorAll(s));
-
-    /* ---------- BUILD GRIDS ---------- */
-    const membersGrid = $('#membersGrid');
-    const teamFelizGrid = $('#teamFelizGrid');
-    const teamXGrid = $('#teamXGrid');
-    function buildMemberCard(m){
-      const el = document.createElement('div');el.className='member';
-      el.innerHTML = `<div class="mname">${m.name}</div><div class="muted">${m.role}</div>`;
-      el.addEventListener('click',()=>openProfile(m.id));
-      return el;
-    }
-    members.forEach(m=>{
-      membersGrid.appendChild(buildMemberCard(m));
-      if(teamFeliz.includes(m.id)) teamFelizGrid.appendChild(buildMemberCard(m));
-    });
-    teamX.forEach(id=>{
-      const m = members.find(x=>x.id===id); if(m) teamXGrid.appendChild(buildMemberCard(m));
-    });
-
-    /* ---------- GALLERY PLACEHOLDER ---------- */
-    const galleryGrid = $('#galleryGrid');
-    for(let i=1;i<=8;i++){
-      const g = document.createElement('div');g.className='member';
-      g.innerHTML=`<div style="height:120px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:grid;place-items:center">Screenshot ${i}</div>`;
-      g.addEventListener('click',()=>alert('Open image viewer - replace with real screenshots'));
-      galleryGrid.appendChild(g);
-    }
-
-    /* ---------- NAVIGATION ---------- */
-    const pages = $all('section.page');
-    const pager = $('#pager');
-    pages.forEach((p,i)=>{
-      const d = document.createElement('div');d.className='dot';d.title = p.dataset.index;
       d.addEventListener('click',()=>showPage(i+1));
-      pager.appendChild(d);
     });
+
     function showPage(n){
-      pages.forEach(p=>p.style.opacity='0');
-      pages[n-1].style.opacity='1';
-      $all('.dot').forEach((dot,idx)=>dot.classList.toggle('active',idx===n-1));
+      pages.forEach(p=>p.style.opacity='1');
+      const sel = pages[n-1]; sel.style.opacity='1';
+      // set body accent to page's accent
+      document.documentElement.style.setProperty('--accent1', getComputedStyle(sel).getPropertyValue('--accent1') || getComputedStyle(sel).getPropertyValue('--accent1'));
+      // update active dot
+      $all('.dot').forEach((d,idx)=>d.classList.toggle('active',(idx===n-1)));
+      // ensure focus
       window.scrollTo({top:0,behavior:'smooth'});
     }
-    showPage(1);
-    $all('nav button[data-page]').forEach(b=>b.addEventListener('click',e=>showPage(Number(e.currentTarget.dataset.page))));
 
-    /* ---------- ACTIONS ---------- */
+    // init show page 1
+    showPage(1);
+
+    // nav buttons
+    $all('nav button[data-page]').forEach(b=>b.addEventListener('click',e=>showPage(Number(e.currentTarget.dataset.page))))
+
+    // enter button scrolls to about
     $('#enterBtn').addEventListener('click',()=>showPage(2));
-    $('#joinQuick').addEventListener('click',()=>showModalManual({name:'Connect',role:'Server',desc:`IP: ${serverIP}\nDiscord: ${discord}`,id:'__connect'}));
+    $('#joinQuick').addEventListener('click',()=>{showModalManual({name:'Connect',role:'Server',desc:`IP: ${serverIP}\nDiscord: ${discord}`,id:'__connect'});});
+
+    // copy ip
+    function copyToClipboard(text){navigator.clipboard.writeText(text).then(()=>{flashMessage('Copied to clipboard')}).catch(()=>{flashMessage('Copy failed')})}
     $('#copyIpBtn').addEventListener('click',()=>copyToClipboard(serverIP));
     $('#copyIpBtn2').addEventListener('click',()=>copyToClipboard(serverIP));
     $('#openDiscord').addEventListener('click',()=>window.open(discord,'_blank'));
 
-    function copyToClipboard(text){
-      navigator.clipboard.writeText(text)
-      .then(()=>flashMessage('Copied to clipboard'))
-      .catch(()=>flashMessage('Copy failed'));
-    }
-
-    /* ---------- MODAL ---------- */
+    // ---------- Modal / profile ----------
     const modal = $('#modal');
     const modalName = $('#modalName');
     const modalRole = $('#modalRole');
     const modalDesc = $('#modalDesc');
     const modalAvatar = $('#modalAvatar');
+
     function openProfile(id){
       const m = members.find(x=>x.id===id); if(!m) return;
       modalAvatar.textContent = m.name.split('_')[0];
@@ -488,6 +394,8 @@
       modalRole.textContent = m.role;
       modalDesc.textContent = m.desc;
       modal.style.display = 'flex';
+      // tint neon to their accent while modal open
+      document.documentElement.style.setProperty('--accent1', getAccentHex(m.accent));
     }
     function showModalManual(obj){
       modalAvatar.textContent = obj.name||obj.id||'MC';
@@ -496,39 +404,48 @@
       modalDesc.textContent = obj.desc||'';
       modal.style.display = 'flex';
     }
-    $('#closeModal').addEventListener('click',()=>{modal.style.display='none'; showPage(1);});
+    $('#closeModal').addEventListener('click',()=>{modal.style.display='none';showPage(1);});
     modal.addEventListener('click',(e)=>{if(e.target===modal) modal.style.display='none';});
+
     $('#modalCopy').addEventListener('click',()=>copyToClipboard(modalName.textContent));
-    $('#modalVisit').addEventListener('click',()=>{
-      if(modalName.textContent==='Connect'){copyToClipboard(serverIP); window.open(discord,'_blank');}
-      else{alert('In-game visit placeholder for '+modalName.textContent);}
+    $('#modalVisit').addEventListener('click',()=>{if(modalName.textContent==='Connect'){copyToClipboard(serverIP);window.open(discord,'_blank')}else{alert('In-game visit placeholder for '+modalName.textContent)}});
+
+    // ---------- neon field generation ----------
+    const neonField = $('#neonField');
+    const colors = ['c1','c2','c3','c4','c5'];
+    for(let i=0;i<100;i++){
+     const cube = document.createElement('div');cube.className='cube '+colors[i%colors.length];
+     const left = Math.random()*100; const top = Math.random()*100; const size = 20 + Math.random()*36;
+     cube.style.width = cube.style.height = size+'px';
+     cube.style.left = left+'%'; cube.style.top = top+'%';
+     cube.style.opacity = 0.45 + Math.random()*0.6;
+     cube.style.setProperty('--tx','0px'); cube.style.setProperty('--ty','0px'); cube.style.setProperty('--r', (Math.random()*40-20)+'deg');
+     cube.style.animationDuration = (6 + Math.random()*8)+'s';
+     neonField.appendChild(cube);
+   }
+
+    // mouse parallax
+    document.addEventListener('mousemove',(e)=>{
+      const x = (e.clientX - innerWidth/2)/innerWidth*30;
+      const y = (e.clientY - innerHeight/2)/innerHeight*30;
+      $all('.cube').forEach((c,idx)=>{
+        const depth = (idx%6)/6 + 0.2; c.style.transform = `translate3d(${x*depth}px,${y*depth}px,0)`;
+      });
     });
 
-    /* ---------- TUNNEL ---------- */
-    const tunnel = $('#tunnel');
-    for(let i=0;i<60;i++){
-      const ring = document.createElement('div');
-      ring.className='ring';
-      ring.style.setProperty('--i',i);
-      tunnel.appendChild(ring);
+    // flash message
+    function flashMessage(t){
+      const el = document.createElement('div');el.textContent=t;el.style.position='fixed';el.style.left='50%';el.style.bottom='40px';el.style.transform='translateX(-50%)';el.style.background='rgba(0,0,0,0.6)';el.style.padding='8px 12px';el.style.borderRadius='8px';el.style.zIndex='120';document.body.appendChild(el);
+      setTimeout(()=>el.style.opacity='0',1200);setTimeout(()=>el.remove(),2000);
     }
 
-    /* ---------- KEYBOARD ---------- */
+    // small accessibility: keyboard nav between pages
     document.addEventListener('keydown',e=>{
       const idx = pages.findIndex(p=>p.style.opacity==='1');
-      if(e.key==='ArrowRight') showPage(Math.min(10,idx+2));
-      if(e.key==='ArrowLeft')  showPage(Math.max(1,idx));
+      if(e.key==='ArrowRight'){showPage(Math.min(pages.length,idx+2))}
+      if(e.key==='ArrowLeft'){showPage(Math.max(1,idx))}
     });
 
-    /* ---------- FLASH MESSAGE ---------- */
-    function flashMessage(t){
-      const el = document.createElement('div');
-      el.textContent=t;
-      el.style.cssText='position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.6);padding:8px 12px;border-radius:8px;z-index:120';
-      document.body.appendChild(el);
-      setTimeout(()=>el.style.opacity='0',1200);
-      setTimeout(()=>el.remove(),2000);
-    }
   </script>
 </body>
 </html>
