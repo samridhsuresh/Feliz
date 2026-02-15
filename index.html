@@ -395,51 +395,8 @@
             observer.observe(el);
         });
     </script>
-    <div class="modal-overlay" id="profileModal">
-        <div class="member-modal">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div class="modal-avatar-container" id="modalImg"></div>
-            <h2 class="modal-name" id="modalName"></h2>
-            <span class="modal-role" id="modalRole"></span>
-            <p class="modal-desc" id="modalDesc"></p>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="tilt.js"></script>
-
-    <script>
-        // Modal Logic
-        const modal = document.getElementById('profileModal');
-        const modalName = document.getElementById('modalName');
-        const modalRole = document.getElementById('modalRole');
-        const modalDesc = document.getElementById('modalDesc');
-        const modalImg = document.getElementById('modalImg');
-
-        document.querySelectorAll('.member-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const name = card.querySelector('h3').innerText;
-                const role = card.querySelector('.role').innerText;
-                const desc = card.querySelector('.intro') ? card.querySelector('.intro').innerText : '';
-                const avatar = card.querySelector('.member-avatar').innerHTML;
-
-                modalName.innerText = name;
-                modalRole.innerText = role;
-                modalDesc.innerText = desc;
-                modalImg.innerHTML = avatar;
-
-                modal.classList.add('active');
-            });
-        });
-
-        function closeModal() {
-            modal.classList.remove('active');
-        }
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-    </script>
 </body>
 
 </html>
