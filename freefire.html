@@ -37,7 +37,7 @@
                 <a href="index.html" class="nav-item">Home</a>
                 <a href="index.html#team" class="nav-item">Team</a>
                 <a href="#" class="nav-item special active">Free Fire</a>
-                <a href="index.html#discord" class="cta-button">Join Discord</a>
+                <a href="https://discord.gg/tRVzM3FGtX" class="cta-button">Join Discord</a>
             </div>
 
             <button class="mobile-menu-btn" aria-label="Toggle menu">
@@ -163,6 +163,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="tilt.js"></script>
 
     <script>
         // Animations setup
@@ -205,25 +206,26 @@
             btn.disabled = true;
             btn.innerText = "Sending...";
 
-            // Simulating send for demo purposes if EmailJS quota is hit or key is invalid, 
-            // but keeping the real call as primary.
-            emailjs.send("service_3a869wj", "template_bco6d9k", {
-                email: form.email.value,
-                name: form.name.value,
-                uid: form.uid.value,
-                rank: form.rank.value,
-                age: form.age.value,
-                reason: form.reason.value,
-                date: new Date().toLocaleString()
-            }).then(() => {
-                showSuccess();
-            }).catch(err => {
-                // Fallback for demo or error
-                console.error(err);
-                result.innerHTML = `<div class="notice error" style="color: #ff5555; background: rgba(255,85,85,0.1); padding: 10px; border-radius: 8px;">❌ Sending Failed. Please contact us on Discord.</div>`;
-                btn.disabled = false;
-                btn.innerText = "Send Application";
-            });
+            const formData = new FormData(form);
+
+            fetch("https://formsubmit.co/ajax/samridhsuresh@gmail.com", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            })
+                .then(response => response.json())
+                .then(data => {
+                    showSuccess();
+                })
+                .catch(error => {
+                    console.error(error);
+                    result.innerHTML = `<div class="notice error" style="color: #ff5555; background: rgba(255,85,85,0.1); padding: 10px; border-radius: 8px;">❌ Sending Failed. Please contact us on Discord.</div>`;
+                    btn.disabled = false;
+                    btn.innerText = "Send Application";
+                });
         });
 
         function showSuccess() {
