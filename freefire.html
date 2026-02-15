@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Feliz • Free Fire Guild</title>
+    <meta name="description" content="Apply to join the Team Feliz Free Fire Guild. Fight with the best.">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/sQj4lYI.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Background Animation -->
+    <div class="fixed-bg" aria-hidden="true"></div>
+    <div class="overlay" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="container nav-container">
+            <a href="index.html" class="brand">
+                <img src="https://i.imgur.com/sQj4lYI.png" alt="Team Feliz Logo" class="logo-img">
+                <span class="brand-text">Team Feliz</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="index.html#team" class="nav-item">Team</a>
+                <a href="#" class="nav-item special active">Free Fire</a>
+                <a href="index.html#discord" class="cta-button">Join Discord</a>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="hero-section" style="min-height: 60vh; padding-top: 120px;">
+        <div class="container hero-content center-text">
+            <span class="badge">Official Guild</span>
+            <h1 class="hero-title animate-on-scroll">Feliz <span class="gradient-text">Free Fire</span></h1>
+            <p class="hero-subtitle animate-on-scroll">Join the elite. Prove your worth. Conquer the battlefield.</p>
+        </div>
+    </section>
+
+    <!-- Application Form Section -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="split-layout">
+
+                <!-- Guidelines / Leaders -->
+                <div class="info-side animate-on-scroll">
+                    <div class="glass-card" style="padding: 40px;">
+                        <h3>Guild Leaders</h3>
+                        <p class="text-muted" style="margin-bottom: 24px;">Connect with our leadership for inquiries.
+                        </p>
+
+                        <div class="leader-row" style="margin-bottom: 20px;">
+                            <div class="leader-info">
+                                <strong style="color: var(--primary); font-size: 1.1rem;">TheOneChachuz</strong>
+                                <span style="display:block; font-size: 0.9rem; color: var(--text-muted)">Guild
+                                    Leader</span>
+                            </div>
+                            <a href="https://instagram.com/_samridh_chachu_z_" target="_blank"
+                                class="social-link">Instagram ↗</a>
+                        </div>
+
+                        <div class="leader-row">
+                            <div class="leader-info">
+                                <strong style="color: var(--primary); font-size: 1.1rem;">Chachuz</strong>
+                                <span
+                                    style="display:block; font-size: 0.9rem; color: var(--text-muted)">Coordinator</span>
+                            </div>
+                            <a href="https://instagram.com/_samridh_chachu_z_" target="_blank"
+                                class="social-link">Instagram ↗</a>
+                        </div>
+                    </div>
+
+                    <div class="glass-card"
+                        style="padding: 30px; margin-top: 24px; background: rgba(245, 180, 0, 0.05); border-color: rgba(245, 180, 0, 0.2);">
+                        <h4>Requirements</h4>
+                        <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-muted); line-height: 1.8;">
+                            <li>Active Daily Player</li>
+                            <li>Minimum Level 50+</li>
+                            <li>Respect for teammates</li>
+                            <li>Discord participation required</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="form-side animate-on-scroll">
+                    <div class="glass-card form-card">
+                        <h2>Application Form</h2>
+                        <p class="text-muted" style="margin-bottom: 24px;">Submit your details. We will reply via Email.
+                        </p>
+
+                        <form id="appForm">
+                            <div class="form-group">
+                                <label>Your Email</label>
+                                <input name="email" type="email" placeholder="Enter your Email" required
+                                    class="glass-input">
+                            </div>
+
+                            <div class="form-group-row">
+                                <div class="form-group">
+                                    <label>In-Game Name (IGN)</label>
+                                    <input name="name" placeholder="Your IGN" required class="glass-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Free Fire UID</label>
+                                    <input name="uid" placeholder="123456789" required class="glass-input">
+                                </div>
+                            </div>
+
+                            <div class="form-group-row">
+                                <div class="form-group">
+                                    <label>Rank / KD</label>
+                                    <input name="rank" placeholder="Diamond II / 2.4 KD" class="glass-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age</label>
+                                    <input name="age" type="number" min="10" placeholder="Your age" class="glass-input">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Why should we accept you?</label>
+                                <textarea name="reason" placeholder="Experience / gameplay strengths / team skills"
+                                    required class="glass-input textarea"></textarea>
+                            </div>
+
+                            <button type="submit" class="cta-button full-width" id="sendBtn">Send Application</button>
+                            <div id="result" style="margin-top: 16px;"></div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> Team Feliz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+    <script>
+        // Animations setup
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('isVisible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.animate-on-scroll').forEach((el) => { observer.observe(el); });
+
+        // Update Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Navbar Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.glass-nav');
+            window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+        });
+
+        // Mobile Menu
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuBtn.classList.toggle('open');
+        });
+
+        // EmailJS Implementation
+        emailjs.init("XgFau5KpXN1mzWKsW");
+        const form = document.getElementById("appForm");
+        const result = document.getElementById("result");
+        const btn = document.getElementById("sendBtn");
+
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerText = "Sending...";
+
+            // Simulating send for demo purposes if EmailJS quota is hit or key is invalid, 
+            // but keeping the real call as primary.
+            emailjs.send("service_3a869wj", "template_bco6d9k", {
+                email: form.email.value,
+                name: form.name.value,
+                uid: form.uid.value,
+                rank: form.rank.value,
+                age: form.age.value,
+                reason: form.reason.value,
+                date: new Date().toLocaleString()
+            }).then(() => {
+                showSuccess();
+            }).catch(err => {
+                // Fallback for demo or error
+                console.error(err);
+                result.innerHTML = `<div class="notice error" style="color: #ff5555; background: rgba(255,85,85,0.1); padding: 10px; border-radius: 8px;">❌ Sending Failed. Please contact us on Discord.</div>`;
+                btn.disabled = false;
+                btn.innerText = "Send Application";
+            });
+        });
+
+        function showSuccess() {
+            result.innerHTML = `<div class="notice success" style="color: #4ade80; background: rgba(74, 222, 128, 0.1); padding: 10px; border-radius: 8px;">🎉 Application Sent! We will reply to your Email.</div>`;
+            btn.disabled = false;
+            btn.innerText = "Send Another";
+            form.reset();
+
+            // Celebration
+            confetti({ particleCount: 250, spread: 80, origin: { y: 0.65 }, colors: ['#f5b400', '#ffffff', '#ffdd66'] });
+            setTimeout(() => confetti({ particleCount: 200, spread: 100, colors: ['#f5b400', '#ffffff'] }), 500);
+        }
+    </script>
+</body>
+
+</html>
