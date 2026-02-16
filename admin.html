@@ -1,1 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Feliz • Admin Panel</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/sQj4lYI.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Background Animation -->
+    <div class="fixed-bg" aria-hidden="true"></div>
+    <div class="overlay" aria-hidden="true"></div>
+
+    <!-- Login Overlay -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="glass-card auth-card">
+            <h2>Admin Login</h2>
+            <p class="text-muted">Enter passkey to access.</p>
+            <input type="password" id="passkey" class="glass-input" placeholder="Enter Passkey" style="margin: 20px 0;">
+            <button class="cta-button full-width" onclick="checkAuth()">Access</button>
+            <p id="authError" style="color: #ff5555; display: none; margin-top: 10px;">Access Denied</p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-container" id="adminDashboard" style="display: none;">
+
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="brand">
+                <img src="https://i.imgur.com/sQj4lYI.png" alt="Logo" width="40">
+                <span>Feliz Admin</span>
+            </div>
+            <a href="index.html" class="nav-item">Back to Site</a>
+        </header>
+
+        <div class="admin-grid">
+
+            <!-- Left: Profile Form -->
+            <div class="admin-panel glass-card">
+                <h3>Create New Profile</h3>
+                <p class="text-muted" style="margin-bottom: 24px;">Enter details to generate code.</p>
+
+                <div class="form-group">
+                    <label>Member Name</label>
+                    <input type="text" id="mName" class="glass-input" placeholder="e.g. DarkKnight"
+                        oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="mRole" class="glass-input" onchange="updatePreview()">
+                        <option value="Elite Member">Elite Member</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Coordinator">Coordinator</option>
+                        <option value="Developer">Developer</option>
+                        <option value="Founder">Founder</option>
+                        <option value="Leader">Leader</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Introduction</label>
+                    <input type="text" id="mIntro" class="glass-input" placeholder="e.g. King of the hill."
+                        oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="text" id="mImage" class="glass-input" placeholder="https://..."
+                        oninput="updatePreview()">
+                    <small class="text-muted">Leave empty to use initials.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Generated HTML Code</label>
+                    <textarea id="outputCode" class="glass-input textarea" readonly
+                        style="font-family: monospace; font-size: 0.8rem;"></textarea>
+                </div>
+
+                <button class="cta-button full-width" onclick="copyCode()">Copy Code</button>
+            </div>
+
+            <!-- Right: Live Preview -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h3>Live Preview</h3>
+                </div>
+                <div class="preview-stage">
+                    <!-- The Card -->
+                    <div class="member-card glass-card" id="previewCard" data-tilt>
+                        <div class="member-avatar" id="pAvatar">
+                            <span class="initials" id="pInitials">DK</span>
+                        </div>
+                        <div class="member-info">
+                            <h3 id="pName">Member Name</h3>
+                            <span class="role" id="pRole">Elite Member</span>
+                            <p class="intro" id="pIntro">"Introduction goes here."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="instructions glass-card" style="margin-top: 24px; padding: 20px;">
+                    <h4>How to add to website:</h4>
+                    <ol style="margin-top: 10px; padding-left: 20px; color: var(--text-muted); line-height: 1.6;">
+                        <li>Fill in the details above.</li>
+                        <li>Click <strong>Copy Code</strong>.</li>
+                        <li>Open <code>index.html</code>.</li>
+                        <li>Find the <code>&lt;!-- Elite Members --&gt;</code> section.</li>
+                        <li>Paste the code inside the grid.</li>
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="tilt.js"></script>
+    <script>
+        function checkAuth() {
+            const pass = document.getElementById('passkey').value;
+            // Simple check (Not secure, but acts as a gatekeeper)
+            if (pass === 'feliz123') {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                updatePreview();
+            } else {
+                document.getElementById('authError').style.display = 'block';
+            }
+        }
+
+        function updatePreview() {
+            const name = document.getElementById('mName').value || 'Member Name';
+            const role = document.getElementById('mRole').value || 'Elite Member';
+            const intro = document.getElementById('mIntro').value || '"Introduction goes here."';
+            const img = document.getElementById('mImage').value;
+
+            // Update Preview Elements
+            document.getElementById('pName').innerText = name;
+            document.getElementById('pRole').innerText = role;
+            document.getElementById('pIntro').innerText = `"${intro.replace(/"/g, '')}"`;
+
+            const avatarDiv = document.getElementById('pAvatar');
+            if (img) {
+                avatarDiv.innerHTML = `<img src="${img}" alt="${name}">`;
+            } else {
+                // Generate initials
+                const initials = name.substring(0, 2).toUpperCase();
+                avatarDiv.innerHTML = `<span class="initials">${initials}</span>`;
+            }
+
+            generateCode();
+        }
+
+        function generateCode() {
+            const name = document.getElementById('mName').value || 'Member Name';
+            const role = document.getElementById('mRole').value || 'Elite Member';
+            const intro = document.getElementById('mIntro').value || 'Introduction goes here.';
+            const img = document.getElementById('mImage').value;
+
+            let avatarHTML = '';
+            if (img) {
+                avatarHTML = `
+                    <div class="member-avatar">
+                        <img src="${img}" alt="${name}">
+                    </div>`;
+            } else {
+                const initials = name.substring(0, 2).toUpperCase();
+                avatarHTML = `
+                    <div class="member-avatar"><span class="initials">${initials}</span></div>`;
+            }
+
+            const code = `
+                <div class="member-card glass-card new animate-on-scroll">
+                    ${avatarHTML.trim()}
+                    <div class="member-info">
+                        <h3>${name}</h3>
+                        <span class="role">${role}</span>
+                        <p class="intro">"${intro.replace(/"/g, '')}"</p>
+                    </div>
+                </div>`;
+
+            document.getElementById('outputCode').value = code.trim();
+        }
+
+        function copyCode() {
+            const copyText = document.getElementById("outputCode");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            alert("Code copied! Now paste it into index.html");
+        }
+    </script>
+</body>
+
+</html>
