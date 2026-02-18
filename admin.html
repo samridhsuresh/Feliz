@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Feliz • Admin Panel</title>
+    <title>Feliz CMS • Premium</title>
     <link rel="icon" type="image/png" href="https://i.imgur.com/sQj4lYI.png">
 
     <!-- Fonts -->
@@ -16,191 +16,396 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Icons (Phosphor) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
-<body>
+<body class="dashboard-body">
 
-    <!-- Background Animation -->
-    <div class="fixed-bg" aria-hidden="true"></div>
-    <div class="overlay" aria-hidden="true"></div>
-
-    <!-- Login Overlay -->
+    <!-- Auth Layer -->
     <div class="auth-overlay" id="authOverlay">
-        <div class="glass-card auth-card">
-            <h2>Admin Login</h2>
-            <p class="text-muted">Enter passkey to access.</p>
-            <input type="password" id="passkey" class="glass-input" placeholder="Enter Passkey" style="margin: 20px 0;">
-            <button class="cta-button full-width" onclick="checkAuth()">Access</button>
-            <p id="authError" style="color: #ff5555; display: none; margin-top: 10px;">Access Denied</p>
+        <div class="glass-card auth-card"
+            style="border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            <img src="https://i.imgur.com/sQj4lYI.png" width="60" style="margin-bottom:20px;">
+            <h2>Admin Access</h2>
+            <p class="text-muted">Enter your secure passkey.</p>
+            <input type="password" id="passkey" class="glass-input" placeholder="Passkey"
+                style="margin: 20px 0; text-align:center;">
+            <button class="cta-button full-width" onclick="checkAuth()">Unlock Dashboard</button>
+            <p id="authError" style="color: #ff5555; display: none; margin-top: 15px; font-size:0.9rem;">Invalid Passkey
+            </p>
         </div>
     </div>
 
-    <!-- Admin Dashboard -->
-    <div class="admin-container" id="adminDashboard" style="display: none;">
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
-        <!-- Header -->
-        <header class="admin-header">
-            <div class="brand">
-                <img src="https://i.imgur.com/sQj4lYI.png" alt="Logo" width="40">
-                <span>Feliz Admin</span>
-            </div>
-            <a href="index.html" class="nav-item">Back to Site</a>
-        </header>
+    <!-- App Container -->
+    <div id="app" style="display:none; width:100%;">
 
-        <div class="admin-grid">
-
-            <!-- Left: Profile Form -->
-            <div class="admin-panel glass-card">
-                <h3>Create New Profile</h3>
-                <p class="text-muted" style="margin-bottom: 24px;">Enter details to generate code.</p>
-
-                <div class="form-group">
-                    <label>Member Name</label>
-                    <input type="text" id="mName" class="glass-input" placeholder="e.g. DarkKnight"
-                        oninput="updatePreview()">
-                </div>
-
-                <div class="form-group">
-                    <label>Role</label>
-                    <select id="mRole" class="glass-input" onchange="updatePreview()">
-                        <option value="Elite Member">Elite Member</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Coordinator">Coordinator</option>
-                        <option value="Developer">Developer</option>
-                        <option value="Founder">Founder</option>
-                        <option value="Leader">Leader</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Introduction</label>
-                    <input type="text" id="mIntro" class="glass-input" placeholder="e.g. King of the hill."
-                        oninput="updatePreview()">
-                </div>
-
-                <div class="form-group">
-                    <label>Image URL</label>
-                    <input type="text" id="mImage" class="glass-input" placeholder="https://..."
-                        oninput="updatePreview()">
-                    <small class="text-muted">Leave empty to use initials.</small>
-                </div>
-
-                <div class="form-group">
-                    <label>Generated HTML Code</label>
-                    <textarea id="outputCode" class="glass-input textarea" readonly
-                        style="font-family: monospace; font-size: 0.8rem;"></textarea>
-                </div>
-
-                <button class="cta-button full-width" onclick="copyCode()">Copy Code</button>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="https://i.imgur.com/sQj4lYI.png" alt="Logo">
+                <span>Feliz<span style="color:var(--primary);">CMS</span></span>
             </div>
 
-            <!-- Right: Live Preview -->
-            <div class="preview-panel">
-                <div class="preview-header">
-                    <h3>Live Preview</h3>
+            <nav class="nav-menu">
+                <button class="nav-btn active" onclick="nav('dashboard', this)">
+                    <i class="ph ph-squares-four" style="font-size:1.2rem;"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-btn" onclick="nav('content', this)">
+                    <i class="ph ph-article" style="font-size:1.2rem;"></i>
+                    <span>Content & Links</span>
+                </button>
+                <button class="nav-btn" onclick="nav('team', this)">
+                    <i class="ph ph-users" style="font-size:1.2rem;"></i>
+                    <span>Team Roster</span>
+                </button>
+            </nav>
+
+            <div style="margin-top:auto;">
+                <a href="index.html" target="_blank" class="nav-btn">
+                    <i class="ph ph-arrow-square-out" style="font-size:1.2rem;"></i>
+                    <span>View Website</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Dashboard View -->
+            <section id="view-dashboard" class="view-section">
+                <div class="dashboard-header">
+                    <div class="page-title">
+                        <h2>Overview</h2>
+                        <p class="text-muted">Welcome back, Admin.</p>
+                    </div>
                 </div>
-                <div class="preview-stage">
-                    <!-- The Card -->
-                    <div class="member-card glass-card" id="previewCard" data-tilt>
-                        <div class="member-avatar" id="pAvatar">
-                            <span class="initials" id="pInitials">DK</span>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Team Members</h3>
+                        <div class="stat-value" id="statMembers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Site Status</h3>
+                        <div class="stat-value" style="color:#55ff55; font-size:1.5rem;">● Live</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Theme</h3>
+                        <div class="stat-value" style="color:var(--primary); font-size:1.5rem;">Premium Dark</div>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding:30px;">
+                    <h3 style="margin-bottom:20px;">Recent Activity</h3>
+                    <p class="text-muted">System initialized. Data synced from local storage.</p>
+                </div>
+            </section>
+
+            <!-- Content View -->
+            <section id="view-content" class="view-section" style="display:none;">
+                <div class="dashboard-header">
+                    <div class="page-title">
+                        <h2>Content Management</h2>
+                        <p class="text-muted">Edit website titles, links, and text.</p>
+                    </div>
+                    <button class="cta-button" onclick="saveAll()">
+                        <i class="ph ph-floppy-disk"></i> Save Changes
+                    </button>
+                </div>
+
+                <div class="settings-section">
+                    <span class="section-label">Hero Section</span>
+                    <div class="form-group">
+                        <label>Main Title (HTML)</label>
+                        <input type="text" id="siteTitle" class="glass-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Subtitle</label>
+                        <input type="text" id="siteSubtitle" class="glass-input">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <span class="section-label">Global Links</span>
+                    <div class="form-group">
+                        <label>Discord Invite URL</label>
+                        <input type="text" id="discordUrl" class="glass-input">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <span class="section-label">Section Headers</span>
+                    <div class="admin-grid" style="grid-template-columns: 1fr 1fr; gap:20px;">
+                        <div>
+                            <label>Team Title</label>
+                            <input type="text" id="teamTitle" class="glass-input mb-3">
+                            <label>Team Desc</label>
+                            <input type="text" id="teamDesc" class="glass-input">
                         </div>
-                        <div class="member-info">
-                            <h3 id="pName">Member Name</h3>
-                            <span class="role" id="pRole">Elite Member</span>
-                            <p class="intro" id="pIntro">"Introduction goes here."</p>
+                        <div>
+                            <label>Server Title</label>
+                            <input type="text" id="serverTitle" class="glass-input mb-3">
+                            <label>Server Desc</label>
+                            <input type="text" id="serverDesc" class="glass-input">
                         </div>
                     </div>
                 </div>
-                <div class="instructions glass-card" style="margin-top: 24px; padding: 20px;">
-                    <h4>How to add to website:</h4>
-                    <ol style="margin-top: 10px; padding-left: 20px; color: var(--text-muted); line-height: 1.6;">
-                        <li>Fill in the details above.</li>
-                        <li>Click <strong>Copy Code</strong>.</li>
-                        <li>Open <code>index.html</code>.</li>
-                        <li>Find the <code>&lt;!-- Elite Members --&gt;</code> section.</li>
-                        <li>Paste the code inside the grid.</li>
-                    </ol>
+            </section>
+
+            <!-- Team View -->
+            <section id="view-team" class="view-section" style="display:none;">
+                <div class="dashboard-header">
+                    <div class="page-title">
+                        <h2>Team Roster</h2>
+                        <p class="text-muted">Manage your squad members.</p>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="cta-button" onclick="saveAll()">
+                            <i class="ph ph-floppy-disk"></i> Save
+                        </button>
+                        <button class="cta-button" style="background:#fff; color:#000;" onclick="openModal()">
+                            <i class="ph ph-plus-bold"></i> Add Member
+                        </button>
+                    </div>
                 </div>
+
+                <div class="glass-card" style="padding:0; overflow:hidden;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamTableBody">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="member-modal" style="text-align: left; max-width: 500px; border:1px solid rgba(255,255,255,0.1);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 id="modalTitle">Member Details</h3>
+                <button class="modal-close" onclick="closeModal()" style="position:static;">&times;</button>
             </div>
 
+            <input type="hidden" id="editId">
+
+            <div class="modal-form-group">
+                <label>Name</label>
+                <input type="text" id="editName">
+            </div>
+            <div class="modal-form-group">
+                <label>Role</label>
+                <select id="editRole">
+                    <option value="Team Leader">Team Leader</option>
+                    <option value="Founder">Founder</option>
+                    <option value="Developer">Developer</option>
+                    <option value="Coordinator">Coordinator</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Elite Member">Elite Member</option>
+                </select>
+            </div>
+            <div class="modal-form-group">
+                <label>Introduction</label>
+                <input type="text" id="editIntro">
+            </div>
+            <div class="modal-form-group">
+                <label>Image URL</label>
+                <input type="text" id="editImage" placeholder="https://...">
+            </div>
+
+            <button onclick="submitMember()" class="cta-button full-width">Confirm Changes</button>
         </div>
     </div>
 
-    <script src="tilt.js"></script>
+    <script src="data.js"></script>
     <script>
+        // State
+        let currentData = null;
+
+        // Init
+        const init = () => {
+            currentData = getSiteData();
+
+            // Check Schema
+            if (!currentData.sectionContent) {
+                currentData.sectionContent = {
+                    team: { title: "The <span class=\"gradient-text\">Squad</span>", desc: "Meet the legends behind Team Feliz." },
+                    server: { title: "Feliz <span class=\"gradient-text\">Server</span>", desc: "An exclusive Minecraft experience tailored for our community. Custom modes, events, and performance-tuned gameplay." },
+                    discord: { title: "Join the Conversation", desc: "Get the latest updates, chat with members, and participate in community events.", url: "https://discord.gg/tRVzM3FGtX" },
+                    footer: { copyright: "&copy; <span id=\"year\"></span> Team Feliz. All rights reserved." }
+                };
+            }
+
+            populateDashboard();
+        };
+
+        // Auth
         function checkAuth() {
             const pass = document.getElementById('passkey').value;
-            // Simple check (Not secure, but acts as a gatekeeper)
             if (pass === 'feliz123') {
                 document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                updatePreview();
+                document.getElementById('app').style.display = 'flex';
+                init();
+                toast('Welcome, Admin!', 'success');
             } else {
                 document.getElementById('authError').style.display = 'block';
+                document.getElementById('passkey').value = '';
+                toast('Access Denied', 'error');
             }
         }
 
-        function updatePreview() {
-            const name = document.getElementById('mName').value || 'Member Name';
-            const role = document.getElementById('mRole').value || 'Elite Member';
-            const intro = document.getElementById('mIntro').value || '"Introduction goes here."';
-            const img = document.getElementById('mImage').value;
+        // Navigation
+        function nav(viewId, btn) {
+            document.querySelectorAll('.view-section').forEach(el => el.style.display = 'none');
+            document.getElementById('view-' + viewId).style.display = 'block';
 
-            // Update Preview Elements
-            document.getElementById('pName').innerText = name;
-            document.getElementById('pRole').innerText = role;
-            document.getElementById('pIntro').innerText = `"${intro.replace(/"/g, '')}"`;
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
-            const avatarDiv = document.getElementById('pAvatar');
-            if (img) {
-                avatarDiv.innerHTML = `<img src="${img}" alt="${name}">`;
+        // Populate Data
+        function populateDashboard() {
+            // Stats
+            document.getElementById('statMembers').innerText = currentData.members.length;
+
+            // Content Fields
+            document.getElementById('siteTitle').value = currentData.websiteConfig.title;
+            document.getElementById('siteSubtitle').value = currentData.websiteConfig.subtitle;
+            document.getElementById('discordUrl').value = currentData.sectionContent.discord.url;
+
+            document.getElementById('teamTitle').value = currentData.sectionContent.team.title;
+            document.getElementById('teamDesc').value = currentData.sectionContent.team.desc;
+            document.getElementById('serverTitle').value = currentData.sectionContent.server.title;
+            document.getElementById('serverDesc').value = currentData.sectionContent.server.desc;
+
+            // Team Table
+            const tbody = document.getElementById('teamTableBody');
+            tbody.innerHTML = '';
+
+            currentData.members.forEach(m => {
+                const tr = document.createElement('tr');
+                tr.className = 'member-row';
+
+                const imgDisplay = m.image ?
+                    `<img src="${m.image}" class="table-avatar">` :
+                    `<div class="table-avatar" style="display:flex;align-items:center;justify-content:center;font-size:0.8rem;">${m.name.substring(0, 2).toUpperCase()}</div>`;
+
+                tr.innerHTML = `
+                    <td>${imgDisplay}</td>
+                    <td><strong>${m.name}</strong><br><span class="text-muted" style="font-size:0.8rem;">"${m.intro}"</span></td>
+                    <td><span style="color:var(--primary);">${m.role}</span></td>
+                    <td>
+                        <button class="btn-small btn-edit" onclick="editMember('${m.id}')"><i class="ph ph-pencil-simple"></i></button>
+                        <button class="btn-small btn-delete" onclick="deleteMember('${m.id}')"><i class="ph ph-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // CRUD Actions
+        function openModal() {
+            document.getElementById('editModal').classList.add('active');
+            document.getElementById('editId').value = '';
+            document.getElementById('editName').value = '';
+            document.getElementById('editRole').value = 'Elite Member';
+            document.getElementById('editIntro').value = '';
+            document.getElementById('editImage').value = '';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function editMember(id) {
+            const m = currentData.members.find(x => x.id === id);
+            if (!m) return;
+
+            document.getElementById('editModal').classList.add('active');
+            document.getElementById('editId').value = m.id;
+            document.getElementById('editName').value = m.name;
+            document.getElementById('editRole').value = m.role;
+            document.getElementById('editIntro').value = m.intro;
+            document.getElementById('editImage').value = m.image || '';
+        }
+
+        function submitMember() {
+            const id = document.getElementById('editId').value;
+            const newMember = {
+                id: id || 'm' + Date.now(),
+                name: document.getElementById('editName').value,
+                role: document.getElementById('editRole').value,
+                intro: document.getElementById('editIntro').value,
+                image: document.getElementById('editImage').value
+            };
+
+            if (id) {
+                const idx = currentData.members.findIndex(x => x.id === id);
+                currentData.members[idx] = newMember;
+                toast('Member updated!', 'success');
             } else {
-                // Generate initials
-                const initials = name.substring(0, 2).toUpperCase();
-                avatarDiv.innerHTML = `<span class="initials">${initials}</span>`;
+                currentData.members.push(newMember);
+                toast('Member added!', 'success');
             }
 
-            generateCode();
+            closeModal();
+            populateDashboard();
         }
 
-        function generateCode() {
-            const name = document.getElementById('mName').value || 'Member Name';
-            const role = document.getElementById('mRole').value || 'Elite Member';
-            const intro = document.getElementById('mIntro').value || 'Introduction goes here.';
-            const img = document.getElementById('mImage').value;
-
-            let avatarHTML = '';
-            if (img) {
-                avatarHTML = `
-                    <div class="member-avatar">
-                        <img src="${img}" alt="${name}">
-                    </div>`;
-            } else {
-                const initials = name.substring(0, 2).toUpperCase();
-                avatarHTML = `
-                    <div class="member-avatar"><span class="initials">${initials}</span></div>`;
+        function deleteMember(id) {
+            if (confirm('Delete this member irrecoverably?')) {
+                currentData.members = currentData.members.filter(m => m.id !== id);
+                populateDashboard();
+                toast('Member deleted.', 'success');
             }
-
-            const code = `
-                <div class="member-card glass-card new animate-on-scroll">
-                    ${avatarHTML.trim()}
-                    <div class="member-info">
-                        <h3>${name}</h3>
-                        <span class="role">${role}</span>
-                        <p class="intro">"${intro.replace(/"/g, '')}"</p>
-                    </div>
-                </div>`;
-
-            document.getElementById('outputCode').value = code.trim();
         }
 
-        function copyCode() {
-            const copyText = document.getElementById("outputCode");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            alert("Code copied! Now paste it into index.html");
+        // Save
+        function saveAll() {
+            currentData.websiteConfig.title = document.getElementById('siteTitle').value;
+            currentData.websiteConfig.subtitle = document.getElementById('siteSubtitle').value;
+            currentData.sectionContent.discord.url = document.getElementById('discordUrl').value;
+            currentData.sectionContent.team.title = document.getElementById('teamTitle').value;
+            currentData.sectionContent.team.desc = document.getElementById('teamDesc').value;
+            currentData.sectionContent.server.title = document.getElementById('serverTitle').value;
+            currentData.sectionContent.server.desc = document.getElementById('serverDesc').value;
+
+            saveSiteData(currentData);
+            toast('All changes saved to live site!', 'success');
+        }
+
+        // Toast Logic
+        function toast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const div = document.createElement('div');
+            div.className = `toast ${type}`;
+            div.innerHTML = `
+                <i class="ph ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}" style="font-size:1.2rem;"></i>
+                <span>${msg}</span>
+            `;
+            container.appendChild(div);
+
+            setTimeout(() => {
+                div.style.opacity = '0';
+                div.style.transform = 'translateX(100%)';
+                setTimeout(() => div.remove(), 300);
+            }, 3000);
         }
     </script>
 </body>
